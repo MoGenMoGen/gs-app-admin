@@ -1,0 +1,32 @@
+{
+  "presets": [
+    ["env", {
+      "modules": false
+    }],
+    "stage-2"
+  ],
+  "ignore": [
+    "./src/assets/js/mui.min.js",
+    "./src/assets/js/mui.picker.min.js",
+    "./src/assets/js/mui.poppicker.js",
+    "./src/assets/js/mui.previewimage.js",
+    "./src/assets/js/mui.zoom.js"
+  ],
+  "plugins": [
+    "transform-runtime",
+    [
+      "component",
+      {
+        "libraryName": "element-ui",
+        "styleLibraryName": "theme-chalk"
+      }
+    ]
+  ],
+  "comments": false,
+  "env": {
+    "test": {
+      "presets": ["env", "stage-2"],
+      "plugins": ["istanbul"]
+    }
+  }
+}

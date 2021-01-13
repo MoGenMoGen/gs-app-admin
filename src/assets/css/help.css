@@ -1,0 +1,49 @@
+﻿/**{*/
+  /*box-sizing: border-box;*/
+  /*text-decoration: none;*/
+  /*list-style-type: none;*/
+  /*padding: 0;*/
+  /*margin: 0;*/
+/*}*/
+
+.icon {
+    width: 1em; height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+.iconfont{
+  font-family:"iconfont";
+  font-size:16px;font-style:normal;
+  vertical-align: middle;
+}
+
+.g-content{
+    width: 1200px;
+    margin: 0  auto;
+}
+
+.mask{
+  position: fixed;
+  left: 0;
+  top:0;
+  z-index: 500;
+  background-color: rgba(0,0,0,.5);
+  width: 100%;
+  height: 100%;
+}
+
+.ellipsis,.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.cur{
+    cursor: pointer;
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+
+.clearfix{overflow:auto;_height:1%}

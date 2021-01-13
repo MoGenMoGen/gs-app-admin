@@ -1,0 +1,220 @@
+<template>
+    <div id="container">
+        <van-sticky>
+            <my-header title="泵房档案" @back="back" @search="searchShow = true"> </my-header>
+        </van-sticky>
+        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="immediate">
+            <div v-for="(item,index) in dataList" :key="index">
+                <van-cell-group>
+                    <van-field label="泵房编号:" v-model="item.no" readonly :border="false">
+                        <template #button>
+                            <van-button icon="logistics" size="mini" type="info" @click="toNav(item)">去导航</van-button>
+                        </template>
+                    </van-field>
+                    <div @click="toDetail(item)">
+                        <van-field label="泵房名称:" v-model="item.nm" readonly :border="false"></van-field>
+                        <van-field label="小区名称:" v-model="item.estateNm" readonly :border="false"></van-field>
+                        <van-field label="分区楼层:" v-model="item.partitionFloor" readonly :border="false"></van-field>
+                        <van-field label="分区情况:" v-model="item.partitionSituation" readonly :border="false"></van-field>
+                        <van-field label="供水模式:" v-model="item.arg2" readonly :border="false"></van-field>
+                        <van-field label="物业电话:" v-model="item.propertyPhone" readonly :border="false"></van-field>
+                        <van-field label="泵房地址:" v-model="item.pumpLocation" readonly :border="false" type="textarea" rows="2"></van-field>
+                    </div>
+                    <van-cell title="路线图:" center>
+                        <template #default>
+                            <van-row>
+                                <van-col span="12">
+                                    <van-image @click="showImg(item.pumpRoute)" v-if="item.pumpRoute != null && item.pumpRoute !== ''" width="80" height="80"
+                                               :src="item.pumpRoute"></van-image>
+                                </van-col>
+                            </van-row>
+                        </template>
+                    </van-cell>
+                    <van-button block style="height: 5px" color="#F3F3F3"></van-button>
+                </van-cell-group>
+            </div>
+        </van-list>
+        <!--详情弹窗-->
+        <van-popup v-model="show" position="bottom" :style="{ height: '90%' }" closeable round close-icon="close">
+            <van-cell-group style="margin-top: 50px">
+                <van-field v-model="info.no" label="泵房编号:" readonly label-width="120"></van-field>
+                <van-field v-model="info.nm" label="泵房名称:" readonly label-width="120"></van-field>
+                <van-field v-model="info.guarantee" label="是否过保:" readonly label-width="120"></van-field>
+                <van-field v-model="info.region" label="行政区域:" readonly label-width="120"></van-field>
+                <van-field v-model="info.waterArea" label="供水区域:" readonly label-width="120"></van-field>
+<!--                <van-field v-model="info.estateNm" label="小区名称:" readonly label-width="120"></van-field>-->
+                <van-field v-model="info.recordNm" label="备案名:" readonly label-width="120"></van-field>
+                <van-field v-model="info.sxNum" label="水箱个数:" readonly label-width="120"></van-field>
+                <van-field v-model="info.volume" label="总容积:" readonly label-width="120"></van-field>
+                <van-field v-model="info.transferTm" label="移交时间:" readonly label-width="120"></van-field>
+                <van-field v-model="info.enableTm" label="启用时间:" readonly label-width="120"></van-field>
+                <van-field v-model="info.warrantyTm" label="质保时间:" readonly label-width="120"></van-field>
+                <van-field v-model="info.maintainTm" label="保养调整时间:" readonly label-width="120"></van-field>
+                <van-field v-model="info.maintainStartTm" label="保养开始时间:" readonly label-width="120"></van-field>
+                <van-field v-model="info.houseNum" label="小区户数:" readonly label-width="120"></van-field>
+                <van-field v-model="info.estateNum" label="小区栋数:" readonly label-width="120"></van-field>
+                <van-field v-model="info.partitionFloor" label="分区楼层:" readonly label-width="120"></van-field>
+                <van-field v-model="info.partitionSituation" label="分区情况:" readonly label-width="120"></van-field>
+                <van-field v-model="info.propertyPhone" label="物业电话:" readonly label-width="120"></van-field>
+                <van-field v-model="info.community" label="所属社区:" readonly label-width="120"></van-field>
+                <van-field v-model="info.communityPhone" label="社区电话:" readonly label-width="120"></van-field>
+                <van-field v-model="info.sxsffk" label="生消分开:" readonly label-width="120"></van-field>
+                <van-field v-model="info.serverAddress" label="服务器地址:" readonly label-width="120"></van-field>
+                <van-field v-model="info.ip" label="IP地址:" readonly label-width="120"></van-field>
+                <van-field v-model="info.broadbandAccount" label="网关:" readonly label-width="120"></van-field>
+                <van-field v-model="info.broadbandPassword" label="子网掩码:" readonly label-width="120"></van-field>
+                <van-field v-model="info.broadbandOperator" label="宽带运营商:" readonly label-width="120"></van-field>
+                <van-field v-model="info.networkType" label="网络类型:" readonly label-width="120"></van-field>
+                <van-field v-model="info.lng" label="经度:" readonly label-width="120">
+                    <template #button>
+                        <van-button size="small" type="primary" @click="getGps">获取当前定位</van-button>
+                    </template>
+                </van-field>
+                <van-field v-model="info.lat" label="维度:" readonly label-width="120">
+                    <template #button>
+                        <van-button size="small" type="info" @click="saveGps">保存当前定位</van-button>
+                    </template>
+
+                </van-field>
+                <van-field v-model="info.pumpLocation" label="泵房位置:" readonly label-width="120" type="textarea" rows="2"></van-field>
+                <van-image width="100" height="100" :src="info.pumpImg1" @click="showImg(info.pumpImg1)"></van-image>
+                <van-image width="100" height="100" :src="info.pumpImg2" @click="showImg(info.pumpImg2)"></van-image>
+                <van-image width="100" height="100" :src="info.pumpRoute" @click="showImg(info.pumpRoute)"></van-image>
+                <van-field v-model="info.equipmentNm" label="设备供应商:" readonly label-width="120"></van-field>
+                <van-field v-model="info.equipmentPhone" label="设备联系人及电话:" readonly label-width="150"></van-field>
+                <van-field v-model="info.lnspectionNm" label="巡检单位:" readonly label-width="120"></van-field>
+                <van-field v-model="info.lnspectionPhone" label="巡检联系人及电话:" readonly label-width="120"></van-field>
+                <van-field v-model="info.maintenanceNm" label="保养单位:" readonly label-width="120"></van-field>
+                <van-field v-model="info.maintenancePhone" label="保养联系人及电话:" readonly label-width="120"></van-field>
+                <van-field v-model="info.maintenanceMethod" label="维护方式:" readonly label-width="120"></van-field>
+            </van-cell-group>
+        </van-popup>
+
+
+        <!--搜索弹窗-->
+        <van-popup v-model="searchShow" position="bottom" :style="{ height: '80%' }" closeable round close-icon="close">
+            <van-form @submit="search" style="margin-top: 50px">
+                <van-field label="泵房名称:" v-model="searchData.pumpNm" clearable></van-field>
+                <div style="margin: 16px;">
+                    <van-button round block type="info" native-type="submit">
+                        提 交
+                    </van-button>
+                </div>
+            </van-form>
+        </van-popup>
+
+
+    </div>
+</template>
+
+<script>
+    import {ImagePreview,Toast} from 'vant';
+    import myHeader from "../../../components/myHeader/myHeader";
+    export default {
+        components: {myHeader},
+        name: "pump",
+        data() {
+            return {
+                info: {},
+                searchData: {
+                    pumpNm: ''
+                },
+                show: false,
+                activeNames: ['1'],
+                dataList: [],
+                searchShow: false,
+                loading: false,
+                finished: false,
+                immediate: false,//初始化不加载必须用变量
+                pageNo: 1,
+                pageSize: 10,
+                total: 0,
+                title: "",
+                pumpNm: "",
+            };
+        },
+        mounted() {
+            this.getList()
+        },
+        methods: {
+            getGps(){
+                this.$bridge.callHandler('h5_up_location', "", (res) => {
+                    let parse = JSON.parse(res);
+                    this.info.lng = parse.dlon;
+                    this.info.lat = parse.dlat;
+                })
+            },
+            saveGps(){
+                this.api.updPump(JSON.stringify(this.info)).then(res => {
+                    Toast("修改成功")
+                });
+            },
+
+            toNav(item) {
+                let temp = {
+                    dlat: item.lat,
+                    dlon: item.lng,
+                    name: item.nm,
+                };
+                this.$bridge.callHandler('h5_baidumap', JSON.stringify(temp))
+            },
+
+            showImg(val) {
+                ImagePreview([val]);
+            },
+
+            search() {
+                this.searchShow = false;
+                this.pageNo = 1;
+                this.dataList = [];
+                this.getList();
+            },
+            back() {
+                this.until.back()
+            },
+            onLoad() {
+                this.getList()
+            },
+            toDetail(item) {
+                this.show = true;
+                this.info = item;
+            },
+            getList() {
+                let qry = this.query.new();
+                if (this.searchData.pumpNm) {
+                    this.query.toW(qry, "nm", this.searchData.pumpNm, "LK");
+                }
+                this.query.toP(qry, this.pageNo, this.pageSize);
+                this.query.toO(qry, "no", "asc");
+                this.api.getPumpPage(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
+                    if (res.code === 200) {
+                        this.dataList.push(...res.data.list);
+                        // 加载状态结束
+                        this.finished = this.dataList.length >= res.page.total;
+                        this.loading = false;
+                        this.pageNo++;
+                    }
+                })
+            },
+        },
+        filters: {
+            filter: function (val) {
+                if (val === 0) {
+                    return '离线'
+                } else if (val === 1) {
+                    return '在线'
+                }
+                return val
+            }
+        },
+    };
+</script>
+
+<style lang="less" scoped>
+    .van-cell {
+        line-height: normal;
+        padding: 8px 16px;
+    }
+
+</style>
+

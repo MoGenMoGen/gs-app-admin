@@ -1,0 +1,33 @@
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0;font-weight: normal }
+body, button, input, select, textarea { font: 14px/19px "Microsoft YaHei", "lucida grande", "lucida sans unicode", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei",Arial, Helvetica, sans-serif;
+}
+h1, h2, h3, h4, h5, h6{ font-size:100%; } 
+address, cite, dfn, em, var { font-style:normal; } 
+code, kbd, pre, samp { font-family:couriernew, courier, monospace; } 
+small{ font-size:12px; } 
+ul, ol { list-style:none; } 
+a { text-decoration:none; color: inherit;display: inline-block}
+a:hover { text-decoration:underline; }
+a:link{text-decoration:none; }  /* 指正常的未被访问过的链接*/
+sup { vertical-align:text-top; }
+sub{ vertical-align:text-bottom; } 
+legend { color:#000; } 
+fieldset, img { border:0; }
+input,button,select,textarea{ outline:none;}
+textarea{ font-size:13px; resize:none;}
+table { border-collapse:collapse; border-spacing:0; }
+
+html,body{
+  box-sizing: border-box;
+  line-height:1.5;
+  height: 100%;
+  position: relative;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+button{
+  border: 0;
+}

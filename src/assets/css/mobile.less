@@ -1,0 +1,54 @@
+body {
+  -webkit-user-select: none; // 禁止页面文字选择 ，此属性不继承，一般加在body上规定整个body的文字都不会自动调整
+  //-webkit-text-size-adjust: none; //禁止文字自动调整大小(默认情况下旋转设备的时候文字大小会发生变化)，此属性也不继承，一般加在body上规定整个body的文字都不会自动调整
+  -webkit-touch-callout: none; // 禁用长按页面时的弹出菜单
+  -webkit-overflow-scrolling: touch; // 局部滚动(仅iOS 5以上支持)
+  -webkit-tap-highlight-color: rgba(
+    0,
+    0,
+    0,
+    0
+  ); //透明度设置为0，去掉点击链接和文本框对象时默认的灰色半透明覆盖层(iOS)或者虚框(Android)
+  //-webkit-tap-highlight-color:rgba(255,0,0,0.5);   //利用此属性，设置touch时链接区域高亮为50%的透明红，只在ios上起作用。android上只要使用了此属性就表现为边框。在body上加此属性，这样就保证body的点击区域效果一致了
+}
+
+//不同type的input使用这个属性之后表现不一。text、button无样式，radio、checkbox直接消失
+button,
+input[type="text"],
+input[type="button"],
+select {
+  background-color: #fff;
+  -webkit-appearance: none; //消除输入框和按钮的原生外观，在iOS上加上这个属性才能给按钮和输入框自定义样式
+}
+
+@color: #0f74b9;
+@borderColor: #e9e9e9;
+@bgColor: #f2f3f7;
+
+.menu {
+  width: 100%;
+  background: #ffffff;
+  display: flex;
+  display: -webkit-flex;
+  align-items: center;
+  height: 1rem;
+  margin-bottom: 0.2rem;
+  padding: 0.2rem 0.5rem;
+  box-sizing: border-box;
+  > div {
+    flex: 1;
+    margin: 0 0.3rem;
+    display: flex;
+    display: -webkit-flex;
+    flex-flow: row nowrap;
+    input {
+      padding-left: 0.4rem;
+      flex: 1;
+      border: 1px solid #ccc;
+    }
+    .mint-button {
+      flex: 0 0 auto;
+      background-color: @color;
+    }
+  }
+}
