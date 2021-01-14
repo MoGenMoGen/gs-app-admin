@@ -42,9 +42,10 @@
 
             <div v-if="info.status2 === 2">
                 <van-field v-model="info.arrivalTm2" center clearable readonly label="到场时间:">
-                    <template #button>
-                        <van-button size="small" type="primary" @click="getNewDate">获取当前时间</van-button>
-                    </template>
+
+                    <slot slot="button">
+                        <van-button size="small" type="primary" @click="getNewDate">获取到场时间</van-button>
+                    </slot>
                 </van-field>
 
                 <van-field readonly clickable label="故障类型"   :value="info.faultType2"  placeholder="选择故障类型"   @click="showPicker = true"></van-field>
@@ -60,22 +61,17 @@
                 <van-field v-model="info.means2" label="排查手段:"  placeholder="请输入排查手段" type="textarea"  rows="2"></van-field>
                 <van-field v-model="info.processingRecords2" label="处理记录:"  placeholder="请输入处理记录" type="textarea"  rows="3"></van-field>
                 <van-field name="uploader" label="处理前照片">
-                    <template #input>
+                    <slot slot="input">
                         <my-upload v-model="imgList1"></my-upload>
-                    </template>
+                    </slot>
                 </van-field>
                 <van-field name="uploader" label="处理后照片">
-                    <template #input>
+                    <slot slot="input">
                         <my-upload v-model="imgList2"></my-upload>
-                    </template>
+                    </slot>
+
                 </van-field>
             </div>
-
-
-
-
-
-
             <van-button type="info" block @click="acceptTask" v-if="info.status2 === 1">接单</van-button>
             <van-button type="primary" block @click="submit" v-if="info.status2 === 2">提交</van-button>
 
