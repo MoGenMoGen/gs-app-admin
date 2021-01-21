@@ -17,7 +17,7 @@
                                     @click="showEarly(item.id,2)">完善信息
                         </van-button>
                         <van-button v-if="item.early2Status === '已提交'" slot="button" size="small" type="info"
-                                    @click="showEarly(item.id,2)">查看信息
+                                    @click="showEarly(item.pumpId,2)">查看信息
                         </van-button>
                         <van-button v-if="item.early2Status === '整改中'" slot="button" size="small" type="warning"
                                     @click="showEarly(item.id,2)">整改中
@@ -29,7 +29,7 @@
                                     @click="showEarly(item.id,3)">完善信息
                         </van-button>
                         <van-button v-if="item.early3Status === '已提交'" slot="button" size="small" type="info"
-                                    @click="showEarly(item.id,3)">查看信息
+                                    @click="showEarly(item.pumpId,3)">查看信息
                         </van-button>
                         <van-button v-if="item.early3Status === '整改中'" slot="button" size="small" type="warning"
                                     @click="showEarly(item.id,3)">整改中
@@ -41,7 +41,7 @@
                                     @click="showEarly(item.id,4)">完善信息
                         </van-button>
                         <van-button v-if="item.early4Status === '已提交'" slot="button" size="small" type="info"
-                                    @click="showEarly(item.id,4)">查看信息
+                                    @click="showEarly(item.pumpId,4)">查看信息
                         </van-button>
                         <van-button v-if="item.early4Status === '整改中'" slot="button" size="small" type="warning"
                                     @click="showEarly(item.id,4)">整改中
@@ -53,7 +53,7 @@
                                     @click="showEarly(item.id,5)">完善信息
                         </van-button>
                         <van-button v-if="item.early5Status === '已提交'" slot="button" size="small" type="info"
-                                    @click="showEarly(item.id,5)">查看信息
+                                    @click="showEarly(item.pumpId,5)">查看信息
                         </van-button>
                         <van-button v-if="item.early5Status === '整改中'" slot="button" size="small" type="warning"
                                     @click="showEarly(item.id,5)">整改中
@@ -65,7 +65,7 @@
                                     @click="showEarly(item.id,6)">完善信息
                         </van-button>
                         <van-button v-if="item.early6Status === '已提交'" slot="button" size="small" type="info"
-                                    @click="showEarly(item.id,6)">查看信息
+                                    @click="showEarly(item.pumpId,6)">查看信息
                         </van-button>
                         <van-button v-if="item.early6Status === '整改中'" slot="button" size="small" type="warning"
                                     @click="showEarly(item.id,6)">整改中
@@ -78,7 +78,7 @@
                                     @click="showEarly(item.id,7)">完善信息
                         </van-button>
                         <van-button v-if="item.early7Status === '已提交'" slot="button" size="small" type="info"
-                                    @click="showEarly(item.id,7)">查看信息
+                                    @click="showEarly(item.pumpId,7)">查看信息
                         </van-button>
                         <van-button v-if="item.early7Status === '整改中'" slot="button" size="small" type="warning"
                                     @click="showEarly(item.id,7)">整改中
@@ -90,7 +90,7 @@
                                     @click="showEarly(item.id,12)">完善信息
                         </van-button>
                         <van-button v-if="item.early12Status === '已提交'" slot="button" size="small" type="info"
-                                    @click="showEarly(item.id,12)">查看信息
+                                    @click="showEarly(item.pumpId,12)">查看信息
                         </van-button>
                         <van-button v-if="item.early12Status === '整改中'" slot="button" size="small" type="warning"
                                     @click="showEarly(item.id,12)">整改中
@@ -103,7 +103,7 @@
                                     @click="showEarly(item.id,13)">完善信息
                         </van-button>
                         <van-button v-if="item.early13Status === '已提交'" slot="button" size="small" type="info"
-                                    @click="showEarly(item.id,13)">查看信息
+                                    @click="showEarly(item.pumpId,13)">查看信息
                         </van-button>
                         <van-button v-if="item.early13Status === '整改中'" slot="button" size="small" type="warning"
                                     @click="showEarly(item.id,13)">整改中
@@ -115,7 +115,7 @@
                                     @click="showEarly(item.id,9)">完善信息
                         </van-button>
                         <van-button v-if="item.early9Status === '已提交'" slot="button" size="small" type="info"
-                                    @click="showEarly(item.id,9)">查看信息
+                                    @click="showEarly(item.pumpId,9)">查看信息
                         </van-button>
                         <van-button v-if="item.early9Status === '整改中'" slot="button" size="small" type="warning"
                                     @click="showEarly(item.id,9)">整改中
@@ -127,7 +127,7 @@
                                     @click="showEarly(item.id,10)">完善信息
                         </van-button>
                         <van-button v-if="item.early10Status === '已提交'" slot="button" size="small" type="info"
-                                    @click="showEarly(item.id,10)">查看信息
+                                    @click="showEarly(item.pumpId,10)">查看信息
                         </van-button>
                         <van-button v-if="item.early10Status === '整改中'" slot="button" size="small" type="warning"
                                     @click="showEarly(item.id,10)">整改中
@@ -139,7 +139,7 @@
                                     @click="showEarly(item.id,11)">完善信息
                         </van-button>
                         <van-button v-if="item.early11Status === '已提交'" slot="button" size="small" type="info"
-                                    @click="showEarly(item.id,11)">查看信息
+                                    @click="showEarly(item.pumpId,11)">查看信息
                         </van-button>
                         <van-button v-if="item.early11Status === '整改中'" slot="button" size="small" type="warning"
                                     @click="showEarly(item.id,11)">整改中
