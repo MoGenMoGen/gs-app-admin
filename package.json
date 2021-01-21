@@ -1,7 +1,7 @@
 {
   "name": "11",
   "version": "1.0.1",
-  "author": "wyh http://61.164.93.186:6181    127.0.0.1",
+  "author": "wyh https://www.zjfld.net:6143    127.0.0.1",
   "scripts": {
     "dev": "node --max_old_space_size=4096 build/dev-server.js --proxy=http://127.0.0.1",
     "build": "node build/build.js",
@@ -9,7 +9,7 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e"
   },
-  "dependencies": {accept
+  "dependencies": {
     "accounting": "^0.4.1",
     "axios": "^0.16.0",
     "element-ui": "^2.13.0",
