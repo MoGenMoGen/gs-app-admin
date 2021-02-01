@@ -246,6 +246,7 @@
                 searchData: {
                     unitNm: '',
                     pumpNo: '',
+                    earlyNo: '',
                     pumpNm: ''
                 },
                 tabList: ['已会审', '已交底', '已试压', '已初验', '已移交'],
@@ -352,8 +353,8 @@
                 if (this.searchData.pumpNm) {
                     this.query.toW(qry, "pumpNm", this.searchData.pumpNm, "LK");
                 }
-                if (this.searchData.pumpNo) {
-                    this.query.toW(qry, "pumpNo", this.searchData.pumpNo, "LK");
+                if (this.searchData.earlyNo) {
+                    this.query.toW(qry, "earlyNo", this.searchData.earlyNo, "LK");
                 }
                 if (this.searchData.unitNm) {
                     this.query.toW(qry, "unitNm", this.searchData.unitNm, "LK");
