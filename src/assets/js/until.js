@@ -218,6 +218,9 @@ class until {
     });
     return promise;
   }
+  replace(url) {
+    window.location.replace(url)
+  }
   //fetch请求
   async fetch(url, data) {
     if (window.fetch) {

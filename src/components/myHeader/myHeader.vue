@@ -33,8 +33,11 @@ export default {
       searchStatus:{
           type: Boolean,
           default: true
+      },
+      showLeft:{
+          type: Boolean,
+          default: true
       }
-
   },
   data () {
     return {

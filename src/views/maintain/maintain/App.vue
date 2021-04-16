@@ -8,7 +8,7 @@
                         <van-cell-group>
                             <van-field label="保养单位:" v-model="item.unitNm" readonly :border="false" label-width="140"></van-field>
                             <van-field label="泵房编号:" v-model="item.pumpNo" readonly :border="false" label-width="140"></van-field>
-                            <van-field label="泵房名称:" v-model="item.estateNm" readonly :border="false" label-width="140"></van-field>
+                            <van-field label="泵房名称:" v-model="item.pumpNm" readonly :border="false" label-width="140"></van-field>
                             <van-field label="供水区域:" v-model="item.zoning" readonly :border="false" label-width="140" right-icon="arrow"></van-field>
                             <van-field label="计划保养开始日期:" v-model="item.planTm" readonly :border="false" label-width="140"></van-field>
                             <van-field label="计划保养结束日期:" v-model="item.plan2Tm" readonly :border="false" label-width="140"></van-field>

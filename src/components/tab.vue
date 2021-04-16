@@ -99,7 +99,7 @@ export default {
   mounted() {},
   methods: {
     toPage(url) {
-      this.until.href(url);
+      this.until.replace(url);
     }
   }
 };

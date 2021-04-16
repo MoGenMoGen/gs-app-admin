@@ -60,7 +60,7 @@
                         };
 
                         this.app.InterfaceName('h5_userinfo',temp);
-                        this.until.href("./index.html");
+                        this.until.replace("./index.html");
                     } else {
                         Toast.fail(res.msg);
                     }

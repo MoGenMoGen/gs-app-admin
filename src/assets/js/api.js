@@ -127,6 +127,17 @@ class api {
         });
     }
 
+
+    //水箱清洗列表
+    getBoxWashList2(data){
+        return new Promise((resolve, reject) => {
+            untilApi.get("/gs/waterWashTask/pageAPump?query="+data).then(res => {
+                if (res.code === 200) {
+                    resolve(res);
+                }
+            });
+        });
+    }
     //获取前期验收
     getAcceptList(data){
         return new Promise((resolve, reject) => {

@@ -172,7 +172,7 @@
                     pumpNo: '',
                     pumpNm: ''
                 },
-                tabList: ['待清洗', '已清洗', '已考评', '逾期'],
+                tabList: ['清洗计划', '清洗审核', '清洗任务', '清洗报表'],
                 tabIndex: 0,
                 active: '',
                 loading: false,
@@ -272,20 +272,30 @@
                 }
                 if (this.tabIndex === 0) {
                     this.query.toW(qry, 'status', '待清洗', "EQ");
+                    this.query.toWNull(qry,'auditStatus')
+                    this.query.toO(qry, "boxNum", "desc");
                 }
                 if (this.tabIndex === 1) {
-                    this.query.toW(qry, 'status', '已清洗', "EQ");
-                    this.query.toW(qry, 'val8', 0, "EQ");
+                    this.query.toW(qry, 'status', '待清洗', "LK");
+                    this.query.toW(qry, 'auditStatus', '未审批', "IN");
+                    // this.query.toW(qry, 'val8', 0, "EQ");
                 }
                 if (this.tabIndex === 2) {
-                    this.query.toW(qry, 'val8', 1, "EQ");
+                    // this.query.toW(qry, 'val8', 1, "EQ");
+                    this.query.toW(qry, 'status', '待清洗', "LK");
+                    this.query.toW(qry, 'auditStatus', '已审批', "LK");
+
                 }
                 if (this.tabIndex === 3) {
-                    this.query.toW(qry, 'status', '逾期', "EQ");
+                    // this.query.toW(qry, 'status', '逾期', "EQ");
+                    this.query.toW(qry, 'status', '已清洗', "LK");
+                    this.query.toO(qry, "startTm", "desc");
+                    this.query.toO(qry, "completeTm", "desc");
+
                 }
                 this.query.toP(qry, this.pageNo, this.pageSize);
-                this.query.toO(qry, "crtTm", "desc");
-                this.api.getBoxWashList(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
+                // this.query.toO(qry, "crtTm", "desc");
+                this.api.getBoxWashList2(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
                     if (res.code === 200) {
                         this.dataList.push(...res.data.list);
                         // 加载状态结束
