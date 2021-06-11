@@ -26,9 +26,15 @@
             <div class="item1">
                 <p class="label"><span>*</span>泵房名称</p>
                 <div class="option-menu">
-                    <el-select v-model="pump" filterable placeholder="请选择" @change="setPump" value-key="id">
-                        <el-option   v-for="item in pumpList" :key="item.id"  :label="item.nm"  :value="item">  </el-option>
-                    </el-select>
+
+<!--                    <el-select v-model="pump" filterable placeholder="请选择" @change="setPump" value-key="id">-->
+<!--                        <el-option   v-for="item in pumpList" :key="item.id"  :label="item.nm"  :value="item">  </el-option>-->
+<!--                    </el-select>-->
+
+                    <mob-select2 text="nm" :list="pumpList"
+                                v-model="pump" @change="setPump"
+                                place="产品名称选择" :disable-input="disableinput"
+                    ></mob-select2>
                 </div>
             </div>
 
@@ -171,21 +177,25 @@
 
         </van-popup>
 
+
+
     </div>
 </template>
 
 <script>
     import myHeader from "../../../components/myHeader/myHeader";
     import {Toast} from 'vant';
-
+    import mobSelect2 from "../../../components/mobSelect2";
     export default {
         name: "newTask",
         components: {
             myHeader,
+            mobSelect2,
         },
         data() {
             return {
                 pump:'',
+                disableinput:false,
                 form: {
                     orderSource: '',//工单来源
                     receivingId: '',//接单部门
@@ -212,6 +222,7 @@
                 minDate: new Date(2020, 0, 1),
                 maxDate: new Date(2025, 10, 1),
                 showDate: false,
+                showPump:false,
                 deptList: [],//接单部门
                 sourceList: [],//接单来源
                 paidanList: [],//派单部门
@@ -321,10 +332,14 @@
                         //查询前期管理 增加到选择项中
                         if (res.data.list.length !== 0){
                             for (let i = 0; i < res.data.list.length ; i++) {
+                                let name=res.data.list[i].pumpNm
+                                if(name.length>10){
+                                   name =  name.substring(0,10)
+                                }
                                 let pump = {
                                     id: res.data.list[i].id,
                                     no: res.data.list[i].pumpNo,
-                                    nm: res.data.list[i].pumpNm,
+                                    nm: name,
                                 };
                                 this.pumpList.push(pump)
                             }

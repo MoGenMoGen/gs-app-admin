@@ -12,7 +12,6 @@ import 'element-ui/lib/theme-chalk/index.css';
 import myPopup from "../../components/myPopup/myPopup";
 import query from "assets/js/query2";
 import { api } from "./api";
-//import "assets/js/WebViewJavascriptBridge";
 import tab from "components/tab";
 import myHeader from "components/myHeader2";
 import mainHeader from "components/mainHeader";
@@ -25,6 +24,10 @@ import infiniteScroll from "vue-infinite-scroll";
 require("video.js/dist/video-js.css");
 import Bridge from './jsBridge.js'
 require("vue-video-player/src/custom-theme.css");
+
+// import Vconsole from 'vconsole';
+// let vConsole = new Vconsole()
+
 
 export default {
   install(Vue) {

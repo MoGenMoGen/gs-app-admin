@@ -120,7 +120,9 @@
                     dlon: item.lng,
                     name: item.nm,
                 };
-                this.$bridge.callHandler('h5_baidumap', JSON.stringify(temp))
+                this.$bridge.callHandler('h5_baidumap', JSON.stringify(temp),res=>{
+
+                })
             },
 
             showImg(val) {

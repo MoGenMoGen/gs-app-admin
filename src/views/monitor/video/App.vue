@@ -7,7 +7,10 @@
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
                   :immediate-check="immediate">
             <div v-for="item in dataList" :key="item.id" @click="toDetail(item)">
-                <van-cell center :title="item.cameraName" is-link></van-cell>
+
+                <van-cell center :title="item.cameraName" is-link>
+
+                </van-cell>
             </div>
         </van-list>
 
@@ -158,11 +161,12 @@
                         //this.info = res.data;
                         //  window.open(res.data.data.url)
                         this.videoUrl = res.data.data.url;
-                        window.open(this.videoUrl)
-                        //this.getVideo(this.videoUrl)
-                        this.videoShow = true;
-                        console.log(this.videoUrl)
-                        // this.getVideo(this.videoUrl)
+                        // window.open(this.videoUrl)
+                        // this.videoShow = true;
+                        this.$bridge.callHandler('h5_video', this.videoUrl, (res) => {
+
+                        })
+
 
                     }
                 });

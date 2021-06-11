@@ -64,6 +64,8 @@
                                     <van-image @click="showImg(item.pumpRoute)" v-if="item.pumpRoute != null && item.pumpRoute !== ''" width="80" height="80"
                                                :src="item.pumpRoute"></van-image>
                                 </van-col>
+
+                                <van-tag type="primary" @click="toNav(item)">去导航</van-tag>
                             </van-row>
                         </template>
                     </van-cell>
@@ -124,6 +126,7 @@
     </div>
 </template>
 <script>
+    import {ImagePreview,Toast} from 'vant';
     import logo from './img/logo.png'
     import search from './img/search.png'
     import ma from './img/ma.png'
@@ -145,13 +148,18 @@
         mounted() {
         },
         methods: {
+            showImg(val) {
+                ImagePreview([val]);
+            },
             toNav(item) {
                 let temp = {
                     dlat: item.lat,
                     dlon: item.lng,
                     name: item.nm,
                 };
-                this.$bridge.callHandler('h5_baidumap', JSON.stringify(temp))
+                this.$bridge.callHandler('h5_baidumap', JSON.stringify(temp),res=>{
+                    console.log("返回的结果。。")
+                })
             },
             toDetail(item) {
                 this.show2 = true;
