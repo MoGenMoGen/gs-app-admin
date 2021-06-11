@@ -138,6 +138,17 @@ class api {
             });
         });
     }
+    //水箱清洗详情
+    getBoxWashDtl(id){
+        return new Promise((resolve, reject) => {
+            untilApi.get("/gs/waterWashTask/info/"+id).then(res => {
+                if (res.code === 200) {
+                    resolve(res);
+                }
+            });
+        });
+    }
+
     //获取前期验收
     getAcceptList(data){
         return new Promise((resolve, reject) => {
