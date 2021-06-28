@@ -18,6 +18,7 @@
                         <van-field label="分区情况:" v-model="item.partitionSituation" readonly :border="false"></van-field>
                         <van-field label="供水模式:" v-model="item.arg2" readonly :border="false"></van-field>
                         <van-field label="物业电话:" v-model="item.propertyPhone" readonly :border="false"></van-field>
+                        <van-field label="广角监控数量:"  label-width="140" v-model="item.wideVideo" readonly :border="false"></van-field>
                         <van-field label="泵房地址:" v-model="item.pumpLocation" readonly :border="false" type="textarea" rows="2"></van-field>
                     </div>
                     <van-cell title="路线图:" center>
@@ -77,6 +78,9 @@
 
                 </van-field>
                 <van-field v-model="info.pumpLocation" label="泵房位置:" readonly label-width="120" type="textarea" rows="2"></van-field>
+
+                <van-field v-model="info.wideVideo" label="广角监控数量:" readonly label-width="120" ></van-field>
+
                 <van-image width="100" height="100" :src="info.pumpImg1" @click="showImg(info.pumpImg1)"></van-image>
                 <van-image width="100" height="100" :src="info.pumpImg2" @click="showImg(info.pumpImg2)"></van-image>
                 <van-image width="100" height="100" :src="info.pumpRoute" @click="showImg(info.pumpRoute)"></van-image>

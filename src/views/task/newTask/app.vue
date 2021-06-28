@@ -31,10 +31,10 @@
 <!--                        <el-option   v-for="item in pumpList" :key="item.id"  :label="item.nm"  :value="item">  </el-option>-->
 <!--                    </el-select>-->
 
-                    <mob-select2 text="nm" :list="pumpList"
+                    <mob-select3 text="nm" :list="pumpList"
                                 v-model="pump" @change="setPump"
-                                place="产品名称选择" :disable-input="disableinput"
-                    ></mob-select2>
+                                place="泵房名称选择" :disable-input="disableinput"
+                    ></mob-select3>
                 </div>
             </div>
 
@@ -185,12 +185,12 @@
 <script>
     import myHeader from "../../../components/myHeader/myHeader";
     import {Toast} from 'vant';
-    import mobSelect2 from "../../../components/mobSelect2";
+    import mobSelect3 from "../../../components/mobSelect3";
     export default {
         name: "newTask",
         components: {
             myHeader,
-            mobSelect2,
+            mobSelect3,
         },
         data() {
             return {
