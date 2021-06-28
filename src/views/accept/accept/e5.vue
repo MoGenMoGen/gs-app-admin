@@ -435,13 +435,13 @@
             </van-cell>
             <van-field name="radio" label-width="80">
                 <slot slot="input">
-                    <van-radio-group v-model="info.val25" direction="horizontal">
-                        <van-radio name="上海冠龙" shape="square">上海冠龙</van-radio>
-                        <van-radio name="VAG" shape="square">VAG</van-radio>
-                        <van-radio name="AVK/苏阀" shape="square">AVK/苏阀</van-radio>
-                        <van-radio name="同档次及以上" shape="square">同档次及以上</van-radio>
-                        <van-button  type="primary" size="mini" @click="info.val25 = ''" plain >取消</van-button>
-                    </van-radio-group>
+                    <van-checkbox-group v-model="val25Result" direction="horizontal">
+                        <van-checkbox  name="上海冠龙" shape="square">上海冠龙</van-checkbox >
+                        <van-checkbox  name="VAG" shape="square">VAG</van-checkbox >
+                        <van-checkbox  name="AVK/苏阀" shape="square">AVK/苏阀</van-checkbox >
+                        <van-checkbox  name="同档次及以上" shape="square">同档次及以上</van-checkbox >
+                        <van-button  type="primary" size="mini" @click="val25Result =[]" plain >取消</van-button>
+                    </van-checkbox-group>
                 </slot>
             </van-field>
             <van-field name="radio" label="验收结论：" label-width="80">
@@ -729,6 +729,7 @@
                 checkboxGroup1:[],
                 checkboxGroup2:[],
                 checkboxGroup3:[],
+                val25Result:[],//val25多选框
             };
         },
         mounted() {
@@ -738,6 +739,12 @@
         props: ["id"],
         beforeDestroy() {
             clearInterval(this.timer);
+        },
+        watch:{
+            val25Result(newVal,oldVal){
+                console.log(newVal)
+                console.log(newVal.toString())
+            }
         },
         methods: {
             off(type,val){
@@ -807,6 +814,13 @@
                 this.api.getE5(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
                     if (res.code === 200) {
                         this.info = res.data.list[0];
+                        console.log("详情的值")
+                        console.log(this.info)
+                        if(this.info.val25){
+                            this.val25Result=this.info.val25.split(",")
+                        }
+
+
                     }
                 })
             },
@@ -815,11 +829,14 @@
             },
             //提交
             submit(){
+
+
                 Dialog.confirm({
                     title: '注意',
                     message: '确定提交？'
                 }).then(() => {
                     this.info.status = '已提交';
+                    this.info.val25=val25Result.toString()
                     this.api.updE5(JSON.stringify(this.info)).then(res => {
                         if (res.code === 200) {
                             Toast.success('提交成功');

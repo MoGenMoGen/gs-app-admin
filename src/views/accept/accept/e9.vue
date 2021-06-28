@@ -415,6 +415,8 @@
                 this.api.getE9(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
                     if (res.code === 200) {
                         this.info = res.data.list[0];
+                        console.log("泵房验收总表")
+                        console.log(this.info)
                         if (this.info.transferMaterial != null){
                             this.checkboxGroup2 = this.info.transferMaterial.split(",")
                         }
