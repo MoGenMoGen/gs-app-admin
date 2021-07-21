@@ -42,7 +42,6 @@
 
             <div v-if="info.status2 === 2">
                 <van-field v-model="info.arrivalTm2" center clearable readonly label="到场时间:">
-
                     <slot slot="button">
                         <van-button size="small" type="primary" @click="getNewDate">获取到场时间</van-button>
                     </slot>

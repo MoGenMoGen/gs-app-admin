@@ -115,9 +115,7 @@
                     </van-button>
                 </div>
             </van-form>
-
         </van-popup>
-
 
     </div>
 </template>
