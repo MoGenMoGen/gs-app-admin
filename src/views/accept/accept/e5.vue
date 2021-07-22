@@ -833,8 +833,6 @@ export default {
       this.api.getE5(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
         if (res.code === 200) {
           this.info = res.data.list[0];
-          // console.log("详情的值")
-          // console.log(this.info)
           if (this.info.val25) {
             this.val25Result = this.info.val25.split(",")
           }

@@ -7,8 +7,6 @@
         <van-cell class="van-hairline--bottom" title="有限空间审批" icon="shop-o"  @click="toPage(2)" center is-link style="height: 80px">
             <van-icon size="1rem" slot="icon"   :name="img2"   style="line-height: inherit;margin-right: 20px"></van-icon>
         </van-cell>
-
-
     </div>
 </template>
 

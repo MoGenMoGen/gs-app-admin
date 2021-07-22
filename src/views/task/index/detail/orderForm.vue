@@ -13,12 +13,10 @@
                     <p>{{info.receivingNm}}</p></div>
                 <div><span>派单时间：</span>
                     <p>{{info.crtTm}}</p></div>
-
                 <div><span>工单时间：</span>
                     <p>{{info.orderDate}}</p></div>
                 <div><span>工单时段：</span>
                     <p>{{info.orderSlot}}</p></div>
-
                 <div><span>处理时限：</span>
                     <p>{{info.processingDeadline}}小时</p></div>
                 <div><span>反映人：</span>
