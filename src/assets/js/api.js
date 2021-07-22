@@ -1,25 +1,37 @@
 import {until} from "./until";
+
 const untilApi = new until();
+
 //线上地址：http://61.164.93.186:6081/
 class api {
 
-    test(data){
+    test(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyT2/test?id="+data).then(res => {
+            untilApi.get("/gs/earlyT2/test?id=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-
-    updWash(data){
+    //审核水箱清洗
+    auditBoxWash(id,status){
+        return new Promise((resolve, reject) => {
+            untilApi.get('/gs/waterWashTask/audit?id=' + id + '&status=' + status).then(res => {
+                if (res.code === 200) {
+                    resolve(res);
+                }
+            });
+        });
+    }
+    updWash(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/waterWashTask/upd",data).then(res => {
+            untilApi.postData("/gs/waterWashTask/upd", data).then(res => {
                 resolve(res)
             });
         });
     }
+
     //登录
     getSysLogin(data) {
         return new Promise((resolve, reject) => {
@@ -37,10 +49,11 @@ class api {
             });
         });
     }
+
     //获取用户信息
-    getUserInfo(data){
+    getUserInfo(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/sys/user/userInfo/"+ data).then(res => {
+            untilApi.get("/sys/user/userInfo/" + data).then(res => {
                 resolve(res);
             });
         });
@@ -49,17 +62,18 @@ class api {
     //泵房列表
     getSysMonitorLatestPage(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/monitorLatest/page?query="+data).then(res => {
+            untilApi.get("/gs/monitorLatest/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
+
     //获取报警列表
-    getAlarmList(data){
+    getAlarmList(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/monitorAlarm/page?query="+data).then(res => {
+            untilApi.get("/gs/monitorAlarm/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
@@ -73,42 +87,46 @@ class api {
     //保养列表
     getMaintainTask(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/maintainTask/page?query="+data).then(res => {
+            untilApi.get("/gs/maintainTask/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
+
     //设备维修列表
-    getRepairPage(data){
+    getRepairPage(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/deviceRepair/myPage?query="+data).then(res => {
+            untilApi.get("/gs/deviceRepair/myPage?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getRepairInfo(data){
+
+    getRepairInfo(data) {
         return new Promise((resolve) => {
             untilApi.get("/gs/deviceRepair/myInfo/" + data).then(res => {
                 resolve(res)
             });
         });
     }
+
     //维修申请审批提交
-    updRepair(data){
+    updRepair(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/deviceRepair/confirmUpd",data).then(res => {
+            untilApi.postData("/gs/deviceRepair/confirmUpd", data).then(res => {
                 resolve(res)
             });
         });
     }
+
     //修改泵房
-    updPump(data){
+    updPump(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/pump/upd2",data).then(res => {
+            untilApi.postData("/gs/pump/upd2", data).then(res => {
                 resolve(res)
             });
         });
@@ -117,9 +135,9 @@ class api {
 
 
     //水箱清洗
-    getBoxWashList(data){
+    getBoxWashList(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/waterWashTask/page?query="+data).then(res => {
+            untilApi.get("/gs/waterWashTask/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
@@ -129,19 +147,20 @@ class api {
 
 
     //水箱清洗列表
-    getBoxWashList2(data){
+    getBoxWashList2(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/waterWashTask/pageAPump?query="+data).then(res => {
+            untilApi.get("/gs/waterWashTask/pageAPump?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
+
     //水箱清洗详情
-    getBoxWashDtl(id){
+    getBoxWashDtl(id) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/waterWashTask/info/"+id).then(res => {
+            untilApi.get("/gs/waterWashTask/info/" + id).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
@@ -150,19 +169,20 @@ class api {
     }
 
     //获取前期验收
-    getAcceptList(data){
+    getAcceptList(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/early/page?query="+data).then(res => {
+            untilApi.get("/gs/early/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
+
     //获取前期表单1
-    getEarly1(data){
+    getEarly1(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyTable1/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyTable1/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
@@ -171,168 +191,185 @@ class api {
     }
 
     //获取前期表单2
-    getEarly2(data){
+    getEarly2(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyTable2/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyTable2/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getE2(data){
+
+    getE2(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyT2/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyT2/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getE4(data){
+
+    getE4(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyT4/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyT4/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getE5(data){
+
+    getE5(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyT5/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyT5/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getE6(data){
+
+    getE6(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyT6/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyT6/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getE7(data){
+
+    getE7(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyT7/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyT7/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getE3(data){
+
+    getE3(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyT3/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyT3/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getE9(data){
+
+    getE9(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyT9/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyT9/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getE11(data){
+
+    getE11(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyT11/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyT11/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getE12(data){
+
+    getE12(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyT12/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyT12/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getE13(data){
+
+    getE13(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyT13/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyT13/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getE10(data){
+
+    getE10(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyT10/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyT10/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
+
     //获取前期表单3
-    getEarly3(data){
+    getEarly3(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyTable3/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyTable3/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
+
     //获取前期表单4
-    getEarly4(data){
+    getEarly4(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyTable4/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyTable4/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
+
     //获取前期表单5
-    getEarly5(data){
+    getEarly5(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyTable5/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyTable5/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
+
     //获取前期表单6
-    getEarly6(data){
+    getEarly6(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyTable6/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyTable6/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
+
     //获取前期表单7
-    getEarly7(data){
+    getEarly7(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/earlyTable7/list?query="+data).then(res => {
+            untilApi.get("/gs/earlyTable7/list?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
+
     //有限空间
-    getBoxSpaceList(data){
+    getBoxSpaceList(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/confinedSpace/page?query="+data).then(res => {
+            untilApi.get("/gs/confinedSpace/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
@@ -342,9 +379,9 @@ class api {
 
 
     //设备巡检
-    getDetectionList(data){
+    getDetectionList(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/detectionTask/page?query="+data).then(res => {
+            untilApi.get("/gs/detectionTask/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
@@ -352,9 +389,9 @@ class api {
         });
     }
 
-    getCameraUrl(code){
+    getCameraUrl(code) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/hk/previewURLs?code="+code).then(res => {
+            untilApi.get("/gs/hk/previewURLs?code=" + code).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
@@ -365,7 +402,7 @@ class api {
     //视频监控
     getSysPumpCameraPage(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/pumpCamera/page?query="+data).then(res => {
+            untilApi.get("/gs/pumpCamera/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
@@ -383,18 +420,20 @@ class api {
             });
         });
     }
-    getPumpPage(data){
+
+    getPumpPage(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/pump/page?query="+data).then(res => {
+            untilApi.get("/gs/pump/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getPumpQrInfo(data){
+
+    getPumpQrInfo(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/pump/qrInfo?pumpNo="+data).then(res => {
+            untilApi.get("/gs/pump/qrInfo?pumpNo=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
@@ -403,18 +442,19 @@ class api {
     }
 
     //获取设备信息
-    getPumpDevicePage(data){
+    getPumpDevicePage(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/pumpDevice/page?query="+data).then(res => {
+            untilApi.get("/gs/pumpDevice/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
             });
         });
     }
-    getMonitorPage(data){
+
+    getMonitorPage(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/monitor/page?query="+data).then(res => {
+            untilApi.get("/gs/monitor/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
@@ -424,9 +464,9 @@ class api {
 
 
     //泵房门禁列表
-    getPumpDoor(data){
+    getPumpDoor(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/pumpDoor/page?query="+data).then(res => {
+            untilApi.get("/gs/pumpDoor/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
@@ -434,7 +474,7 @@ class api {
         });
     }
 
-    operateDoor(id,v){
+    operateDoor(id, v) {
         return new Promise((resolve, reject) => {
             untilApi.get("/gs/hik/synControl?doorUuid=" + id + '&command=' + v).then(res => {
                 if (res.code === 200) {
@@ -443,6 +483,7 @@ class api {
             });
         });
     }
+
     //泵房工艺
     getPumpTechnology(data) {
         return new Promise((resolve, reject) => {
@@ -453,18 +494,20 @@ class api {
             });
         });
     }
+
     //有限空间修改
-    updConfinedSpace(data){
+    updConfinedSpace(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/confinedSpace/upd",data).then(res => {
+            untilApi.postData("/gs/confinedSpace/upd", data).then(res => {
                 resolve(res)
             });
         });
     }
+
     //提交警报确认
-    updAlarm(data){
+    updAlarm(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/monitorAlarm/upd",data).then(res => {
+            untilApi.postData("/gs/monitorAlarm/upd", data).then(res => {
                 resolve(res)
             });
         });
@@ -472,154 +515,169 @@ class api {
 
 
     //修改early1
-    updEarly1(data){
+    updEarly1(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyTable1/upd",data).then(res => {
+            untilApi.postData("/gs/earlyTable1/upd", data).then(res => {
                 resolve(res)
             });
         });
     }
-    updE2(data){
+
+    updE2(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyT2/upd",data).then(res => {
+            untilApi.postData("/gs/earlyT2/upd", data).then(res => {
                 resolve(res)
             });
         });
     }
-    updE3(data){
+
+    updE3(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyT3/upd",data).then(res => {
+            untilApi.postData("/gs/earlyT3/upd", data).then(res => {
                 resolve(res)
             });
         });
     }
-    upload(data){
+
+    upload(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/general/oss/upload",data).then(res => {
+            untilApi.postData("/general/oss/upload", data).then(res => {
                 resolve(res)
             });
         });
     }
 
 
-
-    updE4(data){
+    updE4(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyT4/upd",data).then(res => {
-                resolve(res)
-            });
-        });
-    }
-    updE5(data){
-        return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyT5/upd",data).then(res => {
-                resolve(res)
-            });
-        });
-    }
-    updE6(data){
-        return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyT6/upd",data).then(res => {
-                resolve(res)
-            });
-        });
-    }
-    updE7(data){
-        return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyT7/upd",data).then(res => {
-                resolve(res)
-            });
-        });
-    }
-    updE12(data){
-        return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyT12/upd",data).then(res => {
-                resolve(res)
-            });
-        });
-    }
-    updE13(data){
-        return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyT13/upd",data).then(res => {
-                resolve(res)
-            });
-        });
-    }
-    updE8(data){
-        return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyT8/upd",data).then(res => {
-                resolve(res)
-            });
-        });
-    }
-    updE9(data){
-        return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyT9/upd",data).then(res => {
-                resolve(res)
-            });
-        });
-    }
-    updE10(data){
-        return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyT10/upd",data).then(res => {
-                resolve(res)
-            });
-        });
-    }
-    updE11(data){
-        return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyT11/upd",data).then(res => {
+            untilApi.postData("/gs/earlyT4/upd", data).then(res => {
                 resolve(res)
             });
         });
     }
 
+    updE5(data) {
+        return new Promise((resolve) => {
+            untilApi.postData("/gs/earlyT5/upd", data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+
+    updE6(data) {
+        return new Promise((resolve) => {
+            untilApi.postData("/gs/earlyT6/upd", data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+
+    updE7(data) {
+        return new Promise((resolve) => {
+            untilApi.postData("/gs/earlyT7/upd", data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+
+    updE12(data) {
+        return new Promise((resolve) => {
+            untilApi.postData("/gs/earlyT12/upd", data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+
+    updE13(data) {
+        return new Promise((resolve) => {
+            untilApi.postData("/gs/earlyT13/upd", data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+
+    updE8(data) {
+        return new Promise((resolve) => {
+            untilApi.postData("/gs/earlyT8/upd", data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+
+    updE9(data) {
+        return new Promise((resolve) => {
+            untilApi.postData("/gs/earlyT9/upd", data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+
+    updE10(data) {
+        return new Promise((resolve) => {
+            untilApi.postData("/gs/earlyT10/upd", data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+
+    updE11(data) {
+        return new Promise((resolve) => {
+            untilApi.postData("/gs/earlyT11/upd", data).then(res => {
+                resolve(res)
+            });
+        });
+    }
 
 
     //修改early1
-    updEarly2(data){
+    updEarly2(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyTable2/upd",data).then(res => {
+            untilApi.postData("/gs/earlyTable2/upd", data).then(res => {
                 resolve(res)
             });
         });
     }
+
     //修改early1
-    updEarly3(data){
+    updEarly3(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyTable3/upd",data).then(res => {
+            untilApi.postData("/gs/earlyTable3/upd", data).then(res => {
                 resolve(res)
             });
         });
     }
+
     //修改early4
-    updEarly4(data){
+    updEarly4(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyTable4/upd",data).then(res => {
+            untilApi.postData("/gs/earlyTable4/upd", data).then(res => {
                 resolve(res)
             });
         });
     }
+
     //修改early5
-    updEarly5(data){
+    updEarly5(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyTable5/upd",data).then(res => {
+            untilApi.postData("/gs/earlyTable5/upd", data).then(res => {
                 resolve(res)
             });
         });
     }
+
     //修改early1
-    updEarly6(data){
+    updEarly6(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyTable6/upd",data).then(res => {
+            untilApi.postData("/gs/earlyTable6/upd", data).then(res => {
                 resolve(res)
             });
         });
     }
+
     //修改early1
-    updEarly7(data){
+    updEarly7(data) {
         return new Promise((resolve) => {
-            untilApi.postData("/gs/earlyTable7/upd",data).then(res => {
+            untilApi.postData("/gs/earlyTable7/upd", data).then(res => {
                 resolve(res)
             });
         });
@@ -634,6 +692,7 @@ class api {
             });
         });
     }
+
     getTaskOrder2(data) {
         return new Promise((resolve) => {
             untilApi.get("/gs/order/confirmPage?query=" + data).then(res => {
@@ -642,21 +701,23 @@ class api {
         });
     }
 
-    getMyOrderPage(data){
+    getMyOrderPage(data) {
         return new Promise((resolve) => {
             untilApi.get("/gs/order/myPage?query=" + data).then(res => {
                 resolve(res)
             });
         });
     }
+
     //接单
-    orderReceipt(data){
+    orderReceipt(data) {
         return new Promise((resolve) => {
-            untilApi.get("/gs/order/receipt2?id="+ data).then(res => {
+            untilApi.get("/gs/order/receipt2?id=" + data).then(res => {
                 resolve(res)
             });
         });
     }
+
     //工单详情
     getTaskInfo(id) {
         return new Promise((resolve) => {
@@ -711,7 +772,8 @@ class api {
             });
         });
     }
-    submissionOrder(data){
+
+    submissionOrder(data) {
         return new Promise((resolve) => {
             untilApi.postData("/gs/order/submission2", data).then(res => {
                 resolve(res)

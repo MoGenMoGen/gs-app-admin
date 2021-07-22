@@ -9,20 +9,26 @@
                   :immediate-check="immediate">
           <div v-for="item in dataList" :key="item.id" @click="toDetail(item)">
             <van-cell-group>
-              <van-field label="清洗单位:" v-model="item.unitNm" readonly :border="false"
-                         label-width="120"></van-field>
               <van-field label="泵房编号:" v-model="item.pumpNo" readonly :border="false"
                          label-width="120"></van-field>
               <van-field label="泵房名称:" v-model="item.pumpNm" readonly :border="false"
                          label-width="120"></van-field>
               <van-field label="供水区域:" v-model="item.waterArea" readonly :border="false" label-width="120"
                          right-icon="arrow"></van-field>
-              <van-field label="清洗容积:" v-model="item.washVolume" readonly :border="false"
-                         label-width="120"></van-field>
-              <van-field label="计划开始时间:" v-model="item.startTm" readonly :border="false"
-                         label-width="120"></van-field>
+
+              <van-field label="分区楼层:" v-model="item.partitionFloor" readonly :border="false" label-width="120"
+                         right-icon="arrow"></van-field>
+
               <van-field label="供水模式:" v-model="item.arg2" readonly :border="false"
                          label-width="120"></van-field>
+              <van-field label="清洗单位:" v-model="item.unitNm" readonly :border="false"
+                         label-width="120"></van-field>
+
+              <van-field label="清洗容积:" v-model="item.washVolume" readonly :border="false"
+                         label-width="120"></van-field>
+              <van-field label="计划清洗时间:" v-model="item.startTm" readonly :border="false"
+                         label-width="120"></van-field>
+
               <!--                            <van-field label="清洗消毒人员:" v-model="item.washUser" readonly :border="false"-->
               <!--                                       label-width="120"></van-field>-->
               <van-cell v-if="item.val8 !== 1 && item.status ==='已清洗' ">
@@ -31,6 +37,16 @@
                   <van-tag type="warning">待设施科考评</van-tag>
                 </template>
               </van-cell>
+
+              <van-row gutter="5" v-if="tabIndex === 1">
+                <van-col span="12">
+                  <van-button type="primary" size="small" block @click.stop="audit(item,'已审批')">同意</van-button>
+                </van-col>
+                <van-col span="12">
+                  <van-button type="danger" size="small" block @click.stop="audit(item,'未通过')">撤回</van-button>
+                </van-col>
+              </van-row>
+
 
             </van-cell-group>
           </div>
@@ -59,15 +75,15 @@
         <van-button block style="height: 10px" color="#F3F3F3"></van-button>
         <van-field v-model="info.cleanRecord" label="清洗消毒有关记录：" type="textarea" label-width="130" rows="4"
                    readonly></van-field>
+
+
         <van-field v-model="info.recorder" label="记录人：" label-width="120" readonly></van-field>
         <van-field v-model="info.leader" label="负责人：" label-width="120" readonly></van-field>
-
         <van-field v-model="info.val1" label="浮球阀维护：" label-width="120" readonly></van-field>
         <van-field v-model="info.chlorine" label="余氯：" label-width="120" readonly></van-field>
         <van-field v-model="info.turbidity" label="浊度：" label-width="120" readonly></van-field>
         <van-field v-model="info.val2" label="水质快检结论：" label-width="120" readonly></van-field>
         <van-field v-model="val3" label="其他说明事项：" label-width="120" readonly></van-field>
-
         <van-cell>
           <!-- 使用 title 插槽来自定义标题 -->
           <template #title>
@@ -77,14 +93,10 @@
             <van-image width="80" height="80" :src="info.img2" @click="lookImg(info.img2)"/>
           </template>
         </van-cell>
-
-
         <van-field v-if="info.cleanRecord !== null " v-model="info.cleanRecord" label="清洗消毒记录：" label-width="120"
                    readonly></van-field>
         <van-field v-model="info.recorder" label="记录人：" label-width="120" readonly></van-field>
         <van-field v-model="info.leader" label="负责人：" label-width="120" readonly></van-field>
-
-
         <van-button block style="height: 10px" color="#F3F3F3"></van-button>
 
 
@@ -115,8 +127,8 @@
             <!-- 使用 title 插槽来自定义标题 -->
             <template #title>
               <span>总体考评:</span>
-              <van-rate style="margin-left: 20px" v-model="from.val5" :size="25" color="#ffd21e"
-                        void-icon="star" void-color="#eee"/>
+              <van-rate style="margin-left: 20px" v-model="from.val5" :size="25" color="#ffd21e" void-icon="star"
+                        void-color="#eee"/>
             </template>
           </van-cell>
           <van-field v-model="from.val6" label="其他说明事项" rows="3" type="textarea" placeholder="请输入其他说明事项"/>
@@ -191,12 +203,33 @@ export default {
     this.getList()
   },
   methods: {
+    //审核通过与否
+    audit(item,status) {
+      Dialog.confirm({
+        title: '提交审核',
+        message: '确认提交审核？',
+      })
+          .then(() => {
+            // on confirm
+            this.api.auditBoxWash(item.id, status).then(res => {
+              console.log(res)
+              if (res.code === 200) {
+                Toast.success('操作成功');
+                this.pageNo = 1;
+                this.dataList = [];
+                this.getList();
+                this.show = false;
+              }
+            })
+          })
+          .catch(() => {
+            // on cancel
+          });
+
+    },
+
     lookImg(val) {
-      // let split = val.split(',');
-      // console.log(split)
-      // //console.log(val)
       ImagePreview([val]);
-      // ImagePreview({images: split, startPosition: 0});//this.images为图片资源
     },
     //提交考评
     addEvaluation() {
@@ -233,25 +266,10 @@ export default {
       this.getList();
     },
     toDetail(item) {
-
-      this.api.getBoxWashDtl(item.id).then(res=>{
+      this.api.getBoxWashDtl(item.id).then(res => {
         this.info = res.data;
-        console.log(this.info)
         this.show = true;
-        // if (this.info.val8 === 1) {
-        //   if (this.info.val4) {
-        //     this.val4 = this.info.val4.split(",");
-        //   }
-        //   if (this.info.val3) {
-        //     this.val3 = this.info.val3.split(",");
-        //   }
-        //   this.from.val5 = Number(this.info.val5);
-        //   this.from.val6 = this.info.val6;
-        //   this.from.val7 = this.info.val7;
-        //   this.from.val8 = this.info.val8;
-        // }
       })
-
     },
     //0待保养 1已保养 2逾期
     tabChange(val) {
@@ -280,14 +298,14 @@ export default {
         this.query.toO(qry, "boxNum", "desc");
       }
       if (this.tabIndex === 1) {
-        this.query.toW(qry, 'status', '待清洗', "LK");
-        this.query.toW(qry, 'auditStatus', '未审批', "IN");
+        this.query.toW(qry, 'status', '待清洗', "EQ");
+        this.query.toW(qry, 'auditStatus', '未审批', "EQ");
         // this.query.toW(qry, 'val8', 0, "EQ");
       }
       if (this.tabIndex === 2) {
         // this.query.toW(qry, 'val8', 1, "EQ");
-        this.query.toW(qry, 'status', '待清洗', "LK");
-        this.query.toW(qry, 'auditStatus', '已审批', "LK");
+        this.query.toW(qry, 'status', '待清洗', "EQ");
+        this.query.toW(qry, 'auditStatus', '已审批', "EQ");
 
       }
       if (this.tabIndex === 3) {
@@ -313,7 +331,8 @@ export default {
       this.until.back()
     },
   }
-};
+}
+;
 </script>
 
 <style lang="less" scoped>
