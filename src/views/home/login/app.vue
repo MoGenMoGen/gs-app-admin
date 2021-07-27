@@ -49,22 +49,29 @@
             },
 
             login() {
-                this.api.getSysLogin(this.form).then(res => {
-                    if (res.code === 200) {
-                        Toast('登录成功');
-                        this.until.loSave("userInfo", JSON.stringify(res.data.userInfo));
-                        this.until.loSave("pass", JSON.stringify(this.form));
-                        let temp = {
-                            userId: res.data.userInfo.userId,
-                            token: res.data.token,
-                        };
 
-                        this.app.InterfaceName('h5_userinfo',temp);
-                        this.until.replace("./index.html");
-                    } else {
-                        Toast.fail(res.msg);
-                    }
-                });
+                this.$bridge.callHandler("h5_androidId","",androidId=> {
+                    console.log('androidId：', androidId)
+                    this.form.imei=androidId
+                    this.api.getSysLogin(this.form).then(res => {
+                        if (res.code === 200) {
+                            Toast('登录成功');
+                            this.until.loSave("userInfo", JSON.stringify(res.data.userInfo));
+                            this.until.loSave("pass", JSON.stringify(this.form));
+                            let temp = {
+                                userId: res.data.userInfo.userId,
+                                token: res.data.token,
+                            };
+
+                            this.app.InterfaceName('h5_userinfo',temp);
+                            this.until.replace("./index.html");
+                        } else {
+                            Toast.fail(res.msg);
+                        }
+                    });
+
+                }
+
             }
         },
         components: {}
