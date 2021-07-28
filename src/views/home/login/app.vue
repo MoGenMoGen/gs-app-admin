@@ -6,7 +6,7 @@
                 <van-col span="3">
                     <van-icon :name="logo" size="20"></van-icon>
                 </van-col>
-                <van-col span="21"><p class="p">宁波二次供水智慧管理</p></van-col>
+                <van-col span="21"><p class="p" style="white-space: nowrap">宁波二次供水智慧管理</p></van-col>
             </van-row>
             <div style="height: 50px"></div>
             <van-field left-icon="contact" v-model="form.username" label="|" placeholder="请输入用户名" label-width="20"></van-field>
@@ -49,7 +49,6 @@
             },
 
             login() {
-
                 this.$bridge.callHandler("h5_androidId","",androidId=> {
                     console.log('androidId：', androidId)
                     this.form.imei=androidId
@@ -71,6 +70,7 @@
                     });
 
                 })
+
 
             }
         },

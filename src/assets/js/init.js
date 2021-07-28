@@ -25,8 +25,8 @@ require("video.js/dist/video-js.css");
 import Bridge from './jsBridge.js'
 require("vue-video-player/src/custom-theme.css");
 
-import Vconsole from 'vconsole';
-let vConsole = new Vconsole()
+// import Vconsole from 'vconsole';
+// let vConsole = new Vconsole()
 
 
 export default {
