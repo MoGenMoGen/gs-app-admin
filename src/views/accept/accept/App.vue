@@ -92,13 +92,13 @@
 
           <van-field v-if="item.pumpType === '改造'" label="水箱验收表:" readonly :border="false" label-width="220">
             <van-button v-if="item.early12Status === null" slot="button" size="small" type="primary"
-                        @click="showEarly(item.state===0?item.id:item.pumpId,13)">完善信息
+                        @click="showEarly(item.state===0?item.id:item.pumpId,12)">完善信息
             </van-button>
             <van-button v-if="item.early12Status === '已提交'" slot="button" size="small" type="info"
-                        @click="showEarly(item.state===0?item.id:item.pumpId,13)">查看信息
+                        @click="showEarly(item.state===0?item.id:item.pumpId,12)">查看信息
             </van-button>
             <van-button v-if="item.early12Status === '整改中'" slot="button" size="small" type="warning"
-                        @click="showEarly(item.state===0?item.id:item.pumpId,13)">整改中
+                        @click="showEarly(item.state===0?item.id:item.pumpId,12)">整改中
             </van-button>
           </van-field>
 
@@ -272,6 +272,8 @@ export default {
 
 
     showEarly(id, val) {
+      console.log("id的值"+id)
+      console.log("val的值"+val)
       this.id = id;
       if (val === 1) {
         this.show1 = true;
