@@ -15,9 +15,14 @@
                     <van-button type="primary" color="#008B8B" block @click="submit">提交</van-button>
                 </van-col>
             </van-row>
+
+
+            <van-row gutter="2" v-else>
+                <van-col span="24">
+                    <van-button type="primary" color="#00CED1" block @click="toBack">回退</van-button>
+                </van-col>
+            </van-row>
         </van-cell-group>
-
-
 
     </div>
 </template>
@@ -53,6 +58,10 @@
         },
         props: ["id"],
         methods: {
+            //回退
+            toBack(){
+                this.info.status=""
+            },
             afterRead(item) {
                 // 此时可以自行将文件上传至服务器
                 let param = new FormData();

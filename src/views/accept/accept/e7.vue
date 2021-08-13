@@ -1125,6 +1125,13 @@
                 </van-col>
             </van-row>
 
+            <van-row gutter="2" v-if="info.status == '已提交' && info.state != 0">
+                <van-col span="24">
+                    <van-button type="primary" color="#00CED1" block @click="toBack">回退</van-button>
+                </van-col>
+            </van-row>
+
+
             <van-row gutter="2" v-if="info.state === 0">
                 <van-col span="24">
                     <van-button type="primary" color="#008B8B" block @click="submit">提交</van-button>
@@ -1190,6 +1197,10 @@
             clearInterval(this.timer);
         },
         methods: {
+            //回退
+            toBack(){
+                this.info.status=""
+            },
             off(type,val){
                 if (type === '不合格'){
                     if (this.info.val79.search(val) === -1){

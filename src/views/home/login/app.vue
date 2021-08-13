@@ -50,6 +50,8 @@
 
             login2(){
                 this.form.imei="60b55be1ac54a468"
+                this.form.username="huyimin"
+                this.form.password="Julianhym@123"
                 this.api.getSysLogin(this.form).then(res => {
                     if (res.code === 200) {
                         Toast('登录成功');

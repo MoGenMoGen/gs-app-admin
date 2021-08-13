@@ -274,6 +274,14 @@
           <van-button type="primary" color="#008B8B" block @click="submit">提交</van-button>
         </van-col>
       </van-row>
+      <van-row gutter="2" v-if="info.status == '已提交' && info.state != 0">
+        <van-col span="24">
+          <van-button type="primary" color="#00CED1" block @click="toBack">回退</van-button>
+        </van-col>
+      </van-row>
+
+
+
       <van-row gutter="2" v-if="info.state === 0">
         <van-col span="24">
           <van-button type="primary" color="#008B8B" block @click="submit">提交</van-button>
@@ -343,6 +351,10 @@ export default {
     clearInterval(this.timer);
   },
   methods: {
+    //回退
+    toBack(){
+      this.info.status=""
+    },
 
     //定时保存
     timerKeep() {
