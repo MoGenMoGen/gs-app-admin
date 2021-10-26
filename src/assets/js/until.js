@@ -1,5 +1,6 @@
 const postImgUrl = "http://118.178.121.34:8080/uploads/";
-const hostUrl = "https://www.zjfld.net:6143"; //  正式
+//const hostUrl = "https://www.zjfld.net:6143"; //  正式
+const hostUrl = "http://61.130.113.44:6143"; //  正式
 class until {
 
   //格式化时间
