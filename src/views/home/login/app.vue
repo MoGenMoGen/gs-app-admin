@@ -24,7 +24,7 @@
     import pwdIcon from "./img/pwd-icon.png";
     import logo from "./img/logo.png";
     import {Toast} from 'vant';
-
+    import CryptoJS from 'crypto-js'
     export default {
         data() {
             return {
@@ -33,7 +33,8 @@
                 logo,
                 form: {
                     username: "",
-                    password: ""
+                    password: "",
+                    encrypted:true,
                 }
             };
         },
@@ -41,6 +42,22 @@
             this.getForm();
         },
         methods: {
+            // 加密函數
+            encrypt(word){
+                let keyStr = '4cc36760803f4b39aa60dcae1dca161a'
+                if (word instanceof Object) {
+                    //JSON.stringify
+                    word = JSON.stringify(word)
+                }
+                var key = CryptoJS.enc.Utf8.parse(keyStr)
+                var encryptedObj = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(word), key,
+                    {
+                        mode: CryptoJS.mode.ECB,
+                        padding: CryptoJS.pad.Pkcs7,
+                    },
+                )
+                return encryptedObj.toString()
+            },
             getForm(){
                 if (JSON.parse( this.until.loGet("pass")) != null){
                     this.form.username = JSON.parse( this.until.loGet("pass")).username;
@@ -75,6 +92,7 @@
                 this.$bridge.callHandler("h5_androidId","",androidId=> {
                     console.log('androidId：', androidId)
                     this.form.imei=androidId
+                    this.form.password = this.encrypt(this.form.password)
                     this.api.getSysLogin(this.form).then(res => {
                         if (res.code === 200) {
                             Toast('登录成功');

@@ -1,0 +1,533 @@
+<template>
+    <div id="container">
+        <!--图表弹窗-->
+        <van-popup v-model="show" :style="{ width: '96%',borderRadius:'5px' }">
+            <div class="showTitle">
+                <span></span><p>{{showTitle}}</p><span></span>
+            </div>
+            <echarts-show></echarts-show>
+        </van-popup>
+        <van-sticky>
+            <my-header title="实时监控" @back="back" :searchStatus="false"> </my-header>
+        </van-sticky>
+        <van-sticky :offset-top="82">
+            <div class="search">
+                <div @click="zoneShow=true">
+                    <p>行政区域</p>
+                    <img :src="arrowDown"/>
+                </div>
+                <div @click="searchShow=true">
+                    <p>泵房名称</p>
+                    <img :src="arrowDown"/>
+                </div>
+                <div>
+                    <input placeholder="设备名称、编号" @keyup.enter="search"/>
+                    <img :src="searchImg"/>
+                </div>
+            </div>
+        </van-sticky>
+
+        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="immediate">
+            <div v-for="item in dataList" :key="item.id"class="listItem">
+                <div class="itemTop" @click="toDetail(item)" >
+                    <p>{{item.pumpNo}}<span></span>{{item.pumpNm}}<span></span>{{item.region}}</p>
+                    <img :src="arrowDownBlue" :class="{showMore:item.showMore}" @click.stop="item.showMore = !item.showMore"/>
+                </div>
+                <div class="itemContent" v-show="!item.showMore">
+                    <p @click="toShow('outPressure','出水压力')"><span>出水压力：</span>{{item.outPressure}}</p>
+                    <p @click="toShow('inPressure','进水压力')"><span>进水压力：</span>{{item.inPressure}}</p>
+                    <p @click="toShow('setPressure','设定压力')"><span>设定压力：</span>{{item.setPressure}}</p>
+                    <p @click="toShow('levelV','水箱水位')"><span>水箱水位：</span>{{item.levelV}}</p>
+                </div>
+                <div v-show="item.showMore" class="itemMore">
+
+                    <div class="itemContent">
+                        <div class="title">
+                            <span></span>基本数据
+                        </div>
+                        <p class="pHang"><span>站址：</span>{{item.tid}}</p>
+                        <p @click="toShow('outPressure','出水压力')"><span>出水压力：</span>{{item.outPressure}}</p>
+                        <p @click="toShow('inPressure','进水压力')"><span>进水压力：</span>{{item.inPressure}}</p>
+                        <p @click="toShow('setPressure','设定压力')"><span>设定压力：</span>{{item.setPressure}}</p>
+                        <p @click="toShow('levelV','水箱水位')"><span>水箱水位：</span>{{item.levelV}}</p>
+                    </div>
+                    <div class="itemContent">
+                        <p @click="toShow('turbidity','浊度')"><span>浊度：</span>{{item.turbidity}}</p>
+                        <p @click="toShow('residualChlorine','余氯')"><span>余氯：</span>{{item.residualChlorine}}</p>
+                    </div>
+                    <div class="itemContent">
+                        <p @click="toShow('','电源电压')"><span>电源电压：</span>{{item.outPressure}}</p>
+                        <p @click="toShow('operatingFrequency','运行频率')"><span>运行频率：</span>{{item.operatingFrequency}}</p>
+                        <p @click="toShow('voltage1','A相电压')"><span>A相电压：</span>{{item.voltage1}}</p>
+                        <p @click="toShow('current1','A相电流')"><span>A相电流：</span>{{item.current1}}</p>
+                        <p @click="toShow('voltage2','B相电压')"><span>B相电压：</span>{{item.voltage2}}</p>
+                        <p @click="toShow('current2','B相电流')"><span>B相电流：</span>{{item.current2}}</p>
+                        <p @click="toShow('voltage3','C相电压')"><span>C相电压：</span>{{item.voltage3}}</p>
+                        <p @click="toShow('current3','C相电流')"><span>C相电流：</span>{{item.current3}}</p>
+                    </div>
+                    <div class="itemContent">
+                        <div class="pump">
+                            <p>泵1</p>
+                            <p @click="toShow('operatingFrequency1','泵1运行频率')"><span>运行频率：</span>{{item.operatingFrequency1}}</p>
+                            <p @click="toShow('pumpCurrent1','泵1运行电流')"><span>运行电流：</span>{{item.pumpCurrent1}}</p>
+                            <p @click="toShow('operationHours1','泵1运行时间')"><span>运行时间：</span>{{item.operationHours1}}</p>
+                            <p @click="toShow('','泵1泵体温度')"><span>泵体温度：</span>{{item.outPressure}}</p>
+                            <p @click="toShow('','泵1泵体震动')"><span>泵体震动：</span>{{item.outPressure}}</p>
+                            <span>
+                                变频 <img :src="gray"/>
+                            </span>
+                            <span>
+                                工频 <img :src="gray"/>
+                            </span>
+                            <span>
+                                故障 <img :src="blue"/>
+                            </span>
+                            <span>
+                                检修 <img :src="gray"/>
+                            </span>
+                        </div>
+                        <div class="pump">
+                            <p>泵2</p>
+                            <p @click="toShow('operatingFrequency2','泵2运行频率')"><span>运行频率：</span>{{item.operatingFrequency2}}</p>
+                            <p @click="toShow('pumpCurrent2','泵2运行电流')"><span>运行电流：</span>{{item.pumpCurrent2}}</p>
+                            <p @click="toShow('operationHours2','泵2运行时间')"><span>运行时间：</span>{{item.operationHours2}}</p>
+                            <p @click="toShow('','泵2泵体温度')"><span>泵体温度：</span>{{item.outPressure}}</p>
+                            <p @click="toShow('','泵2泵体震动')"><span>泵体震动：</span>{{item.outPressure}}</p>
+                            <span>
+                                变频 <img :src="gray"/>
+                            </span>
+                            <span>
+                                工频 <img :src="gray"/>
+                            </span>
+                            <span>
+                                故障 <img :src="blue"/>
+                            </span>
+                            <span>
+                                检修 <img :src="gray"/>
+                            </span>
+                        </div>
+
+                    </div>
+                    <div class="itemContent">
+                        <div class="pump">
+                            <p>泵3</p>
+                            <p @click="toShow('operatingFrequency3','泵3运行频率')"><span>运行频率：</span>{{item.operatingFrequency3}}</p>
+                            <p @click="toShow('pumpCurrent3','泵3运行电流')"><span>运行电流：</span>{{item.pumpCurrent3}}</p>
+                            <p @click="toShow('operationHours3','泵3运行时间')"><span>运行时间：</span>{{item.operationHours3}}</p>
+                            <p @click="toShow('','泵3泵体温度')"><span>泵体温度：</span>{{item.outPressure}}</p>
+                            <p @click="toShow('','泵3泵体震动')"><span>泵体震动：</span>{{item.outPressure}}</p>
+                            <span>
+                                变频 <img :src="gray"/>
+                            </span>
+                            <span>
+                                工频 <img :src="gray"/>
+                            </span>
+                            <span>
+                                故障 <img :src="blue"/>
+                            </span>
+                            <span>
+                                检修 <img :src="gray"/>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="itemContent">
+                        <p @click="toShow('','泵房积水')"><span>泵房积水：</span>{{item.outPressure}}</p>
+                        <p @click="toShow('','有功电能')"><span>有功电能：</span>{{item.operatingFrequency}}</p>
+                        <p @click="toShow('','泵房噪音')"><span>泵房噪音：</span>{{item.voltage1}}</p>
+                        <p @click="toShow('cumulativeFlow','累计流量')"><span>累计流量：</span>{{item.cumulativeFlow}}</p>
+                        <p @click="toShow('','泵房温度')"><span>泵房温度：</span>{{item.voltage2}}</p>
+                        <p @click="toShow('instantaneousFlow','瞬间流量')"><span>瞬间流量：</span>{{item.instantaneousFlow}}</p>
+                        <p @click="toShow('','泵房湿度')"><span>泵房湿度：</span>{{item.voltage3}}</p>
+                    </div>
+                    <div class="itemContent">
+                        <div class="title">
+                            <span></span>当前状态
+                        </div>
+                        <p><span>远程控制：</span><img :src="close"/></p>
+                        <p><span>水位低：</span><img :src="close"/></p>
+                        <p><span>远程急停：</span><img :src="close"/></p>
+                        <p><span>水位高：</span><img :src="close"/></p>
+                        <p><span>压力超高：</span><img :src="open"/></p>
+                        <p><span>水位过低：</span><img :src="close"/></p>
+                        <p><span>欠压报警：</span><img :src="close"/></p>
+                        <p><span>水位过高：</span><img :src="close"/></p>
+                        <p class="pHang"><span>停机报警：</span><img :src="close"/></p>
+                        <p><span>积水：</span><img :src="close"/></p>
+                        <p><span>进水阀开：</span><img :src="close"/></p>
+                        <p><span>烟感：</span><img :src="close"/></p>
+                        <p><span>进水阀关：</span><img :src="close"/></p>
+                        <p><span>入侵：</span><img :src="open"/></p>
+                        <p><span>开到位：</span><img :src="close"/></p>
+                        <p><span>门禁：</span><img :src="close"/></p>
+                        <p><span>关到位：</span><img :src="close"/></p>
+                    </div>
+                </div>
+
+            </div>
+        </van-list>
+
+      <!--泵房搜索弹窗-->
+      <van-popup v-model="searchShow" position="bottom" :style="{ height: '60%' }" closeable round close-icon="close">
+          <div class="pumpSearch">
+              <input placeholder="泵房名称" @keyup.enter="search"/>
+              <img :src="searchImg"/>
+          </div>
+          <van-picker
+                  title="泵房名称"
+                  value-key="nm"
+                  show-toolbar
+                  :columns="pumpList"
+                  @confirm="onConfirm"
+                  @cancel="searchShow = false"
+          />
+      </van-popup>
+        <!--行政区域搜索弹窗-->
+        <van-popup v-model="zoneShow" position="bottom" :style="{ height: '60%' }" closeable round close-icon="close">
+            <van-picker
+                    title="行政区域"
+                    value-key="nm"
+                    show-toolbar
+                    :columns="zoneList"
+                    @confirm="zoneConfirm"
+                    @cancel="zoneShow = false"
+            />
+        </van-popup>
+
+    </div>
+</template>
+
+<script>
+
+    import myHeader from "../../../components/myHeader/myHeader";
+    import echartsShow from "../components/echartsShow";
+    import arrowRight from './img/arrowRight.png'
+    import arrowDown from './img/arrowDown.png'
+    import arrowDownBlue from './img/向下.png'
+    import searchImg from './img/搜索.png'
+    import gray from './img/灰.png'
+    import blue from './img/蓝.png'
+    import close from './img/关.png'
+    import open from './img/开.png'
+    export default {
+        components: {myHeader,echartsShow},
+        name: "monitor",
+        data() {
+            return {
+                arrowRight,
+                arrowDown,
+                arrowDownBlue,
+                searchImg,
+                gray,
+                blue,
+                close,
+                open,
+                info: {},
+                searchData: {
+                    pumpNm: ''
+                },
+                show: false,
+                showTitle:'标题',
+                activeNames: ['1'],
+                dataList: [],
+                searchShow: false,
+                zoneShow:false,
+                pumpList:[],
+                zoneList:[],
+                loading: false,
+                finished: false,
+                immediate: false,//初始化不加载必须用变量
+                pageNo: 1,
+                pageSize: 10,
+                total: 0,
+                title: "",
+                pumpNm: "",
+            };
+        },
+        mounted() {
+            this.getList()
+            this.getPump()
+        },
+        methods: {
+            //显示图表曲线
+            toShow(cd,title){
+                this.showTitle = title
+                this.show = true
+            },
+            search() {
+                console.log('search')
+            //     this.searchShow = false;
+            //     this.pageNo = 1;
+            //     this.dataList = [];
+            //     this.getList();
+            },
+            back() {
+                this.until.back()
+            },
+            onLoad() {
+                this.getList()
+            },
+            toDetail(item) {
+                this.until.href('screenCurveDetail.html')
+                this.info = item;
+            },
+            //获取泵房列表
+            getPump() {
+                let qry = this.query.new();
+                if (this.searchData.pumpNm) {
+                    this.query.toW(qry, "nm", this.searchData.pumpNm, "LK");
+                }
+                this.query.toP(qry, 1, 50);
+                this.query.toO(qry, "no", "asc");
+                this.api.getPumpPage(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
+                    if (res.code === 200) {
+                        this.pumpList = res.data.list
+                    }
+                })
+            },
+            //泵房确定选择
+            onConfirm(e){
+                console.log(e)
+                this.searchShow = false
+            },
+            //行政区域确定
+            zoneConfirm(e){
+
+            },
+            getList() {
+                let qry = this.query.new();
+                if (this.searchData.pumpNm) {
+                    this.query.toW(qry, "pumpNm", this.searchData.pumpNm, "LK");
+                }
+                this.query.toP(qry, this.pageNo, this.pageSize);
+                this.query.toO(qry, "crtTm", "desc");
+                this.api.getSysMonitorLatestPage(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
+                    if (res.code === 200) {
+                        res.data.list.forEach(item=>{
+                            item.showMore = false
+                            this.dataList.push(item)
+                        })
+                        // this.dataList.push(...res.data.list);
+                        // 加载状态结束
+                        this.finished = this.dataList.length >= res.page.total;
+                        this.loading = false;
+                        this.pageNo++;
+                    }
+                })
+            },
+        },
+        filters: {
+            filter: function (val) {
+                if (val === 0) {
+                    return '离线'
+                } else if (val === 1) {
+                    return '在线'
+                }
+                return val
+            }
+        },
+    };
+</script>
+
+<style lang="less" scoped>
+    #container{
+        background: #F5F2F5;
+        .pumpSearch{
+            display: flex;
+            align-items: center;
+            border: 1px solid #D5D5D5;
+            height: 0.48rem;
+            border-radius: 0.24rem;
+            background: #ffffff;
+            width: 96%;
+            margin: 1rem auto 0.4rem;
+            input{
+                flex: 1;
+                border: 0;
+                text-indent: 0.2rem;
+                background: transparent;
+            }
+            img{
+                width: 0.28rem;
+                margin-right: 0.2rem;
+            }
+        }
+        /*弹窗样式*/
+        .showTitle{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 0.45rem;
+            padding-bottom: 0.3rem;
+            span{
+                display: inline-block;
+                width: 1.1rem;
+                height: 1px;
+                background: #000000;
+                opacity: 0.2;
+            }
+            p{
+                font-size: 0.3rem;
+                font-weight: bold;
+                padding: 0 0.3rem;
+            }
+        }
+        .search{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            background: #F5F2F5;
+            padding: 0.25rem 2%;
+            box-sizing: border-box;
+            >div{
+                display: flex;
+                align-items: center;
+                border: 1px solid #D5D5D5;
+                height: 0.48rem;
+                border-radius: 0.24rem;
+                background: #ffffff;
+                p,input{
+                    flex: 1;
+                    border: 0;
+                    text-indent: 0.2rem;
+                }
+                img{
+                    margin-right: 0.18rem;
+                }
+                &:not(:last-of-type){
+                    width: 30%;
+                    img{
+                        width: 0.2rem;
+                    }
+                }
+                &:last-of-type{
+                    width: 33%;
+                    input{
+                        background: transparent;
+                        width: 90%;
+                    }
+                    img{
+                        width: 0.28rem;
+                    }
+                }
+            }
+        }
+        .listItem{
+            background: #ffffff;
+            border-radius: 0.1rem;
+            margin: 0 auto 0.15rem;
+            width: 96%;
+            .itemTop{
+                display: flex;
+                align-items: center;
+                height: 1rem;
+                width: 95%;
+                margin: 0 auto;
+                p{
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    span{
+                        display: inline-block;
+                        width: 1px;
+                        height: 0.2rem;
+                        background: #000000;
+                        opacity: 0.2;
+                        margin: 0 0.2rem;
+                    }
+                }
+                img{
+                    width: 0.35rem;
+                }
+                .showMore{
+                    transform:rotate(180deg);
+                    -ms-transform:rotate(180deg); 	/* IE 9 */
+                    -moz-transform:rotate(180deg); 	/* Firefox */
+                    -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+                    -o-transform:rotate(180deg); 	/* Opera */
+                }
+            }
+            .itemMore{
+
+            }
+
+            .itemContent{
+                width: 95%;
+                margin: 0 auto;
+                border-top:1px solid #E9E9E9;
+                display: flex;
+                flex-wrap: wrap;
+                padding: 0.2rem 0;
+                .title{
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    height: 0.6rem;
+                    padding-bottom: 0.1rem;
+                    font-size: 0.28rem;
+                    font-weight: bold;
+
+                    span{
+                        width: 0.07rem;
+                        height: 0.28rem;
+                        background: #0B62B1;
+                        display: inline-block;
+                        margin-right: 0.2rem;
+                    }
+                }
+                p{
+                    width: 50%;
+                    display: flex;
+                    align-items: center;
+                    height: 0.5rem;
+                    span{
+                        color: #909090;
+                        width: 1.3rem;
+                        display: inline-block;
+                        flex-shrink: 0;
+                    }
+                    img{
+                        width: 0.45rem;
+                    }
+                }
+                .pHang{
+                    width: 100%;
+                }
+                .pump{
+                    width: 50%;
+                    overflow: hidden;
+                    p:first-child{
+                        padding-top: 0.1rem;
+                        width: 100%;
+                        display: block;
+                        padding-left: 1rem;
+                        color: #909090;
+                    }
+                    >span{
+                        display: inline-flex;
+                        align-items: center;
+                        float: left;
+                        color: #909090;
+                        height: 0.5rem;
+                        &:nth-of-type(2n+1){
+                            width: 38%;
+                        }
+                        &:nth-of-type(2n){
+                            width: 60%;
+                        }
+                        img{
+                            width: 0.26rem;
+                            margin-left: 0.1rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .van-cell {
+        line-height: normal;
+        padding: 8px 16px;
+    }
+
+</style>
+

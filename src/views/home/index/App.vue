@@ -189,7 +189,7 @@
                     {
                         nm: "多屏曲线",
                         img: monitor6,
-                        aHref: ""
+                        aHref: "../monitor/screenCurve.html"
                     },
                     {
                         nm: "泵房工艺",
