@@ -37,23 +37,38 @@
     import * as echarts from 'echarts';
   export default {
     props:{
-        title:{
-            type:String,
-            default:''
-        }
+
     },
+
     data() {
       return {
           img,
       }
     },
     mounted() {
-        this.drawEcharts()
+        // this.drawEcharts()
     },
     methods: {
-        drawEcharts(){
+        //列表的
+        getData(info){
+            let info2 = {
+                pumpNo:info.pumpNo,
+                valNm:info.valNm
+            }
+            this.api.mobCurveData(info2).then(res=>{
+                console.log(res)
+                if(res.code==200){
+                    let x = res.data.xData
+                    let y = res.data.yData
+                    this.drawEcharts(x,y)
+                }
+            })
+        },
+
+        drawEcharts(x,y){
             var myChart = echarts.init(document.getElementById('echarts'));
-            let timeList = ['00:00','01:00', '02:00','03:00', '04:00','05:00', '06:00','07:00', '08:00','09:00', '10:00','11:00', '12:00', '13:00','14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00',  '21:00','22:00', '23:00','24:00']
+            let timeList = x
+            // let timeList = ['00:00','01:00', '02:00','03:00', '04:00','05:00', '06:00','07:00', '08:00','09:00', '10:00','11:00', '12:00', '13:00','14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00',  '21:00','22:00', '23:00','24:00']
             let startValue = timeList.length<7 ? 0 : timeList.length - 7
             let endValue = timeList.length - 1
             // 绘制图表
@@ -109,7 +124,7 @@
                     {
                         name: '：',
                         type: 'line',
-                        data: [10, 11, 13, 11, 12, 12, 9,10, 11, 13, 11, 12, 12,10, 11, 13, 11, 12, 12,10, 11, 13, 11, 12, 12],
+                        data: y,
                         label:{
                             show:false,
                         },

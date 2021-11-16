@@ -26,24 +26,22 @@
                 margin-right: 0.3rem;
             }
         }
-        .listTitle,.list{
-            display: flex;
-            align-items: center;
-            p{
-                text-align: center;
-                flex: 1;
-                height: 0.8rem;
-                line-height: 0.8rem;
-                &:nth-of-type(5),&:nth-of-type(6),&:nth-of-type(7){
-                    flex: 2;
-                }
-            }
-        }
-
         .listTitle{
             color: #909090;
-            p{
+            td{
+                line-height: 0.8rem;
+                text-align: center;
                 background: #F5F2F5;
+                width: 10%;
+                &:nth-of-type(1),&:nth-of-type(9),&:nth-of-type(8){
+                    width: 8%;
+                }
+                &:nth-of-type(3){
+                    width: 6%;
+                }
+                &:nth-of-type(5),&:nth-of-type(6),&:nth-of-type(7){
+                    width: 16%;
+                }
             }
         }
         .reportFormMain{
@@ -56,15 +54,22 @@
                 width: 100vw;
                 overflow: scroll;
                 >div{
-                    width: 200vw;
+                    width: 250vw;
                 }
                 /*overflow-x: scroll;*/
                 /*-webkit-overflow-scrolling: touch;*/
             }
+            table{
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
             .list{
-                height: 0.77rem;
-                p{
+                td{
+                    padding: 0.1rem;
                     border-bottom: 1px solid #DAD7DB;
+                    text-align: center;
+                    line-height: 0.3rem;
 
                 }
             }
@@ -81,7 +86,7 @@
             <van-datetime-picker
                     @confirm="timeChoose"
                     @cancel="timeChoseShow = false"
-                    v-model="time"
+                    v-model="currentDate"
                     type="date"
                     title="选择年月日"
                     :max-date="maxDate"
@@ -101,28 +106,33 @@
             <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="immediate">
                 <div class="touch">
                     <div>
-                        <div class="listTitle">
-                            <p>泵房编号</p>
-                            <p>泵房名称</p>
-                            <p>分区</p>
-                            <p>报警类型</p>
-                            <p>报警内容</p>
-                            <p>设备商</p>
-                            <p>保养单位</p>
-                            <p>警报时间</p>
-                            <p>状态</p>
-                        </div>
-                        <div class="list" v-for="item in list">
-                            <p>{{item.time}}</p>
-                            <p>{{item.value}}</p>
-                            <p>{{item.value}}</p>
-                            <p>{{item.value}}</p>
-                            <p>{{item.value}}</p>
-                            <p>{{item.value}}</p>
-                            <p>{{item.time}}</p>
-                            <p>{{item.value}}</p>
-                            <p>{{item.value}}</p>
-                        </div>
+                        <table>
+                            <thead>
+                            <tr  class="listTitle">
+                                <td>泵房编号</td>
+                                <td>泵房名称</td>
+                                <td>分区</td>
+                                <td>报警类型</td>
+                                <td>报警内容</td>
+                                <td>设备商</td>
+                                <td>保养单位</td>
+                                <td>警报时间</td>
+                                <td>状态</td>
+                            </tr>
+
+                            </thead>
+                            <tr class="list" v-for="item in list">
+                                <td>{{item.pumpNo}}</td>
+                                <td>{{item.pumpNm}}</td>
+                                <td>{{item.nm}}</td>
+                                <td>{{item.type}}</td>
+                                <td>{{item.reason}}</td>
+                                <td>{{item.equipmentNm}}</td>
+                                <td>{{item.maintenanceNm}}</td>
+                                <td>{{item.startTm}}</td>
+                                <td>{{item.status}}</td>
+                            </tr>
+                        </table>
                     </div>
 
                 </div>
@@ -139,7 +149,7 @@
     import img from '../img/日期.png'
     export default {
         props:{
-            title:{
+            pumpNo:{
                 type:String,
                 default:''
             }
@@ -157,59 +167,59 @@
                 pageNo: 1,
                 pageSize: 10,
                 total: 30,
-                list:[{
-                    time:'11-05  17:59',
-                    value:'0.510'
-                },{
-                    time:'11-05  17:59',
-                    value:'0.510'
-                },{
-                    time:'11-05  17:59',
-                    value:'0.510'
-                },{
-                    time:'11-05  17:59',
-                    value:'0.510'
-                },{
-                    time:'11-05  17:59',
-                    value:'0.510'
-                },{
-                    time:'11-05  17:59',
-                    value:'0.510'
-                },{
-                    time:'11-05  17:59',
-                    value:'0.510'
-                },{
-                    time:'11-05  17:59',
-                    value:'0.510'
-                }],
+                list:[],
             }
         },
         mounted() {
+            this.$nextTick(()=>{
+                console.log('mounted:'+this.pumpNo)
+
+                this.getList()
+
+            })
         },
         methods: {
 
             onLoad() {
-                console.log('onLoad')
+                console.log('onLoad:'+this.pumpNo)
+                this.pageNo++
                 this.getList()
             },
             getList(){
-                console.log('getList')
                 this.loading = true
-                if(this.list.length<this.total){
-                    this.list.push(...this.list)
-                    console.log(this.list.length)
-                    this.loading = false
-                }else {
-                    console.log('finished')
-                    this.finished = true
+                let qry = this.query.new();
+                if(this.time){
+                    this.query.toW(qry,'startTm',this.time,'LK')
                 }
+                // this.query.toW(qry,'pumpNo',this.pumpNo,'EQ')
+                this.query.toP(qry,this.pageNo,this.pageSize)
+                this.api.getAlarmList(encodeURIComponent(this.query.toJsonStr(qry))).then(res=>{
+                    console.log(res)
+                    if(res.code==200){
+                        this.list.push(...res.data.list)
+                        this.total = res.page.total
+                        console.log(this.list.length)
+                        console.log(this.total)
+                        if(this.total<=this.list.length){
+                            this.finished = true
+                        }else {
+                            this.finished = false
+                        }
+                        this.loading = false
+                    }
+                })
             },
             toChooseTime(){
                 this.timeChoseShow = true
             },
             timeChoose(e){
                 console.log(e)
+                let date = this.until.formatDate(e)
+                this.time = date.year+'-'+date.month+'-'+date.day
                 this.timeChoseShow = false
+                this.list = []
+                this.pageNo = 1
+                this.getList()
             }
         }
     }

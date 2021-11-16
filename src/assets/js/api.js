@@ -1,8 +1,9 @@
 import {until} from "./until";
 
 const untilApi = new until();
-
-//线上地址：http://61.164.93.186:6081/
+//
+// http://192.168.0.47
+//线上地址：http://61.164.93.186:6181/
 class api {
 
     test(data) {
@@ -780,8 +781,46 @@ class api {
             });
         });
     }
-
-
+    //多屏曲线列表
+   getMonitorLatest(data) {
+        return new Promise((resolve) => {
+            untilApi.get("/gs/monitorLatest/page2?query=" + data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+    //图表数据
+    mobCurveData(data) {
+        return new Promise((resolve) => {
+            untilApi.get("/gs/monitorLatest/mobCurveData",data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+    //多屏曲线详情页tab列表
+    getTab() {
+        return new Promise((resolve) => {
+            untilApi.get("/gs/monitorLatest/tabs").then(res => {
+                resolve(res)
+            });
+        });
+    }
+    //多屏曲线详情页今日最高等数据
+    mobDtl(data) {
+        return new Promise((resolve) => {
+            untilApi.get("/gs/monitorLatest/mobDtl",data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+    //详情页曲线数据
+    dtlDayYearData(data) {
+        return new Promise((resolve) => {
+            untilApi.get("/gs/monitorLatest/dtlDayYearData",data).then(res => {
+                resolve(res)
+            });
+        });
+    }
 }
 
 export {api};

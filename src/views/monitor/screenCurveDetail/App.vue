@@ -1,17 +1,17 @@
 <template>
     <div id="container">
-        <van-sticky>
+        <van-sticky v-show="activeId!=4">
             <my-header :title="title" @back="back"  :searchStatus="false"> </my-header>
         </van-sticky>
         <div class="main">
             <!--实时-->
-            <real-time v-if="activeId==1"></real-time>
+            <real-time v-if="activeId==1 && menuList.length>0" :menuList="menuList" :pumpNo="pumpNo"></real-time>
             <!--报表-->
-            <report-form v-if="activeId==2"></report-form>
+            <report-form v-if="activeId==2 && menuList.length>0" :pumpNo="pumpNo"  :menuList="menuList"></report-form>
             <!--报警-->
-            <alarm v-if="activeId==3"></alarm>
+            <alarm v-if="activeId==3" :pumpNo="pumpNo"></alarm>
             <!--地图-->
-            <my-map v-if="activeId==4"></my-map>
+            <my-map v-if="activeId==4" :url="url"></my-map>
         </div>
         <div class="tab">
             <p @click="activeId = item.id" v-for="item in tabList" :key="item.id" :class="{active:item.id==activeId}">
@@ -51,8 +51,11 @@
         name: "monitor",
         data() {
             return {
+                info:{},
+                menuList:[],
+                pumpNo:'',
                 title:'泵房监控',
-                info: {},
+                url: '',//百度地图地址
                 activeId:1,
                 tabList:[{
                     nm:'实时',
@@ -77,9 +80,21 @@
                 }]
             };
         },
-        mounted() {
+       async mounted() {
+            this.pumpNo = this.until.getQueryString('pumpNo')
+           this.getInfo()
+           this.menuList = await this.api.getTab()
         },
         methods: {
+            getInfo(){
+              this.api.getPumpQrInfo(this.pumpNo.slice(0,this.pumpNo.length-1)).then(res=>{
+                  if(res.code=='200'){
+                    this.info = res.data
+                     this.title = this.info.nm
+                      this.url = `http://api.map.baidu.com/marker?location=${this.info.lat},${this.info.lng}&title=${this.info.nm}&content=${this.info.pumpLocation}&output=html&src=webapp.baidu.openAPIdemo`
+                  }
+              })
+            },
             back() {
                 this.until.back()
             },
@@ -101,8 +116,8 @@
     #container{
         background: #F5F2F5;
         min-height: 100%;
-        .main{}
-        padding-bottom: 1.2rem;
+        .main{        padding-bottom: 1.2rem;
+        }
     }
     .tab{
         display: flex;

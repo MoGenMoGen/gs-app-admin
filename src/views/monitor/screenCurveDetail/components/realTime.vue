@@ -149,20 +149,20 @@
         <!--更多弹出窗口-->
         <van-popup v-model="showMore" position="right"  :style="{ width: '80%',height:'100vh' }">
             <div class="menuAll">
-                <p  v-for="item in menuList" :key="item.id" :class="{active:item.id==activeId}" @click="choose(item)">{{item.nm}}</p>
+                <p  v-for="item in menuList" :key="item.value" :class="{active:item.value==activeId}" @click="choose(item)">{{item.label}}</p>
             </div>
         </van-popup>
         <van-sticky :offset-top="82">
             <div class="menuList" v-if="menuList.length<5">
-                <p v-for="item in menuList" :key="item.id" :class="{active:item.id==activeId}" @click="activeId=item.id">{{item.nm}}</p>
+                <p v-for="item in menuList" :key="item.value" :class="{active:item.value==activeId}" @click="choose(item)">{{item.label}}</p>
             </div>
             <div class="menuList" v-else>
-                <p v-for="item in menuList.slice(0,4)" :key="item.id" :class="{active:item.id==activeId}"  @click="activeId=item.id">{{item.nm}}</p>
+                <p v-for="item in menuList.slice(0,4)" :key="item.value" :class="{active:item.value==activeId}"  @click="choose(item)">{{item.label}}</p>
                 <p @click="showMore=true">更多</p>
             </div>
         </van-sticky>
         <div class="realTimeMain">
-            <h5>0.540Mpa</h5>
+            <h5>{{newData}}Mpa</h5>
             <div class="dataShow">
                 <p v-for="item in dataShow">{{item.nm}}：<span>{{item.value}}</span></p>
             </div>
@@ -171,9 +171,9 @@
             </div>
             <div class="realTimeEcharts">
                 <div class="echartsMenu">
-                    <p :class="{active:item.id==echartsId}" v-for="item in echartsMenu" @click="echartsId=item.id">{{item.nm}}</p>
+                    <p :class="{active:item.id==echartsId}" v-for="item in echartsMenu" @click="timeChange(item)">{{item.nm}}</p>
                 </div>
-                <echarts-show></echarts-show>
+                <echarts-show :pumpNo="pumpNo" :valNm="activeId" :type="echartsId" ref="echarts"></echarts-show>
                 <div class="dataTable">
                     <div class="left">
                         <p>时间</p>
@@ -200,37 +200,25 @@
     import echartsShow from '../../components/echartsShow'
   export default {
     props:{
-        title:{
+        pumpNo:{
             type:String,
             default:''
+        },
+        menuList:{
+            type:Array,
+            default:()=>{
+                return []
+            }
         }
     },
     components:{echartsShow},
     data() {
       return {
           img,
-          activeId:1,
+          activeId:'',
           showMore:false,
-          menuList:[
-              {
-                  nm:'出水压力',
-                  id:1
-              } ,
-              {
-                  nm:'进水压力',
-                  id:2
-              },
-              {
-                  nm:'设定压力',
-                  id:3
-              },{
-                  nm:'电源电压',
-                  id:4
-              },{
-                  nm:'运行频率',
-                  id:5
-              }
-          ],
+
+          newData:'',
           dataShow:[{
               nm:'今日最高',
               value:'0.672'
@@ -253,18 +241,18 @@
           }],
           echartsMenu:[{
               nm:'今日',
-              id:1
+              id:0
           },{
               nm:'本月',
-              id:2
+              id:1
           },{
               nm:'本年',
-              id:3
+              id:2
           },{
               nm:'实时',
-              id:4
+              id:3
           }],
-          echartsId:4,
+          echartsId:3,
           tableList:[{
               time:'00:00',
               value:'0.140'
@@ -291,12 +279,77 @@
       }
     },
     mounted() {
-        this.tableWidth = this.tableList.length>4 ? (this.tableList.length-4)*15+100 : 100
+        this.activeId = this.menuList[0].value
+        this.getData()
+        this.getEcharts()
+        // this.getTab()
     },
     methods: {
+        getEcharts(){
+            let param = {
+                pumpNo:this.pumpNo,
+                valNm:this.activeId,
+                type:this.echartsId
+            }
+            this.api.dtlDayYearData(param).then(res=>{
+                console.log(res)
+                if(res.code==200){
+                    let x = res.data.time
+                    let y = res.data.data
+                    this.tableList = []
+                    x.forEach((item,index)=>{
+                        this.tableList.push({
+                            time:item,
+                            value:y[index]
+                        })
+                    })
+                    this.$refs.echarts.drawEcharts(x,y)
+                }
+            })
+
+        },
+        // getTab(){
+        //     this.api.getTab().then(res=>{
+        //         this.menuList = res
+        //         this.activeId = this.menuList[0].value
+        //         this.getData()
+        //         this.getEcharts()
+        //
+        //     })
+        // },
+        getData(){
+            let param = {
+                pumpNo:this.pumpNo,
+                valNm:this.activeId
+            }
+            this.api.mobDtl(param).then(res=>{
+                console.log(res)
+                if(res.code==200){
+                    this.dataShow[0].value = res.data.todayMax
+                    this.dataShow[1].value = res.data.todayMin
+                    this.dataShow[2].value = res.data.todayAve
+
+                    this.dataShow2[0].value = res.data.yesterdayMax
+                    this.dataShow2[1].value = res.data.yesterdayMin
+                    this.dataShow2[2].value = res.data.yesterdayAve
+
+                    this.newData = res.data.newData
+
+                }
+            })
+
+        },
         choose(item){
-            this.activeId = item.id
+            this.activeId = item.value
+            //这个数据变了要更新下图表
+            this.getEcharts()
+            this.getData()
             this.showMore = false
+        },
+        timeChange(item){
+            this.echartsId=item.id
+            this.getEcharts()
+
         }
     }
   }

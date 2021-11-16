@@ -5,7 +5,7 @@
             <div class="showTitle">
                 <span></span><p>{{showTitle}}</p><span></span>
             </div>
-            <echarts-show></echarts-show>
+            <echarts-show  ref="echarts"></echarts-show>
         </van-popup>
         <van-sticky>
             <my-header title="实时监控" @back="back" :searchStatus="false"> </my-header>
@@ -13,15 +13,15 @@
         <van-sticky :offset-top="82">
             <div class="search">
                 <div @click="zoneShow=true">
-                    <p>行政区域</p>
+                    <p>{{searchData.region?searchData.region : '行政区域'}}</p>
                     <img :src="arrowDown"/>
                 </div>
                 <div @click="searchShow=true">
-                    <p>泵房名称</p>
+                    <p>{{searchData.pumpNm?searchData.pumpNm : '泵房名称'}}</p>
                     <img :src="arrowDown"/>
                 </div>
                 <div>
-                    <input placeholder="设备名称、编号" @keyup.enter="search"/>
+                    <input placeholder="设备名称、编号"  @keyup.enter="search"/>
                     <img :src="searchImg"/>
                 </div>
             </div>
@@ -34,10 +34,10 @@
                     <img :src="arrowDownBlue" :class="{showMore:item.showMore}" @click.stop="item.showMore = !item.showMore"/>
                 </div>
                 <div class="itemContent" v-show="!item.showMore">
-                    <p @click="toShow('outPressure','出水压力')"><span>出水压力：</span>{{item.outPressure}}</p>
-                    <p @click="toShow('inPressure','进水压力')"><span>进水压力：</span>{{item.inPressure}}</p>
-                    <p @click="toShow('setPressure','设定压力')"><span>设定压力：</span>{{item.setPressure}}</p>
-                    <p @click="toShow('levelV','水箱水位')"><span>水箱水位：</span>{{item.levelV}}</p>
+                    <p @click="toShow(item.pumpNo,'outPressure','出水压力')"><span>出水压力：</span>{{item.outPressure}}</p>
+                    <p @click="toShow(item.pumpNo,'inPressure','进水压力')"><span>进水压力：</span>{{item.inPressure}}</p>
+                    <p @click="toShow(item.pumpNo,'setPressure','设定压力')"><span>设定压力：</span>{{item.setPressure}}</p>
+                    <p @click="toShow(item.pumpNo,'levelV','水箱水位')"><span>水箱水位：</span>{{item.levelV}}</p>
                 </div>
                 <div v-show="item.showMore" class="itemMore">
 
@@ -46,64 +46,64 @@
                             <span></span>基本数据
                         </div>
                         <p class="pHang"><span>站址：</span>{{item.tid}}</p>
-                        <p @click="toShow('outPressure','出水压力')"><span>出水压力：</span>{{item.outPressure}}</p>
-                        <p @click="toShow('inPressure','进水压力')"><span>进水压力：</span>{{item.inPressure}}</p>
-                        <p @click="toShow('setPressure','设定压力')"><span>设定压力：</span>{{item.setPressure}}</p>
-                        <p @click="toShow('levelV','水箱水位')"><span>水箱水位：</span>{{item.levelV}}</p>
+                        <p @click="toShow(item.pumpNo,'outPressure','出水压力')"><span>出水压力：</span>{{item.outPressure}}</p>
+                        <p @click="toShow(item.pumpNo,'inPressure','进水压力')"><span>进水压力：</span>{{item.inPressure}}</p>
+                        <p @click="toShow(item.pumpNo,'setPressure','设定压力')"><span>设定压力：</span>{{item.setPressure}}</p>
+                        <p @click="toShow(item.pumpNo,'levelV','水箱水位')"><span>水箱水位：</span>{{item.levelV}}</p>
                     </div>
                     <div class="itemContent">
-                        <p @click="toShow('turbidity','浊度')"><span>浊度：</span>{{item.turbidity}}</p>
-                        <p @click="toShow('residualChlorine','余氯')"><span>余氯：</span>{{item.residualChlorine}}</p>
+                        <p @click="toShow(item.pumpNo,'turbidity','浊度')"><span>浊度：</span>{{item.turbidity}}</p>
+                        <p @click="toShow(item.pumpNo,'residualChlorine','余氯')"><span>余氯：</span>{{item.residualChlorine}}</p>
                     </div>
                     <div class="itemContent">
-                        <p @click="toShow('','电源电压')"><span>电源电压：</span>{{item.outPressure}}</p>
-                        <p @click="toShow('operatingFrequency','运行频率')"><span>运行频率：</span>{{item.operatingFrequency}}</p>
-                        <p @click="toShow('voltage1','A相电压')"><span>A相电压：</span>{{item.voltage1}}</p>
-                        <p @click="toShow('current1','A相电流')"><span>A相电流：</span>{{item.current1}}</p>
-                        <p @click="toShow('voltage2','B相电压')"><span>B相电压：</span>{{item.voltage2}}</p>
-                        <p @click="toShow('current2','B相电流')"><span>B相电流：</span>{{item.current2}}</p>
-                        <p @click="toShow('voltage3','C相电压')"><span>C相电压：</span>{{item.voltage3}}</p>
-                        <p @click="toShow('current3','C相电流')"><span>C相电流：</span>{{item.current3}}</p>
+                        <p @click="toShow(item.pumpNo,'','电源电压')"><span>电源电压：</span>#</p>
+                        <p @click="toShow(item.pumpNo,'operatingFrequency','运行频率')"><span>运行频率：</span>{{item.operatingFrequency}}</p>
+                        <p @click="toShow(item.pumpNo,'voltage1','A相电压')"><span>A相电压：</span>{{item.voltage1}}</p>
+                        <p @click="toShow(item.pumpNo,'current1','A相电流')"><span>A相电流：</span>{{item.current1}}</p>
+                        <p @click="toShow(item.pumpNo,'voltage2','B相电压')"><span>B相电压：</span>{{item.voltage2}}</p>
+                        <p @click="toShow(item.pumpNo,'current2','B相电流')"><span>B相电流：</span>{{item.current2}}</p>
+                        <p @click="toShow(item.pumpNo,'voltage3','C相电压')"><span>C相电压：</span>{{item.voltage3}}</p>
+                        <p @click="toShow(item.pumpNo,'current3','C相电流')"><span>C相电流：</span>{{item.current3}}</p>
                     </div>
                     <div class="itemContent">
                         <div class="pump">
                             <p>泵1</p>
-                            <p @click="toShow('operatingFrequency1','泵1运行频率')"><span>运行频率：</span>{{item.operatingFrequency1}}</p>
-                            <p @click="toShow('pumpCurrent1','泵1运行电流')"><span>运行电流：</span>{{item.pumpCurrent1}}</p>
-                            <p @click="toShow('operationHours1','泵1运行时间')"><span>运行时间：</span>{{item.operationHours1}}</p>
-                            <p @click="toShow('','泵1泵体温度')"><span>泵体温度：</span>{{item.outPressure}}</p>
-                            <p @click="toShow('','泵1泵体震动')"><span>泵体震动：</span>{{item.outPressure}}</p>
+                            <p @click="toShow(item.pumpNo,'operatingFrequency1','泵1运行频率')"><span>运行频率：</span>{{item.operatingFrequency1}}</p>
+                            <p @click="toShow(item.pumpNo,'pumpCurrent1','泵1运行电流')"><span>运行电流：</span>{{item.pumpCurrent1}}</p>
+                            <p @click="toShow(item.pumpNo,'operationHours1','泵1运行时间')"><span>运行时间：</span>{{item.operationHours1}}</p>
+                            <p @click="toShow(item.pumpNo,'temperatureP1','泵1泵体温度')"><span>泵体温度：</span>{{item.temperatureP1}}</p>
+                            <p @click="toShow(item.pumpNo,'','泵1泵体震动')"><span>泵体震动：</span>#</p>
                             <span>
-                                变频 <img :src="gray"/>
+                                变频 <img :src="item.pumpBian1?blue : gray"/>
                             </span>
                             <span>
-                                工频 <img :src="gray"/>
+                                工频 <img :src="item.pumpGong1?blue:gray"/>
                             </span>
                             <span>
-                                故障 <img :src="blue"/>
+                                故障 <img :src="item.pumpFault1 ? blue:gray"/>
                             </span>
                             <span>
-                                检修 <img :src="gray"/>
+                                检修 <img :src="item.pumpOverhaul1 ? blue : gray"/>
                             </span>
                         </div>
                         <div class="pump">
                             <p>泵2</p>
-                            <p @click="toShow('operatingFrequency2','泵2运行频率')"><span>运行频率：</span>{{item.operatingFrequency2}}</p>
-                            <p @click="toShow('pumpCurrent2','泵2运行电流')"><span>运行电流：</span>{{item.pumpCurrent2}}</p>
-                            <p @click="toShow('operationHours2','泵2运行时间')"><span>运行时间：</span>{{item.operationHours2}}</p>
-                            <p @click="toShow('','泵2泵体温度')"><span>泵体温度：</span>{{item.outPressure}}</p>
-                            <p @click="toShow('','泵2泵体震动')"><span>泵体震动：</span>{{item.outPressure}}</p>
+                            <p @click="toShow(item.pumpNo,'operatingFrequency2','泵2运行频率')"><span>运行频率：</span>{{item.operatingFrequency2}}</p>
+                            <p @click="toShow(item.pumpNo,'pumpCurrent2','泵2运行电流')"><span>运行电流：</span>{{item.pumpCurrent2}}</p>
+                            <p @click="toShow(item.pumpNo,'operationHours2','泵2运行时间')"><span>运行时间：</span>{{item.operationHours2}}</p>
+                            <p @click="toShow(item.pumpNo,'temperatureP2','泵2泵体温度')"><span>泵体温度：</span>{{item.temperatureP2}}</p>
+                            <p @click="toShow(item.pumpNo,'','泵2泵体震动')"><span>泵体震动：</span>#</p>
                             <span>
-                                变频 <img :src="gray"/>
+                                变频 <img :src="item.pumpBian2?blue : gray"/>
                             </span>
                             <span>
-                                工频 <img :src="gray"/>
+                                工频 <img :src="item.pumpGong2?blue:gray"/>
                             </span>
                             <span>
-                                故障 <img :src="blue"/>
+                                故障 <img :src="item.pumpFault2 ? blue:gray"/>
                             </span>
                             <span>
-                                检修 <img :src="gray"/>
+                                检修 <img :src="item.pumpOverhaul2 ? blue : gray"/>
                             </span>
                         </div>
 
@@ -111,55 +111,75 @@
                     <div class="itemContent">
                         <div class="pump">
                             <p>泵3</p>
-                            <p @click="toShow('operatingFrequency3','泵3运行频率')"><span>运行频率：</span>{{item.operatingFrequency3}}</p>
-                            <p @click="toShow('pumpCurrent3','泵3运行电流')"><span>运行电流：</span>{{item.pumpCurrent3}}</p>
-                            <p @click="toShow('operationHours3','泵3运行时间')"><span>运行时间：</span>{{item.operationHours3}}</p>
-                            <p @click="toShow('','泵3泵体温度')"><span>泵体温度：</span>{{item.outPressure}}</p>
-                            <p @click="toShow('','泵3泵体震动')"><span>泵体震动：</span>{{item.outPressure}}</p>
+                            <p @click="toShow(item.pumpNo,'operatingFrequency3','泵3运行频率')"><span>运行频率：</span>{{item.operatingFrequency3}}</p>
+                            <p @click="toShow(item.pumpNo,'pumpCurrent3','泵3运行电流')"><span>运行电流：</span>{{item.pumpCurrent3}}</p>
+                            <p @click="toShow(item.pumpNo,'operationHours3','泵3运行时间')"><span>运行时间：</span>{{item.operationHours3}}</p>
+                            <p @click="toShow(item.pumpNo,'temperatureP3','泵3泵体温度')"><span>泵体温度：</span>{{item.temperatureP3}}</p>
+                            <p @click="toShow(item.pumpNo,'','泵3泵体震动')"><span>泵体震动：</span>#</p>
                             <span>
-                                变频 <img :src="gray"/>
+                                变频 <img :src="item.pumpBian3?blue : gray"/>
                             </span>
                             <span>
-                                工频 <img :src="gray"/>
+                                工频 <img :src="item.pumpGong3?blue:gray"/>
                             </span>
                             <span>
-                                故障 <img :src="blue"/>
+                                故障 <img :src="item.pumpFault3 ? blue:gray"/>
                             </span>
                             <span>
-                                检修 <img :src="gray"/>
+                                检修 <img :src="item.pumpOverhaul3 ? blue : gray"/>
+                            </span>
+                        </div>
+                        <div class="pump">
+                            <p>泵4</p>
+                            <p @click="toShow(item.pumpNo,'operatingFrequency4','泵3运行频率')"><span>运行频率：</span>{{item.operatingFrequency3}}</p>
+                            <p @click="toShow(item.pumpNo,'pumpCurrent4','泵3运行电流')"><span>运行电流：</span>{{item.pumpCurrent3}}</p>
+                            <p @click="toShow(item.pumpNo,'operationHours4','泵3运行时间')"><span>运行时间：</span>{{item.operationHours3}}</p>
+                            <p @click="toShow(item.pumpNo,'temperatureP4','泵3泵体温度')"><span>泵体温度：</span>{{item.temperatureP3}}</p>
+                            <p @click="toShow(item.pumpNo,'','泵3泵体震动')"><span>泵体震动：</span>#</p>
+                            <span>
+                                变频 <img :src="item.pumpBian4?blue : gray"/>
+                            </span>
+                            <span>
+                                工频 <img :src="item.pumpGong4?blue:gray"/>
+                            </span>
+                            <span>
+                                故障 <img :src="item.pumpFault4 ? blue:gray"/>
+                            </span>
+                            <span>
+                                检修 <img :src="item.pumpOverhaul4 ? blue : gray"/>
                             </span>
                         </div>
                     </div>
                     <div class="itemContent">
-                        <p @click="toShow('','泵房积水')"><span>泵房积水：</span>{{item.outPressure}}</p>
-                        <p @click="toShow('','有功电能')"><span>有功电能：</span>{{item.operatingFrequency}}</p>
-                        <p @click="toShow('','泵房噪音')"><span>泵房噪音：</span>{{item.voltage1}}</p>
-                        <p @click="toShow('cumulativeFlow','累计流量')"><span>累计流量：</span>{{item.cumulativeFlow}}</p>
-                        <p @click="toShow('','泵房温度')"><span>泵房温度：</span>{{item.voltage2}}</p>
-                        <p @click="toShow('instantaneousFlow','瞬间流量')"><span>瞬间流量：</span>{{item.instantaneousFlow}}</p>
-                        <p @click="toShow('','泵房湿度')"><span>泵房湿度：</span>{{item.voltage3}}</p>
+                        <p @click="toShow(item.pumpNo,'levelJ','泵房积水')"><span>泵房积水：</span>{{item.levelJ}}</p>
+                        <p @click="toShow(item.pumpNo,'kwh','有功电能')"><span>有功电能：</span>{{item.kwh}}</p>
+                        <p @click="toShow(item.pumpNo,'noise','泵房噪音')"><span>泵房噪音：</span>{{item.noise}}</p>
+                        <p @click="toShow(item.pumpNo,'cumulativeFlow','累计流量')"><span>累计流量：</span>{{item.cumulativeFlow}}</p>
+                        <p @click="toShow(item.pumpNo,'temperature','泵房温度')"><span>泵房温度：</span>{{item.temperature}}</p>
+                        <p @click="toShow(item.pumpNo,'instantaneousFlow','瞬间流量')"><span>瞬间流量：</span>{{item.instantaneousFlow}}</p>
+                        <p @click="toShow(item.pumpNo,'humidity','泵房湿度')"><span>泵房湿度：</span>{{item.humidity}}</p>
                     </div>
                     <div class="itemContent">
                         <div class="title">
                             <span></span>当前状态
                         </div>
-                        <p><span>远程控制：</span><img :src="close"/></p>
-                        <p><span>水位低：</span><img :src="close"/></p>
-                        <p><span>远程急停：</span><img :src="close"/></p>
-                        <p><span>水位高：</span><img :src="close"/></p>
-                        <p><span>压力超高：</span><img :src="open"/></p>
-                        <p><span>水位过低：</span><img :src="close"/></p>
-                        <p><span>欠压报警：</span><img :src="close"/></p>
-                        <p><span>水位过高：</span><img :src="close"/></p>
-                        <p class="pHang"><span>停机报警：</span><img :src="close"/></p>
-                        <p><span>积水：</span><img :src="close"/></p>
-                        <p><span>进水阀开：</span><img :src="close"/></p>
-                        <p><span>烟感：</span><img :src="close"/></p>
-                        <p><span>进水阀关：</span><img :src="close"/></p>
-                        <p><span>入侵：</span><img :src="open"/></p>
-                        <p><span>开到位：</span><img :src="close"/></p>
-                        <p><span>门禁：</span><img :src="close"/></p>
-                        <p><span>关到位：</span><img :src="close"/></p>
+                        <p><span>远程控制：</span><img :src="item.remoteControl ? open : close"/></p>
+                        <p><span>水位低：</span><img :src="item.waterLow ? open : close"/></p>
+                        <p><span>远程急停：</span><img :src="item.remoteStop ? open : close"/></p>
+                        <p><span>水位高：</span><img :src="item.waterHi ? open : close"/></p>
+                        <p><span>压力超高：</span><img :src="item.outWaterHi ? open : close"/></p>
+                        <p><span>水位过低：</span><img :src="item.waterTooLow ?open : close"/></p>
+                        <p><span>欠压报警：</span><img :src="item.lowVol ?open : close"/></p>
+                        <p><span>水位过高：</span><img :src="item.waterHi ?open : close"/></p>
+                        <p class="pHang"><span>停机报警：</span><img :src="item.shutDown ?open : close"/></p>
+                        <p><span>积水：</span><img :src="item.levelK ?open : close"/></p>
+                        <p><span>进水阀开：</span><img :src="item.inOn ?open : close"/></p>
+                        <p><span>烟感：</span><img :src="item.smokeStatus ?open : close"/></p>
+                        <p><span>进水阀关：</span><img :src="item.inOff ?open : close"/></p>
+                        <p><span>入侵：</span><img :src="item.infrared ?open : close"/></p>
+                        <p><span>开到位：</span><img :src="item.onStatus ?open : close"/></p>
+                        <p><span>门禁：</span><img :src="item.doorStatus ?open : close"/></p>
+                        <p><span>关到位：</span><img :src="item.offStatus ?open : close"/></p>
                     </div>
                 </div>
 
@@ -169,7 +189,7 @@
       <!--泵房搜索弹窗-->
       <van-popup v-model="searchShow" position="bottom" :style="{ height: '60%' }" closeable round close-icon="close">
           <div class="pumpSearch">
-              <input placeholder="泵房名称" @keyup.enter="search"/>
+              <input placeholder="泵房名称" v-model="pumpNm" @keyup.enter="search"/>
               <img :src="searchImg"/>
           </div>
           <van-picker
@@ -221,9 +241,12 @@
                 blue,
                 close,
                 open,
+                pumpNo:"",
+                valNm:"",
                 info: {},
                 searchData: {
-                    pumpNm: ''
+                    pumpNm: '',
+                    region:'',
                 },
                 show: false,
                 showTitle:'标题',
@@ -241,17 +264,33 @@
                 total: 0,
                 title: "",
                 pumpNm: "",
+                menuList:[],
             };
         },
         mounted() {
+            this.getTab()
             this.getList()
             this.getPump()
         },
         methods: {
             //显示图表曲线
-            toShow(cd,title){
+            toShow(pumpNo,valNm,title){
+                this.pumpNo = pumpNo
+                this.valNm = valNm
                 this.showTitle = title
-                this.show = true
+                let index = this.menuList.findIndex(item=>{
+                    return item.value==valNm
+                })
+                console.log(valNm)
+                console.log(this.menuList)
+                console.log(index)
+                if(index!=-1){
+                    this.show = true
+                    this.$nextTick(()=>{
+                        this.$refs.echarts.getData({pumpNo:pumpNo,valNm:valNm})
+                    })
+                }
+
             },
             search() {
                 console.log('search')
@@ -267,14 +306,21 @@
                 this.getList()
             },
             toDetail(item) {
-                this.until.href('screenCurveDetail.html')
+                this.until.href('screenCurveDetail.html?pumpNo='+item.pumpNo)
                 this.info = item;
+            },
+            //有图表的数据
+            getTab(){
+                this.api.getTab().then(res=>{
+                    this.menuList = res
+
+                })
             },
             //获取泵房列表
             getPump() {
                 let qry = this.query.new();
-                if (this.searchData.pumpNm) {
-                    this.query.toW(qry, "nm", this.searchData.pumpNm, "LK");
+                if (this.pumpNm) {
+                    this.query.toW(qry, "nm", this.pumpNm, "LK");
                 }
                 this.query.toP(qry, 1, 50);
                 this.query.toO(qry, "no", "asc");
@@ -287,20 +333,35 @@
             //泵房确定选择
             onConfirm(e){
                 console.log(e)
+                this.searchData.pumpNm = e.pumpNm
                 this.searchShow = false
+                this.finished = false
+                this.pageNo = 1
+                this.dataList = []
+                this.getList()
             },
             //行政区域确定
             zoneConfirm(e){
-
+                this.searchData.region = e.region
+                this.zoneShow = false
+                this.finished = false
+                this.pageNo = 1
+                this.dataList = []
+                this.getList()
             },
             getList() {
+                this.loading = true
                 let qry = this.query.new();
                 if (this.searchData.pumpNm) {
                     this.query.toW(qry, "pumpNm", this.searchData.pumpNm, "LK");
                 }
+                if (this.searchData.region) {
+                    this.query.toW(qry, "region", this.searchData.region, "LK");
+                }
                 this.query.toP(qry, this.pageNo, this.pageSize);
                 this.query.toO(qry, "crtTm", "desc");
-                this.api.getSysMonitorLatestPage(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
+                this.api.getMonitorLatest(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
+                    console.log(res)
                     if (res.code === 200) {
                         res.data.list.forEach(item=>{
                             item.showMore = false
