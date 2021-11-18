@@ -162,7 +162,7 @@
             </div>
         </van-sticky>
         <div class="realTimeMain">
-            <h5>{{newData}}Mpa</h5>
+            <h5>{{newData}}{{unit}}</h5>
             <div class="dataShow">
                 <p v-for="item in dataShow">{{item.nm}}：<span>{{item.value}}</span></p>
             </div>
@@ -214,6 +214,7 @@
     components:{echartsShow},
     data() {
       return {
+          unit:'',
           img,
           activeId:'',
           showMore:false,
@@ -280,11 +281,38 @@
     },
     mounted() {
         this.activeId = this.menuList[0].value
+        this.getUnit(this.menuList[0].label)
         this.getData()
         this.getEcharts()
         // this.getTab()
     },
     methods: {
+        getUnit(nm){
+            //  压力MPa， 电压V，电流A，频率Hz，电能W，时间H ，液位m， 浊度NTU，余氯CL，温度°C，湿度%，分贝
+            if(nm.indexOf('压力')!=-1){
+                this.unit = 'MPa'
+            }else if(nm.indexOf('电压')!=-1){
+                this.unit = 'V'
+            }else if(nm.indexOf('电流')!=-1){
+                this.unit = 'A'
+            }else if(nm.indexOf('频率')!=-1){
+                this.unit = 'Hz'
+            }else if(nm.indexOf('时间')!=-1){
+                this.unit = 'H'
+            }else if(nm.indexOf('液位')!=-1 || nm.indexOf('积水')!=-1){
+                this.unit = 'm'
+            }else if(nm.indexOf('浊度')!=-1){
+                this.unit = 'NTU'
+            }else if(nm.indexOf('余氯')!=-1){
+                this.unit = 'CL'
+            }else if(nm.indexOf('温度')!=-1){
+                this.unit = '°C'
+            }else if(nm.indexOf('湿度')!=-1){
+                this.unit = '%'
+            }else if(nm.indexOf('噪音')!=-1){
+                this.unit = 'dB'
+            }
+        },
         getEcharts(){
             let param = {
                 pumpNo:this.pumpNo,
@@ -341,6 +369,7 @@
         },
         choose(item){
             this.activeId = item.value
+             this.getUnit(item.label)
             //这个数据变了要更新下图表
             this.getEcharts()
             this.getData()
@@ -348,6 +377,7 @@
         },
         timeChange(item){
             this.echartsId=item.id
+
             this.getEcharts()
 
         }

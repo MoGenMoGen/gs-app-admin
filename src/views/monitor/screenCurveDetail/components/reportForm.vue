@@ -123,12 +123,13 @@
             </div>
         </van-popup>
         <!--时间选择-->
+
         <van-popup v-model="timeChoseShow" round position="bottom" :style="{ height: '40%' }" >
             <van-datetime-picker
                     v-show="timeType!='year'"
                     @confirm="timeChoose"
                     @cancel="timeChoseShow = false"
-                    v-model="time"
+                    v-model="currentDate"
                     :type="timeType"
                     :title="timeTitle"
                     :max-date="maxDate"
@@ -138,7 +139,7 @@
                     title="选择年份"
                     show-toolbar
                     :columns="yearList"
-                    @confirm="timeChoose"
+                    @confirm="timeChoose2"
                     @cancel="timeChoseShow = false"
             />
         </van-popup>
@@ -147,7 +148,7 @@
                 <div @click="toChooseTime">
                     <p>{{time?time : '请选择时间'}}</p><img :src="img"/>
                 </div>
-                <p class="btn" @click="showMore=true">{{menuList.length>0 ? menuList[menuIndex].label: '11111'}}</p>
+                <p class="btn" @click="showMore=true">{{menuList.length>0 ? menuList[menuIndex].label: ''}}</p>
             </div>
             <div class="menuList">
                 <p :class="{active:activeId==item.id}" v-for="item in tabList"  @click="typeChange(item)">{{item.nm}}</p>
@@ -236,6 +237,7 @@
         methods: {
             typeChange(item){
               this.activeId=item.id
+
               this.getData()
             },
             //选择数据类型  出水压力、进水压力
@@ -297,22 +299,30 @@
             },
             //时间选择弹窗显示
             toChooseTime(){
-                if(this.activeId==1 || this.activeId==2){
+                if(this.activeId==3 || this.activeId==0){
                     this.timeType = 'date'
                     this.timeTitle = '请选择年月日'
-                }else if(this.activeId == 3){
+                }else if(this.activeId == 1){
                     this.timeType = 'year-month'
                     this.timeTitle = '请选择年月'
-                }else if(this.activeId == 4){
+                }else if(this.activeId == 2){
                     this.timeType = 'year'
                 }
               this.timeChoseShow = true
             },
             //时间选择确定
             timeChoose(e){
-                console.log(e)
                 let date = this.until.formatDate(e)
-                this.time = date.year+'-'+date.month+'-'+date.day
+                if(this.timeType = 'year-month'){ //年月
+                    this.time = date.year+'-'+date.month
+                }else { //年月日
+                    this.time = date.year+'-'+date.month+'-'+date.day
+                }
+                this.timeChoseShow = false
+                this.getData()
+            },
+            timeChoose2(e){
+                this.time = e
                 this.timeChoseShow = false
                 this.getData()
             }
