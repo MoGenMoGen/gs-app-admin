@@ -21,7 +21,7 @@
                     <img :src="arrowDown"/>
                 </div>
                 <div>
-                    <input placeholder="设备名称、编号"  @keyup.enter="search"/>
+                    <input placeholder="编号" v-model="searchData.cd"  @keyup.enter="search"/>
                     <img :src="searchImg"/>
                 </div>
             </div>
@@ -202,10 +202,9 @@
           />
       </van-popup>
         <!--行政区域搜索弹窗-->
-        <van-popup v-model="zoneShow" position="bottom" :style="{ height: '60%' }" closeable round close-icon="close">
+        <van-popup v-model="zoneShow" position="bottom" :style="{ height: '60%' }" round close-icon="close">
             <van-picker
                     title="行政区域"
-                    value-key="nm"
                     show-toolbar
                     :columns="zoneList"
                     @confirm="zoneConfirm"
@@ -247,6 +246,7 @@
                 searchData: {
                     pumpNm: '',
                     region:'',
+                    cd:''
                 },
                 show: false,
                 showTitle:'标题',
@@ -255,7 +255,7 @@
                 searchShow: false,
                 zoneShow:false,
                 pumpList:[],
-                zoneList:[],
+                zoneList:['鄞州区','海曙区','江北区','镇海区','北仑区'],
                 loading: false,
                 finished: false,
                 immediate: false,//初始化不加载必须用变量
@@ -295,9 +295,9 @@
             search() {
                 console.log('search')
             //     this.searchShow = false;
-            //     this.pageNo = 1;
-            //     this.dataList = [];
-            //     this.getList();
+                this.pageNo = 1;
+                this.dataList = [];
+                this.getList();
             },
             back() {
                 this.until.back()
@@ -333,7 +333,7 @@
             //泵房确定选择
             onConfirm(e){
                 console.log(e)
-                this.searchData.pumpNm = e.pumpNm
+                this.searchData.pumpNm = e.nm
                 this.searchShow = false
                 this.finished = false
                 this.pageNo = 1
@@ -342,7 +342,9 @@
             },
             //行政区域确定
             zoneConfirm(e){
-                this.searchData.region = e.region
+                console.log(e)
+                this.searchData.region = e
+                console.log(this.searchData)
                 this.zoneShow = false
                 this.finished = false
                 this.pageNo = 1
@@ -357,6 +359,9 @@
                 }
                 if (this.searchData.region) {
                     this.query.toW(qry, "region", this.searchData.region, "LK");
+                }
+                if (this.searchData.cd) {
+                    this.query.toW(qry, "pumpNo", this.searchData.cd, "LK");
                 }
                 this.query.toP(qry, this.pageNo, this.pageSize);
                 this.query.toO(qry, "crtTm", "desc");
