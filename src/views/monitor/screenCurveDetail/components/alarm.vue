@@ -152,7 +152,7 @@
             pumpNo:{
                 type:String,
                 default:''
-            }
+            },
         },
         data() {
             return {
@@ -191,7 +191,7 @@
                 if(this.time){
                     this.query.toW(qry,'startTm',this.time,'LK')
                 }
-                // this.query.toW(qry,'pumpNo',this.pumpNo,'EQ')
+                this.query.toW(qry,'pumpNo',this.pumpNo,'EQ')
                 this.query.toP(qry,this.pageNo,this.pageSize)
                 this.api.getAlarmList(encodeURIComponent(this.query.toJsonStr(qry))).then(res=>{
                     console.log(res)
