@@ -157,7 +157,7 @@
         <div class="reportFormMain">
             <div class="listTitle">
                 <p>时间</p>
-                <p>出水压力</p>
+                <p>{{menuList[menuIndex].label}}</p>
             </div>
             <div>
                 <div class="list" v-for="item in list">
