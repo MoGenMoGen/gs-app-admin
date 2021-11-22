@@ -798,9 +798,9 @@ class api {
         });
     }
     //多屏曲线详情页tab列表
-    getTab() {
+    getTab(data) {
         return new Promise((resolve) => {
-            untilApi.get("/gs/monitorLatest/tabs").then(res => {
+            untilApi.get("/gs/monitorLatest/tabs",data).then(res => {
                 resolve(res)
             });
         });

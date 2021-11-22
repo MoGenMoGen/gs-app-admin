@@ -83,7 +83,7 @@
        async mounted() {
             this.pumpNo = this.until.getQueryString('pumpNo')
            this.getInfo()
-           this.menuList = await this.api.getTab()
+           this.menuList = await this.api.getTab({config:this.until.getQueryString('config')})
         },
         methods: {
             getInfo(){

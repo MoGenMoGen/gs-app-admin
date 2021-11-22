@@ -311,7 +311,6 @@
             };
         },
         mounted() {
-            this.getTab()
             this.getList()
             this.getPump()
         },
@@ -352,12 +351,12 @@
                 this.getList()
             },
             toDetail(item) {
-                this.until.href('screenCurveDetail.html?pumpNo='+item.pumpNo)
+                this.until.href('screenCurveDetail.html?pumpNo='+item.pumpNo+'&config='+item.config)
                 this.info = item;
             },
             //有图表的数据
-            getTab(){
-                this.api.getTab().then(res=>{
+            getTab(config){
+                this.api.getTab({config:config}).then(res=>{
                     this.menuList = res
 
                 })
@@ -401,6 +400,9 @@
             //二进制转十进制
             switchVal (info,index) {
                 info.showMore = !info.showMore
+                if(info.showMore){
+                    this.getTab(info.config)
+                }
                 if(info.configVal.vShow){ //已经转换过了
                     return
                 }
