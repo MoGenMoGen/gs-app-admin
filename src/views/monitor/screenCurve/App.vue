@@ -232,7 +232,7 @@
       <!--泵房搜索弹窗-->
       <van-popup v-model="searchShow" position="bottom" :style="{ height: '60%' }" closeable round close-icon="close">
           <div class="pumpSearch">
-              <input placeholder="泵房名称" v-model="pumpNm" @keyup.enter="search"/>
+              <input placeholder="泵房名称" v-model="pumpNm" @keyup.enter="searchPump"/>
               <img :src="searchImg"/>
           </div>
           <van-picker
@@ -342,6 +342,9 @@
                 this.dataList = [];
                 this.getList();
             },
+            searchPump(){
+              this.getPump()
+            },
             back() {
                 this.until.back()
             },
@@ -370,6 +373,7 @@
                 this.api.getPumpPage(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
                     if (res.code === 200) {
                         this.pumpList = res.data.list
+                        console.log(this.pumpList)
                     }
                 })
             },
@@ -517,6 +521,7 @@
 
 <style lang="less" scoped>
     #container{
+        min-height: 100vh;
         background: #F5F2F5;
         .pumpSearch{
             display: flex;

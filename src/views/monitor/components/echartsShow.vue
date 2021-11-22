@@ -93,6 +93,9 @@
                     boundaryGap: false,
                     axisLabel:{
                         interval: 0, //刻度
+                        textStyle: {
+                            fontSize : 10      //更改坐标轴文字大小
+                        }
                     },
                     data: timeList
                 },
