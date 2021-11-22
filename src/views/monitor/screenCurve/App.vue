@@ -396,6 +396,7 @@
             },
             //二进制转十进制
             switchVal (info,index) {
+                info.showMore = !info.showMore
                 if(info.configVal.vShow){ //已经转换过了
                     return
                 }
@@ -448,7 +449,7 @@
 
                 info.configVal = configVal
                 this.$set(this.dataList,index,info)
-                info.showMore = !info.showMore
+
 
             },
             getList() {

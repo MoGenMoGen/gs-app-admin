@@ -76,7 +76,7 @@
 
                 grid:{
                   bottom:'10%',
-                   top:'10%'
+                   top:'20%'
                 },
                 tooltip: {
                     trigger: 'axis',
