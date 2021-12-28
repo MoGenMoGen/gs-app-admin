@@ -90,7 +90,6 @@
 
             login() {
                 this.$bridge.callHandler("h5_androidId","",androidId=> {
-                    console.log('androidId：', androidId)
                     this.form.imei=androidId
                     this.form.password = this.encrypt(this.form.password)
                     this.api.getSysLogin(this.form).then(res => {

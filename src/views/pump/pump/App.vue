@@ -6,12 +6,13 @@
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="immediate">
             <div v-for="(item,index) in dataList" :key="index">
                 <van-cell-group>
-                    <van-field label="泵房编号:" v-model="item.no" readonly :border="false">
-                        <template #button>
-                            <van-button icon="logistics" size="mini" type="info" @click="toNav(item)">去导航</van-button>
-                        </template>
-                    </van-field>
+<!--                    <van-field label="泵房编号:" v-model="item.no" readonly :border="false">-->
+<!--                        <template #default>-->
+<!--                            <van-button  size="mini" type="info" @click="toNav(item)">去导航</van-button>-->
+<!--                        </template>-->
+<!--                    </van-field>-->
                     <div @click="toDetail(item)">
+                        <van-field label="泵房编号:" v-model="item.no" readonly :border="false"></van-field>
                         <van-field label="泵房名称:" v-model="item.nm" readonly :border="false"></van-field>
                         <van-field label="小区名称:" v-model="item.estateNm" readonly :border="false"></van-field>
                         <van-field label="分区楼层:" v-model="item.partitionFloor" readonly :border="false"></van-field>
@@ -21,7 +22,7 @@
                         <van-field label="广角监控数量:"  label-width="140" v-model="item.wideVideo" readonly :border="false"></van-field>
                         <van-field label="泵房地址:" v-model="item.pumpLocation" readonly :border="false" type="textarea" rows="2"></van-field>
                     </div>
-                    <van-cell title="路线图:" center>
+                    <van-cell title="路线图:" center :border="false">
                         <template #default>
                             <van-row>
                                 <van-col span="12">
@@ -31,6 +32,11 @@
                             </van-row>
                         </template>
                     </van-cell>
+                  <van-cell  center>
+                    <template #default>
+                      <van-button  size="mini" type="info" @click="toNav(item)">去导航</van-button>
+                    </template>
+                  </van-cell>
                     <van-button block style="height: 5px" color="#F3F3F3"></van-button>
                 </van-cell-group>
             </div>
@@ -78,6 +84,9 @@
 
                 </van-field>
                 <van-field v-model="info.pumpLocation" label="泵房位置:" readonly label-width="120" type="textarea" rows="2"></van-field>
+                <van-field v-model="info.bigEvent" label="泵房大事件:" readonly label-width="120" type="textarea" rows="2"></van-field>
+
+
 
                 <van-field v-model="info.wideVideo" label="广角监控数量:" readonly label-width="120" ></van-field>
 

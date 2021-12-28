@@ -40,7 +40,6 @@
         </van-nav-bar>
         <van-popup style="margin-top: 74px" :overlay="false" v-model="show" position="top" :style="{ height: '100%' }">
             <van-empty image="search" description="输入泵房名称" v-if="list.length === 0"></van-empty>
-
             <div v-for="(item,index) in list" :key="index">
                 <van-cell-group>
                     <van-field label="泵房编号:" v-model="item.no" readonly :border="false">
@@ -72,9 +71,9 @@
                     <van-button block style="height: 5px" color="#F3F3F3"></van-button>
                 </van-cell-group>
             </div>
-
-
         </van-popup>
+
+
 
         <!--详情弹窗-->
         <van-popup v-model="show2" position="bottom" :style="{ height: '90%' }" closeable round close-icon="close">

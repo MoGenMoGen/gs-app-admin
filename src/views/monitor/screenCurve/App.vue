@@ -12,6 +12,7 @@
         </van-sticky>
         <van-sticky :offset-top="82">
             <div class="search">
+
                 <div @click="zoneShow=true">
                     <p>{{searchData.region?searchData.region : '行政区域'}}</p>
                     <img :src="arrowDown"/>
@@ -33,6 +34,13 @@
                     <p>{{item.pumpNo}}<span></span>{{item.pumpNm}}<span></span>{{item.region}}</p>
                     <img :src="arrowDownBlue" :class="{showMore:item.showMore}" @click.stop="switchVal(item,index)"/>
                 </div>
+                <div  style="margin-left: 10px">
+                  <van-tag type="success" v-if="item.status ==='1'">在线</van-tag>
+                  <van-tag type="warning" v-if="item.status ==='0'">离线</van-tag>
+
+                  <span style="font-size: 10px;margin-left: 10px">最后通讯:{{item.datetimes}}</span>
+                </div>
+
                 <div class="itemContent" v-show="!item.showMore">
                     <p @click="toShow(item.pumpNo,'outPressure','出水压力')"><span>出水压力：</span>{{item.outPressure}}</p>
                     <p @click="toShow(item.pumpNo,'inPressure','进水压力')"><span>进水压力：</span>{{item.inPressure}}</p>
@@ -40,7 +48,6 @@
                     <p @click="toShow(item.pumpNo,'levelV','水箱水位')"><span>水箱水位：</span>{{item.levelV}}</p>
                 </div>
                 <div v-show="item.showMore" class="itemMore">
-
                     <div class="itemContent">
                         <div class="title">
                             <span></span>基本数据
@@ -323,9 +330,6 @@
                 let index = this.menuList.findIndex(item=>{
                     return item.value==valNm
                 })
-                console.log(valNm)
-                console.log(this.menuList)
-                console.log(index)
                 if(index!=-1){
                     this.show = true
                     this.$nextTick(()=>{
@@ -471,7 +475,7 @@
                     this.query.toW(qry, "pumpNo", this.searchData.cd, "LK");
                 }
                 this.query.toP(qry, this.pageNo, this.pageSize);
-                this.query.toO(qry, "crtTm", "desc");
+                this.query.toO(qry, "pumpNo", "asc");
                 this.api.getMonitorLatest(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
                     console.log(res)
                     if (res.code === 200) {
@@ -624,7 +628,7 @@
                     span{
                         display: inline-block;
                         width: 1px;
-                        height: 0.2rem;
+                        height: 0.1rem;
                         background: #000000;
                         opacity: 0.2;
                         margin: 0 0.2rem;

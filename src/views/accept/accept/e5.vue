@@ -259,7 +259,7 @@
                 </span>
       </van-cell>
       <van-field name="radio" label="验收结论：" label-width="80"
-                 @click="off(info.val12,'泵房内管道应进行标识：进水总管及水箱出水管－天酞蓝色；出水管：低区—绿色，中区—白色，高区—深蓝色，超高区—黄色。排水管、溢流管－黑色，表示水流方向的箭头与对应管道文字同色')">
+                 @click="off(info.val75,'泵房管道材质采用不低于SUS304的食品级不锈钢材质')">
         <slot slot="input">
           <van-radio-group v-model="info.val75" direction="horizontal">
             <van-radio name="合格" shape="square">合格</van-radio>
