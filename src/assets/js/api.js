@@ -41,7 +41,13 @@ class api {
             });
         });
     }
-
+    getUrl(data) {
+        return new Promise((resolve, reject) => {
+            untilApi.get(data).then(res => {
+                resolve(res);
+            });
+        });
+    }
     //退出
     getSysLoginOut() {
         return new Promise((resolve, reject) => {
