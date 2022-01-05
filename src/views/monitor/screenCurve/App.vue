@@ -31,10 +31,14 @@
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="immediate">
             <div v-for="(item,index) in dataList" :key="item.id"class="listItem">
                 <div class="itemTop" @click="toDetail(item)" >
-                    <p>{{item.pumpNo}}<span></span>{{item.pumpNm}}<span></span>{{item.region}}</p>
+                    <div>{{item.pumpNo}}<span></span>{{item.pumpNm}}<span></span>{{item.region}}
+                        <!--<p v-if="item.status==1" class="green">在线</p>-->
+                        <!--<p v-if="item.status==0" class="red">离线</p>-->
+                    </div>
+
                     <img :src="arrowDownBlue" :class="{showMore:item.showMore}" @click.stop="switchVal(item,index)"/>
                 </div>
-                <div  style="margin-left: 10px">
+                <div  style="margin-left: 10px;padding-bottom: 10px">
                   <van-tag type="success" v-if="item.status ==='1'">在线</van-tag>
                   <van-tag type="warning" v-if="item.status ==='0'">离线</van-tag>
 
@@ -42,10 +46,10 @@
                 </div>
 
                 <div class="itemContent" v-show="!item.showMore">
-                    <p @click="toShow(item.pumpNo,'outPressure','出水压力')"><span>出水压力：</span>{{item.outPressure}}</p>
-                    <p @click="toShow(item.pumpNo,'inPressure','进水压力')"><span>进水压力：</span>{{item.inPressure}}</p>
-                    <p @click="toShow(item.pumpNo,'setPressure','设定压力')"><span>设定压力：</span>{{item.setPressure}}</p>
-                    <p @click="toShow(item.pumpNo,'levelV','水箱水位')"><span>水箱水位：</span>{{item.levelV}}</p>
+                    <p @click="toShow(item.pumpNo,'outPressure','出水压力',item)"><span>出水压力：</span>{{item.outPressure}}</p>
+                    <p @click="toShow(item.pumpNo,'inPressure','进水压力',item)"><span>进水压力：</span>{{item.inPressure}}</p>
+                    <p @click="toShow(item.pumpNo,'setPressure','设定压力',item)"><span>设定压力：</span>{{item.setPressure}}</p>
+                    <p @click="toShow(item.pumpNo,'levelV','水箱水位',item)"><span>水箱水位：</span>{{item.levelV}}</p>
                 </div>
                 <div v-show="item.showMore" class="itemMore">
                     <div class="itemContent">
@@ -53,33 +57,33 @@
                             <span></span>基本数据
                         </div>
                         <p class="pHang"><span>站址：</span>{{item.tid}}</p>
-                        <p @click="toShow(item.pumpNo,'outPressure','出水压力')"><span>出水压力：</span>{{item.outPressure}}</p>
-                        <p @click="toShow(item.pumpNo,'inPressure','进水压力')"  v-if="item.configVal.val16=== '1'"><span>进水压力：</span>{{item.inPressure}}</p>
-                        <p @click="toShow(item.pumpNo,'setPressure','设定压力')"><span>设定压力：</span>{{item.setPressure}}</p>
-                        <p @click="toShow(item.pumpNo,'levelV','水箱液位')"  v-if="item.configVal.val5 === '1'"><span>水箱液位：</span>{{item.levelV}}</p>
+                        <p @click="toShow(item.pumpNo,'outPressure','出水压力',item)"><span>出水压力：</span>{{item.outPressure}}</p>
+                        <p @click="toShow(item.pumpNo,'inPressure','进水压力',item)"  v-if="item.configVal.val16=== '1'"><span>进水压力：</span>{{item.inPressure}}</p>
+                        <p @click="toShow(item.pumpNo,'setPressure','设定压力',item)"><span>设定压力：</span>{{item.setPressure}}</p>
+                        <p @click="toShow(item.pumpNo,'levelV','水箱液位',item)"  v-if="item.configVal.val5 === '1'"><span>水箱液位：</span>{{item.levelV}}</p>
                     </div>
                     <div class="itemContent"  v-if="item.configVal.val10 === '1' || item.configVal.val9 === '1'">
-                        <p @click="toShow(item.pumpNo,'turbidity','浊度')"  v-if="item.configVal.val10 === '1'"><span>浊度：</span>{{item.turbidity}}</p>
-                        <p @click="toShow(item.pumpNo,'residualChlorine','余氯')" v-if="item.configVal.val9 === '1'"><span>余氯：</span>{{item.residualChlorine}}</p>
+                        <p @click="toShow(item.pumpNo,'turbidity','浊度',item)"  v-if="item.configVal.val10 === '1'"><span>浊度：</span>{{item.turbidity}}</p>
+                        <p @click="toShow(item.pumpNo,'residualChlorine','余氯',item)" v-if="item.configVal.val9 === '1'"><span>余氯：</span>{{item.residualChlorine}}</p>
                     </div>
                     <div class="itemContent">
-                        <p @click="toShow(item.pumpNo,'voltage','电源电压')"><span>电源电压：</span>{{item.voltage}}</p>
-                        <p @click="toShow(item.pumpNo,'operatingFrequency','运行频率')"><span>运行频率：</span>{{item.operatingFrequency}}</p>
-                        <p @click="toShow(item.pumpNo,'voltage1','A相电压')" v-if="item.configVal.val7 === '1'"><span>A相电压：</span>{{item.voltage1}}</p>
-                        <p @click="toShow(item.pumpNo,'current1','A相电流')" v-if="item.configVal.val7 === '1'"><span>A相电流：</span>{{item.current1}}</p>
-                        <p @click="toShow(item.pumpNo,'voltage2','B相电压')" v-if="item.configVal.val7 === '1'"><span>B相电压：</span>{{item.voltage2}}</p>
-                        <p @click="toShow(item.pumpNo,'current2','B相电流')" v-if="item.configVal.val7 === '1'"><span>B相电流：</span>{{item.current2}}</p>
-                        <p @click="toShow(item.pumpNo,'voltage3','C相电压')" v-if="item.configVal.val7 === '1'"><span>C相电压：</span>{{item.voltage3}}</p>
-                        <p @click="toShow(item.pumpNo,'current3','C相电流')" v-if="item.configVal.val7 === '1'"><span>C相电流：</span>{{item.current3}}</p>
+                        <p @click="toShow(item.pumpNo,'voltage','电源电压',item)"><span>电源电压：</span>{{item.voltage}}</p>
+                        <p @click="toShow(item.pumpNo,'operatingFrequency','运行频率',item)"><span>运行频率：</span>{{item.operatingFrequency}}</p>
+                        <p @click="toShow(item.pumpNo,'voltage1','A相电压',item)" v-if="item.configVal.val7 === '1'"><span>A相电压：</span>{{item.voltage1}}</p>
+                        <p @click="toShow(item.pumpNo,'current1','A相电流',item)" v-if="item.configVal.val7 === '1'"><span>A相电流：</span>{{item.current1}}</p>
+                        <p @click="toShow(item.pumpNo,'voltage2','B相电压',item)" v-if="item.configVal.val7 === '1'"><span>B相电压：</span>{{item.voltage2}}</p>
+                        <p @click="toShow(item.pumpNo,'current2','B相电流',item)" v-if="item.configVal.val7 === '1'"><span>B相电流：</span>{{item.current2}}</p>
+                        <p @click="toShow(item.pumpNo,'voltage3','C相电压',item)" v-if="item.configVal.val7 === '1'"><span>C相电压：</span>{{item.voltage3}}</p>
+                        <p @click="toShow(item.pumpNo,'current3','C相电流',item)" v-if="item.configVal.val7 === '1'"><span>C相电流：</span>{{item.current3}}</p>
                     </div>
                     <div class="itemContent">
                         <div class="pump">
                             <p>泵1</p>
-                            <p @click="toShow(item.pumpNo,'operatingFrequency1','泵1运行频率')"><span>运行频率：</span>{{item.operatingFrequency1}}</p>
-                            <p @click="toShow(item.pumpNo,'pumpCurrent1','泵1运行电流')"><span>运行电流：</span>{{item.pumpCurrent1}}</p>
-                            <p @click="toShow(item.pumpNo,'operationHours1','泵1运行时间')"><span>运行时间：</span>{{item.operationHours1}}</p>
-                            <p @click="toShow(item.pumpNo,'temperatureP1','泵1泵体温度')"  v-if="item.configVal.val3 === '1'"><span>泵体温度：</span>{{item.temperatureP1}}</p>
-                            <p @click="toShow(item.pumpNo,'vibrate1','泵1泵体震动')"><span>泵体震动：</span>{{item.vibrate1}}</p>
+                            <p @click="toShow(item.pumpNo,'operatingFrequency1','泵1运行频率',item)"><span>运行频率：</span>{{item.operatingFrequency1}}</p>
+                            <p @click="toShow(item.pumpNo,'pumpCurrent1','泵1运行电流',item)"><span>运行电流：</span>{{item.pumpCurrent1}}</p>
+                            <p @click="toShow(item.pumpNo,'operationHours1','泵1运行时间',item)"><span>运行时间：</span>{{item.operationHours1}}</p>
+                            <p @click="toShow(item.pumpNo,'temperatureP1','泵1泵体温度',item)"  v-if="item.configVal.val3 === '1'"><span>泵体温度：</span>{{item.temperatureP1}}</p>
+                            <p @click="toShow(item.pumpNo,'vibrate1','泵1泵体震动',item)"><span>泵体震动：</span>{{item.vibrate1}}</p>
                             <span>
                                 变频 <img :src="item.pumpBian1?blue : gray"/>
                             </span>
@@ -95,11 +99,11 @@
                         </div>
                         <div class="pump"  v-if="item.configVal.val14 === '1'">
                             <p>泵2</p>
-                            <p @click="toShow(item.pumpNo,'operatingFrequency2','泵2运行频率')"  v-if="item.configVal.val14 === '1'"><span>运行频率：</span>{{item.operatingFrequency2}}</p>
-                            <p @click="toShow(item.pumpNo,'pumpCurrent2','泵2运行电流')"  v-if="item.configVal.val14 === '1'"><span>运行电流：</span>{{item.pumpCurrent2}}</p>
-                            <p @click="toShow(item.pumpNo,'operationHours2','泵2运行时间')"><span>运行时间：</span>{{item.operationHours2}}</p>
-                            <p @click="toShow(item.pumpNo,'temperatureP2','泵2泵体温度')"  v-if="item.configVal.val3 === '1'"><span>泵体温度：</span>{{item.temperatureP2}}</p>
-                            <p @click="toShow(item.pumpNo,'vibrate2','泵2泵体震动')"><span>泵体震动：</span>{{item.vibrate2}}</p>
+                            <p @click="toShow(item.pumpNo,'operatingFrequency2','泵2运行频率',item)"  v-if="item.configVal.val14 === '1'"><span>运行频率：</span>{{item.operatingFrequency2}}</p>
+                            <p @click="toShow(item.pumpNo,'pumpCurrent2','泵2运行电流',item)"  v-if="item.configVal.val14 === '1'"><span>运行电流：</span>{{item.pumpCurrent2}}</p>
+                            <p @click="toShow(item.pumpNo,'operationHours2','泵2运行时间',item)"><span>运行时间：</span>{{item.operationHours2}}</p>
+                            <p @click="toShow(item.pumpNo,'temperatureP2','泵2泵体温度',item)"  v-if="item.configVal.val3 === '1'"><span>泵体温度：</span>{{item.temperatureP2}}</p>
+                            <p @click="toShow(item.pumpNo,'vibrate2','泵2泵体震动',item)"><span>泵体震动：</span>{{item.vibrate2}}</p>
                             <span>
                                 变频 <img :src="item.pumpBian2?blue : gray"/>
                             </span>
@@ -116,11 +120,11 @@
                         <!--泵房2没有 泵房3显示在这里-->
                         <div class="pump"  v-if="item.configVal.val14 !== '1' && item.configVal.val13 === '1'">
                             <p>泵3</p>
-                            <p @click="toShow(item.pumpNo,'operatingFrequency3','泵3运行频率')"  v-if="item.configVal.val13 === '1'"><span>运行频率：</span>{{item.operatingFrequency3}}</p>
-                            <p @click="toShow(item.pumpNo,'pumpCurrent3','泵3运行电流')"  v-if="item.configVal.val13 === '1'"><span>运行电流：</span>{{item.pumpCurrent3}}</p>
-                            <p @click="toShow(item.pumpNo,'operationHours3','泵3运行时间')"><span>运行时间：</span>{{item.operationHours3}}</p>
-                            <p @click="toShow(item.pumpNo,'temperatureP3','泵3泵体温度')"  v-if="item.configVal.val3 === '1'"> <span>泵体温度：</span>{{item.temperatureP3}}</p>
-                            <p @click="toShow(item.pumpNo,'vibrate3','泵3泵体震动')"><span>泵体震动：</span>{{item.vibrate3}}</p>
+                            <p @click="toShow(item.pumpNo,'operatingFrequency3','泵3运行频率',item)"  v-if="item.configVal.val13 === '1'"><span>运行频率：</span>{{item.operatingFrequency3}}</p>
+                            <p @click="toShow(item.pumpNo,'pumpCurrent3','泵3运行电流',item)"  v-if="item.configVal.val13 === '1'"><span>运行电流：</span>{{item.pumpCurrent3}}</p>
+                            <p @click="toShow(item.pumpNo,'operationHours3','泵3运行时间',item)"><span>运行时间：</span>{{item.operationHours3}}</p>
+                            <p @click="toShow(item.pumpNo,'temperatureP3','泵3泵体温度',item)"  v-if="item.configVal.val3 === '1'"> <span>泵体温度：</span>{{item.temperatureP3}}</p>
+                            <p @click="toShow(item.pumpNo,'vibrate3','泵3泵体震动',item)"><span>泵体震动：</span>{{item.vibrate3}}</p>
                             <span>
                                 变频 <img :src="item.pumpBian3?blue : gray"/>
                             </span>
@@ -137,11 +141,11 @@
                         <!--泵房2 泵房3 都没有 泵房4显示在这里-->
                         <div class="pump" v-if="item.configVal.val14 !== '1' && item.configVal.val13 !== '1' && item.configVal.val12 === '1'">
                             <p>泵4</p>
-                            <p @click="toShow(item.pumpNo,'operatingFrequency4','泵3运行频率')"  v-if="item.configVal.val12 === '1'"><span>运行频率：</span>{{item.operatingFrequency3}}</p>
-                            <p @click="toShow(item.pumpNo,'pumpCurrent4','泵3运行电流')"   v-if="item.configVal.val12 === '1'"><span>运行电流：</span>{{item.pumpCurrent3}}</p>
-                            <p @click="toShow(item.pumpNo,'operationHours4','泵3运行时间')"><span>运行时间：</span>{{item.operationHours3}}</p>
-                            <p @click="toShow(item.pumpNo,'temperatureP4','泵3泵体温度')"  v-if="item.configVal.val3 === '1'"><span>泵体温度：</span>{{item.temperatureP3}}</p>
-                            <p @click="toShow(item.pumpNo,'vibrate4','泵3泵体震动')"><span>泵体震动：</span>{{item.vibrate4}}</p>
+                            <p @click="toShow(item.pumpNo,'operatingFrequency4','泵3运行频率',item)"  v-if="item.configVal.val12 === '1'"><span>运行频率：</span>{{item.operatingFrequency3}}</p>
+                            <p @click="toShow(item.pumpNo,'pumpCurrent4','泵3运行电流',item)"   v-if="item.configVal.val12 === '1'"><span>运行电流：</span>{{item.pumpCurrent3}}</p>
+                            <p @click="toShow(item.pumpNo,'operationHours4','泵3运行时间',item)"><span>运行时间：</span>{{item.operationHours3}}</p>
+                            <p @click="toShow(item.pumpNo,'temperatureP4','泵3泵体温度',item)"  v-if="item.configVal.val3 === '1'"><span>泵体温度：</span>{{item.temperatureP3}}</p>
+                            <p @click="toShow(item.pumpNo,'vibrate4','泵3泵体震动',item)"><span>泵体震动：</span>{{item.vibrate4}}</p>
                             <span>
                                 变频 <img :src="item.pumpBian4?blue : gray"/>
                             </span>
@@ -161,11 +165,11 @@
                     <div class="itemContent" v-if="item.configVal.num>2">
                         <div class="pump"  v-if="item.configVal.val13 === '1'">
                             <p>泵3</p>
-                            <p @click="toShow(item.pumpNo,'operatingFrequency3','泵3运行频率')"  v-if="item.configVal.val13 === '1'"><span>运行频率：</span>{{item.operatingFrequency3}}</p>
-                            <p @click="toShow(item.pumpNo,'pumpCurrent3','泵3运行电流')"  v-if="item.configVal.val13 === '1'"><span>运行电流：</span>{{item.pumpCurrent3}}</p>
-                            <p @click="toShow(item.pumpNo,'operationHours3','泵3运行时间')"><span>运行时间：</span>{{item.operationHours3}}</p>
-                            <p @click="toShow(item.pumpNo,'temperatureP3','泵3泵体温度')"  v-if="item.configVal.val3 === '1'"> <span>泵体温度：</span>{{item.temperatureP3}}</p>
-                            <p @click="toShow(item.pumpNo,'vibrate3','泵3泵体震动')"><span>泵体震动：</span>{{item.vibrate3}}</p>
+                            <p @click="toShow(item.pumpNo,'operatingFrequency3','泵3运行频率',item)"  v-if="item.configVal.val13 === '1'"><span>运行频率：</span>{{item.operatingFrequency3}}</p>
+                            <p @click="toShow(item.pumpNo,'pumpCurrent3','泵3运行电流',item)"  v-if="item.configVal.val13 === '1'"><span>运行电流：</span>{{item.pumpCurrent3}}</p>
+                            <p @click="toShow(item.pumpNo,'operationHours3','泵3运行时间',item)"><span>运行时间：</span>{{item.operationHours3}}</p>
+                            <p @click="toShow(item.pumpNo,'temperatureP3','泵3泵体温度',item)"  v-if="item.configVal.val3 === '1'"> <span>泵体温度：</span>{{item.temperatureP3}}</p>
+                            <p @click="toShow(item.pumpNo,'vibrate3','泵3泵体震动',item)"><span>泵体震动：</span>{{item.vibrate3}}</p>
                             <span>
                                 变频 <img :src="item.pumpBian3?blue : gray"/>
                             </span>
@@ -181,11 +185,11 @@
                         </div>
                         <div class="pump" v-if="item.configVal.val12 === '1'">
                             <p>泵4</p>
-                            <p @click="toShow(item.pumpNo,'operatingFrequency4','泵3运行频率')"  v-if="item.configVal.val12 === '1'"><span>运行频率：</span>{{item.operatingFrequency3}}</p>
-                            <p @click="toShow(item.pumpNo,'pumpCurrent4','泵3运行电流')"   v-if="item.configVal.val12 === '1'"><span>运行电流：</span>{{item.pumpCurrent3}}</p>
-                            <p @click="toShow(item.pumpNo,'operationHours4','泵3运行时间')"><span>运行时间：</span>{{item.operationHours3}}</p>
-                            <p @click="toShow(item.pumpNo,'temperatureP4','泵3泵体温度')"  v-if="item.configVal.val3 === '1'"><span>泵体温度：</span>{{item.temperatureP3}}</p>
-                            <p @click="toShow(item.pumpNo,'vibrate4','泵3泵体震动')"><span>泵体震动：</span>{{item.vibrate4}}</p>
+                            <p @click="toShow(item.pumpNo,'operatingFrequency4','泵3运行频率',item)"  v-if="item.configVal.val12 === '1'"><span>运行频率：</span>{{item.operatingFrequency3}}</p>
+                            <p @click="toShow(item.pumpNo,'pumpCurrent4','泵3运行电流',item)"   v-if="item.configVal.val12 === '1'"><span>运行电流：</span>{{item.pumpCurrent3}}</p>
+                            <p @click="toShow(item.pumpNo,'operationHours4','泵3运行时间',item)"><span>运行时间：</span>{{item.operationHours3}}</p>
+                            <p @click="toShow(item.pumpNo,'temperatureP4','泵3泵体温度',item)"  v-if="item.configVal.val3 === '1'"><span>泵体温度：</span>{{item.temperatureP3}}</p>
+                            <p @click="toShow(item.pumpNo,'vibrate4','泵3泵体震动',item)"><span>泵体震动：</span>{{item.vibrate4}}</p>
                             <span>
                                 变频 <img :src="item.pumpBian4?blue : gray"/>
                             </span>
@@ -201,13 +205,13 @@
                         </div>
                     </div>
                     <div class="itemContent">
-                        <p @click="toShow(item.pumpNo,'levelJ','泵房积水')"><span>泵房积水：</span>{{item.levelJ}}</p>
-                        <p @click="toShow(item.pumpNo,'kwh','有功电能')"><span>有功电能：</span>{{item.kwh}}</p>
-                        <p @click="toShow(item.pumpNo,'noise','泵房噪音')"><span>泵房噪音：</span>{{item.noise}}</p>
-                        <p @click="toShow(item.pumpNo,'cumulativeFlow','累计流量')" v-if="item.configVal.val1 === '1'"><span>累计流量：</span>{{item.cumulativeFlow}}</p>
-                        <p @click="toShow(item.pumpNo,'temperature','泵房温度')" ><span>泵房温度：</span>{{item.temperature}}</p>
-                        <p @click="toShow(item.pumpNo,'instantaneousFlow','瞬间流量')" v-if="item.configVal.val1 === '1'"><span>瞬间流量：</span>{{item.instantaneousFlow}}</p>
-                        <p @click="toShow(item.pumpNo,'humidity','泵房湿度')"><span>泵房湿度：</span>{{item.humidity}}</p>
+                        <p @click="toShow(item.pumpNo,'levelJ','泵房积水',item)"><span>泵房积水：</span>{{item.levelJ}}</p>
+                        <p @click="toShow(item.pumpNo,'kwh','有功电能',item)"><span>有功电能：</span>{{item.kwh}}</p>
+                        <p @click="toShow(item.pumpNo,'noise','泵房噪音',item)"><span>泵房噪音：</span>{{item.noise}}</p>
+                        <p @click="toShow(item.pumpNo,'cumulativeFlow','累计流量',item)" v-if="item.configVal.val1 === '1'"><span>累计流量：</span>{{item.cumulativeFlow}}</p>
+                        <p @click="toShow(item.pumpNo,'temperature','泵房温度',item)" ><span>泵房温度：</span>{{item.temperature}}</p>
+                        <p @click="toShow(item.pumpNo,'instantaneousFlow','瞬间流量',item)" v-if="item.configVal.val1 === '1'"><span>瞬间流量：</span>{{item.instantaneousFlow}}</p>
+                        <p @click="toShow(item.pumpNo,'humidity','泵房湿度',item)"><span>泵房湿度：</span>{{item.humidity}}</p>
                     </div>
                     <div class="itemContent">
                         <div class="title">
@@ -323,11 +327,15 @@
         },
         methods: {
             //显示图表曲线
-            toShow(pumpNo,valNm,title){
+            async toShow(pumpNo,valNm,title,info){
                 this.pumpNo = pumpNo
                 this.valNm = valNm
                 this.showTitle = title
-                let index = this.menuList.findIndex(item=>{
+                if(!info.menuList){
+                    info.menuList = await this.getTab(info.config)
+                    //   console.log(info.menuList)
+                }
+                let index = info.menuList.findIndex(item=>{
                     return item.value==valNm
                 })
                 if(index!=-1){
@@ -360,9 +368,11 @@
             },
             //有图表的数据
             getTab(config){
-                this.api.getTab({config:config}).then(res=>{
-                    this.menuList = res
-
+                return new Promise(resolve => {
+                    this.api.getTab({config:config}).then(res=>{
+                        //this.menuList = res
+                        resolve(res)
+                    })
                 })
             },
             //获取泵房列表
@@ -402,10 +412,10 @@
                 this.getList()
             },
             //二进制转十进制
-            switchVal (info,index) {
+            async switchVal (info,index) {
                 info.showMore = !info.showMore
-                if(info.showMore){
-                    this.getTab(info.config)
+                if(info.showMore && !info.menuList){
+                    info.menuList = await this.getTab(info.config)
                 }
                 if(info.configVal.vShow){ //已经转换过了
                     return
@@ -621,7 +631,7 @@
                 height: 1rem;
                 width: 95%;
                 margin: 0 auto;
-                p{
+                div:first-of-type{
                     flex: 1;
                     display: flex;
                     align-items: center;
@@ -633,7 +643,22 @@
                         opacity: 0.2;
                         margin: 0 0.2rem;
                     }
+                    p{
+                        height: 0.45rem;
+                        line-height: 0.45rem;
+                        padding: 0 0.1rem;
+                        border-radius: 3px;
+                        color: #ffffff;
+                        margin-left: 0.2rem;
+                    }
+                    .red{
+                        background: red;
+                    }
+                    .green{
+                        background: green;
+                    }
                 }
+
                 img{
                     width: 0.35rem;
                 }

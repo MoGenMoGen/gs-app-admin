@@ -94,10 +94,18 @@ export default {
     },
 
     login2() {
-      this.form.imei = "60b55be1ac54a468"
-      this.form.username = "huyimin"
-      this.form.password = "Julianhym@123"
-      this.api.getSysLogin(this.form).then(res => {
+        if (!this.form.code){
+            return  Toast.fail("请输入验证码!")
+        }
+        if (this.form.code != this.identifyCode){
+            this.refreshCode()
+            return  Toast.fail("验证码错误!")
+        }
+        let param = JSON.parse(JSON.stringify(this.form))
+        param.imei = "60b55be1ac54a468"
+        param.password = this.encrypt(this.form.password)
+        param.username = this.encrypt(this.form.username)
+      this.api.getSysLogin(param).then(res => {
         if (res.code === 200) {
           Toast('登录成功');
           this.until.loSave("userInfo", JSON.stringify(res.data.userInfo));

@@ -163,9 +163,14 @@
                 monitor: [
                     {
                         nm: "泵房监控",
-                        img: monitor1,
-                        aHref: "../monitor/pump.html"
+                        img: monitor6,
+                        aHref: "../monitor/screenCurve.html"
                     },
+                    // {
+                    //     nm: "泵房监控",
+                    //     img: monitor1,
+                    //     aHref: "../monitor/pump.html"
+                    // },
                     {
                         nm: "视频监控",
                         img: monitor2,
@@ -186,11 +191,7 @@
                         img: monitor5,
                         aHref: "../waterQuality/waterQuality.html"
                     },
-                    {
-                        nm: "多屏曲线",
-                        img: monitor6,
-                        aHref: "../monitor/screenCurve.html"
-                    },
+
                     {
                         nm: "泵房工艺",
                         img: monitor7,
