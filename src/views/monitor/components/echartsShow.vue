@@ -43,18 +43,64 @@
     data() {
       return {
           img,
+          unit:'',//曲线单位
       }
     },
     mounted() {
         // this.drawEcharts()
     },
     methods: {
+        getUnit(title){
+            let unitArr=[{
+                label:'压力',
+                value:'MPa',
+            },{
+                label:'电压',
+                value:'V',
+            },{
+                label:'电流',
+                value:'A',
+            },{
+                label:'频率',
+                value:'Hz',
+            },{
+                label:'时间',
+                value:'H',
+            },{
+                label:'液位',
+                value:'m',
+            },{
+                label:'水位',
+                value:'m',
+            },{
+                label:'积水',
+                value:'m',
+            },{
+                label:'浊度',
+                value:'NTU',
+            },{
+                label:'余氯',
+                value:'CL',
+            },{
+                label:'温度',
+                value:'°C',
+            },{
+                label:'湿度',
+                value:'%',
+            },{
+                label:'噪音',
+                value:'dB',
+            }]
+            let index = unitArr.findIndex(item=>title.indexOf(item.label)>=0)
+            return index>=0 ? unitArr[index].value : ''
+        },
         //列表的
         getData(info){
             let info2 = {
                 pumpNo:info.pumpNo,
                 valNm:info.valNm
             }
+            this.unit = this.getUnit(info.title)
             this.api.mobCurveData(info2).then(res=>{
                 console.log(res)
                 if(res.code==200){
@@ -65,7 +111,10 @@
             })
         },
 
-        drawEcharts(x,y){
+        drawEcharts(x,y,unit){
+            if(unit){
+                this.unit = unit
+            }
             var myChart = echarts.init(document.getElementById('echarts'));
             let timeList = x
             // let timeList = ['00:00','01:00', '02:00','03:00', '04:00','05:00', '06:00','07:00', '08:00','09:00', '10:00','11:00', '12:00', '13:00','14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00',  '21:00','22:00', '23:00','24:00']
@@ -80,7 +129,7 @@
                 },
                 tooltip: {
                     trigger: 'axis',
-                    formatter:'当前：{c}Mpa',
+                    formatter:'当前：{c}'+this.unit,
                 },
                 legend: {
                     show:false,

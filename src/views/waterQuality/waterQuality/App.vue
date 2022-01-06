@@ -339,7 +339,7 @@
                 if(index!=-1){
                     this.show = true
                     this.$nextTick(()=>{
-                        this.$refs.echarts.getData({pumpNo:pumpNo,valNm:valNm})
+                        this.$refs.echarts.getData({pumpNo:pumpNo,valNm:valNm,title:title})
                     })
                 }
 
