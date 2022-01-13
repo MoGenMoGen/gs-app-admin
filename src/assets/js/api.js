@@ -787,6 +787,14 @@ class api {
             });
         });
     }
+
+    updOrder(data) {
+        return new Promise((resolve) => {
+            untilApi.postData("/gs/order/upd", data).then(res => {
+                resolve(res)
+            });
+        });
+    }
     //多屏曲线列表
    getMonitorLatest(data) {
         return new Promise((resolve) => {

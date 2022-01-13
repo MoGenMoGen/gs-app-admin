@@ -54,6 +54,20 @@
         </slot>
       </van-field>
 
+
+      <van-field name="switch" label="一体化" label-width="120">
+        <slot slot="input">
+          <van-switch v-model="info.yth" size="20" :active-value="1" :inactive-value="0" active-color="#07c160"
+                      inactive-color="#ee0a24"></van-switch>
+        </slot>
+      </van-field>
+      <van-field name="stepper" label="一体化个数" label-width="120">
+        <slot slot="input">
+          <van-stepper v-model="info.ythNum" min="0"></van-stepper>
+        </slot>
+      </van-field>
+
+
       <!--            <van-field v-model="info.deviceNum" label="设备套数："  placeholder="请输入套数"  label-width="80">  </van-field>-->
       <van-button block style="height: 10px" color="#F3F3F3"></van-button>
       <van-cell>验收内容及结论</van-cell>

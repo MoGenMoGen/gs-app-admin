@@ -46,9 +46,9 @@
                 </div>
 
                 <div class="itemContent" v-show="!item.showMore">
-                    <p @click="toShow(item.pumpNo,'noise','噪声',item)"><span>噪声：</span>{{item.noise}}</p>
-                    <p @click="toShow(item.pumpNo,'temperature','温度',item)"><span>温度：</span>{{item.temperature}}</p>
-                    <p @click="toShow(item.pumpNo,'humidity','湿度',item)"><span>湿度：</span>{{item.humidity}}</p>
+                    <p @click="toShow(item.pumpNo,'noise','泵房噪声',item)"><span>泵房噪声：</span>{{item.noise}}</p>
+                    <p @click="toShow(item.pumpNo,'temperature','泵房温度',item)"><span>泵房温度：</span>{{item.temperature}}</p>
+                    <p @click="toShow(item.pumpNo,'humidity','泵房湿度',item)"><span>泵房湿度：</span>{{item.humidity}}</p>
                     <p @click="toShow(item.pumpNo,'levelJ','泵房积水',item)"><span>泵房积水：</span>{{item.levelJ}}</p>
                 </div>
                 <div v-show="item.showMore" class="itemMore">
@@ -363,7 +363,7 @@
                 this.getList()
             },
             toDetail(item) {
-                this.until.href('/views/monitor/screenCurveDetail.html?pumpNo='+item.pumpNo+'&config='+item.config)
+                this.until.href('/eggl/views/monitor/screenCurveDetail.html?pumpNo='+item.pumpNo+'&config='+item.config)
                // this.info = item;
             },
             //有图表的数据
@@ -479,6 +479,7 @@
                     this.query.toW(qry, "pumpNm", this.searchData.pumpNm, "LK");
                 }
                 this.query.toW(qry, "ambientFlag", 1, "EQ");
+                this.query.toO(qry, "pumpNo", "asc");
                 this.query.toP(qry, this.pageNo, this.pageSize);
                 this.api.getSysMonitorLatestPage(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
                     console.log(res)

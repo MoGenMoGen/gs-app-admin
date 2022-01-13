@@ -13,8 +13,8 @@
                          label-width="120"></van-field>
               <van-field label="泵房名称:" v-model="item.pumpNm" readonly :border="false"
                          label-width="120"></van-field>
-              <van-field label="供水区域:" v-model="item.waterArea" readonly :border="false" label-width="120"
-                         right-icon="arrow"></van-field>
+              <van-field label="供水区域:" v-model="item.waterArea" readonly :border="false" label-width="120" ></van-field>
+
 
               <van-field label="分区楼层:" v-model="item.partitionFloor" readonly :border="false" label-width="120"
                          right-icon="arrow"></van-field>
@@ -29,7 +29,11 @@
               <van-field label="计划清洗时间:" v-model="item.startTm" readonly :border="false"
                          label-width="120"></van-field>
 
-              <!--                            <van-field label="清洗消毒人员:" v-model="item.washUser" readonly :border="false"-->
+              <van-field label="受限空间状态:" v-model=" item.confinedStatus == '2' ? '审核通过' : item.confinedStatus == '1' ? '审核中': '未提交'" readonly :border="false"
+                         label-width="120"></van-field>
+
+
+              <!--         item.confinedStatus == '2'?'审核通过':'审核中'                   <van-field label="清洗消毒人员:" v-model="item.washUser" readonly :border="false"-->
               <!--                                       label-width="120"></van-field>-->
               <van-cell v-if="item.val8 !== 1 && item.status ==='已清洗' ">
                 <!-- 使用 title 插槽来自定义标题 -->
@@ -202,7 +206,11 @@ export default {
   mounted() {
     this.getList()
   },
+
   methods: {
+
+
+
     //审核通过与否
     audit(item,status) {
       Dialog.confirm({

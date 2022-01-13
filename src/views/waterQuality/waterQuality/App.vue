@@ -60,9 +60,12 @@
                         <p @click="toShow(item.pumpNo,'setPressure','设定压力',item)"><span>设定压力：</span>{{item.setPressure}}</p>
                         <p @click="toShow(item.pumpNo,'levelV','水箱液位',item)"  v-if="item.configVal.val5 === '1'"><span>水箱液位：</span>{{item.levelV}}</p>
                     </div>
-                    <div class="itemContent"  v-if="item.configVal.val10 === '1' || item.configVal.val9 === '1'">
-                        <p @click="toShow(item.pumpNo,'turbidity','浊度',item)"  v-if="item.configVal.val10 === '1'"><span>浊度：</span>{{item.turbidity}}</p>
-                        <p @click="toShow(item.pumpNo,'residualChlorine','余氯',item)" v-if="item.configVal.val9 === '1'"><span>余氯：</span>{{item.residualChlorine}}</p>
+
+
+
+                    <div class="itemContent">
+                        <p @click="toShow(item.pumpNo,'turbidity','浊度',item)"  ><span>浊度：</span>{{item.turbidity}}</p>
+                        <p @click="toShow(item.pumpNo,'residualChlorine','余氯',item)" ><span>余氯：</span>{{item.residualChlorine}}</p>
                     </div>
                     <div class="itemContent">
                         <p @click="toShow(item.pumpNo,'voltage','电源电压',item)"><span>电源电压：</span>{{item.voltage}}</p>
@@ -361,7 +364,7 @@
                 this.getList()
             },
             toDetail(item) {
-                this.until.href('/views/monitor/screenCurveDetail.html?pumpNo='+item.pumpNo+'&config='+item.config)
+                this.until.href('/eggl/views/monitor/screenCurveDetail.html?pumpNo='+item.pumpNo+'&config='+item.config)
                 // this.info = item;
             },
             //有图表的数据
@@ -384,7 +387,6 @@
                 this.api.getPumpPage(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
                     if (res.code === 200) {
                         this.pumpList = res.data.list
-                        console.log(this.pumpList)
                     }
                 })
             },
@@ -478,6 +480,8 @@
                 }
                 this.query.toW(qry, "waterFlag", 1, "EQ");
                 this.query.toP(qry, this.pageNo, this.pageSize);
+                this.query.toO(qry, "pumpNo", "asc");
+
                 this.api.getSysMonitorLatestPage(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
                     console.log(res)
                     if (res.code === 200) {

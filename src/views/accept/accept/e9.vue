@@ -51,24 +51,6 @@
                  @click="dateShow(1)" label-width="100" right-icon="calender-o"></van-field>
       <van-field readonly clickable name="date" :value="info.warrantyTm" label="质保时间：" placeholder="点击选择时间"
                  @click="dateShow(2)" label-width="100" right-icon="calender-o"></van-field>
-
-      <!--            <van-field  label="供水模式：" label-width="80">-->
-      <!--                <slot slot="input">-->
-      <!--                    <van-radio-group v-model="info.waterMode" direction="horizontal">-->
-      <!--                        <van-radio name="无负压" shape="square">无负压</van-radio>-->
-      <!--                        <van-radio name="箱式" shape="square">箱式</van-radio>-->
-      <!--                        <van-radio name="水箱+变频" shape="square">水箱+变频</van-radio>-->
-      <!--                        <van-radio name="工频" shape="square">工频</van-radio>-->
-      <!--                    </van-radio-group>-->
-      <!--                 </slot>-->
-      <!--            </van-field>-->
-
-      <!--            <van-field name="stepper" label="供水模式数量：" label-width="100">-->
-      <!--                <slot slot="input">-->
-      <!--                    <van-stepper v-model="info.waterModeNum"></van-stepper>-->
-      <!--                 </slot>-->
-      <!--            </van-field>-->
-
       <van-field name="switch" label="无负压" label-width="120">
         <slot slot="input">
           <van-switch v-model="info.wfy" size="20" :active-value="1" :inactive-value="0" active-color="#07c160"
@@ -109,11 +91,29 @@
                       inactive-color="#ee0a24"></van-switch>
         </slot>
       </van-field>
+
+
+
+
       <van-field name="stepper" label="共频个数" label-width="120">
         <slot slot="input">
           <van-stepper v-model="info.gpNum" min="0"></van-stepper>
         </slot>
       </van-field>
+
+      <van-field name="switch" label="一体化" label-width="120">
+        <slot slot="input">
+          <van-switch v-model="info.yth" size="20" :active-value="1" :inactive-value="0" active-color="#07c160"
+                      inactive-color="#ee0a24"></van-switch>
+        </slot>
+      </van-field>
+      <van-field name="stepper" label="一体化个数" label-width="120">
+        <slot slot="input">
+          <van-stepper v-model="info.ythNum" min="0"></van-stepper>
+        </slot>
+      </van-field>
+
+
       <van-field v-model="info.sx" label="水箱容积：" label-width="80" placeholder="请输入水箱容积" clearable></van-field>
       <van-field name="stepper" label="水箱个数：" label-width="80">
         <slot slot="input">
@@ -461,6 +461,8 @@ export default {
               this.info.sxbpNum = x.sxbpNum;
               this.info.gp = x.gp;
               this.info.gpNum = x.gpNum;
+              this.info.yth = x.yth;
+              this.info.ythNum = x.ythNum;
               this.info.recordNm = x.recordNm;
             }
           })

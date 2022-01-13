@@ -50,8 +50,8 @@
                     <p @click="toShow(item.pumpNo,'cumulativeFlow','累计流量',item)"><span>累计流量：</span>{{item.cumulativeFlow}}</p>
                     <p @click="toShow(item.pumpNo,'kwh','总功耗',item)"><span>总功耗：</span>{{item.kwh}}</p>
                     <p @click="toShow(item.pumpNo,'efficacy','工作效能',item)"><span>工作效能：</span>{{item.efficacy}}</p>
-                    <p @click="toShow(item.pumpNo,'maxWater','最大用水流量',item)" class="pHang"><span style="width: 1.6rem">最大用水流量：</span>{{item.maxWater}}</p>
-                    <p @click="toShow(item.pumpNo,'maxWaterTm','最大用水时间',item)" class="pHang"><span style="width: 1.6rem">最大用水时间：</span>{{item.maxWaterTm}}</p>
+                    <p @click="toShow(item.pumpNo,'maxWater','最大用水流量',item)" class="pHang"><span style="width: 2.0rem">最大用水流量：</span>{{item.maxWater}}</p>
+                    <p @click="toShow(item.pumpNo,'maxWaterTm','最大用水时间',item)" class="pHang"><span style="width: 2.0rem">最大用水时间：</span>{{item.maxWaterTm}}</p>
                 </div>
                 <div v-show="item.showMore" class="itemMore">
                     <div class="itemContent">
@@ -64,6 +64,16 @@
                         <p @click="toShow(item.pumpNo,'setPressure','设定压力',item)"><span>设定压力：</span>{{item.setPressure}}</p>
                         <p @click="toShow(item.pumpNo,'levelV','水箱液位',item)"  v-if="item.configVal.val5 === '1'"><span>水箱液位：</span>{{item.levelV}}</p>
                     </div>
+
+                  <div class="itemContent" >
+                    <p @click="toShow(item.pumpNo,'instantaneousFlow','瞬间流量',item)"><span>瞬间流量：</span>{{item.instantaneousFlow}}</p>
+                    <p @click="toShow(item.pumpNo,'cumulativeFlow','累计流量',item)"><span>累计流量：</span>{{item.cumulativeFlow}}</p>
+                    <p @click="toShow(item.pumpNo,'kwh','总功耗',item)"><span>总功耗：</span>{{item.kwh}}</p>
+                    <p @click="toShow(item.pumpNo,'efficacy','工作效能',item)"><span>工作效能：</span>{{item.efficacy}}</p>
+                    <p @click="toShow(item.pumpNo,'maxWater','最大用水流量',item)" class="pHang"><span style="width: 2.0rem">最大用水流量：</span>{{item.maxWater}}</p>
+                    <p @click="toShow(item.pumpNo,'maxWaterTm','最大用水时间',item)" class="pHang"><span style="width: 2.0rem">最大用水时间：</span>{{item.maxWaterTm}}</p>
+                  </div>
+
                     <div class="itemContent"  v-if="item.configVal.val10 === '1' || item.configVal.val9 === '1'">
                         <p @click="toShow(item.pumpNo,'turbidity','浊度',item)"  v-if="item.configVal.val10 === '1'"><span>浊度：</span>{{item.turbidity}}</p>
                         <p @click="toShow(item.pumpNo,'residualChlorine','余氯',item)" v-if="item.configVal.val9 === '1'"><span>余氯：</span>{{item.residualChlorine}}</p>
@@ -365,7 +375,7 @@
                 this.getList()
             },
             toDetail(item) {
-                this.until.href('/views/monitor/screenCurveDetail.html?pumpNo='+item.pumpNo+'&config='+item.config)
+                this.until.href('/eggl/views/monitor/screenCurveDetail.html?pumpNo='+item.pumpNo+'&config='+item.config)
                 // this.info = item;
             },
             //有图表的数据
@@ -481,6 +491,7 @@
                     this.query.toW(qry, "pumpNm", this.searchData.pumpNm, "LK");
                 }
                 this.query.toW(qry, "energyFlag", 1, "EQ");
+                this.query.toO(qry, "pumpNo", "asc");
                 this.query.toP(qry, this.pageNo, this.pageSize);
                 this.api.getSysMonitorLatestPage(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
                     console.log(res)

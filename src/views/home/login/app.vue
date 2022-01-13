@@ -36,6 +36,7 @@ import logo from "./img/logo.png";
 import {Toast} from 'vant';
 import CryptoJS from 'crypto-js'
 import sidentify from "./sidentify";
+
 export default {
   data() {
     return {
@@ -46,8 +47,8 @@ export default {
       form: {
         username: "",
         password: "",
-        code:"",
-        userCode:''
+        code: "",
+        userCode: ''
       },
     };
   },
@@ -61,13 +62,12 @@ export default {
     randomNum(min, max) {
       return Math.floor(Math.random() * (max - min) + min)
     },
-    refreshCode () {
-      this.form.userCode = this.randomNum(10000,99999)
-      this.api.getUrl('/general/access/getCode?userCode='+this.form.userCode).then(res=>{
+    refreshCode() {
+      this.form.userCode = this.randomNum(10000, 99999)
+      this.api.getUrl('/general/access/getCode?userCode=' + this.form.userCode).then(res => {
         this.identifyCode = res.data
       })
     },
-
 
 
     // 加密函數
@@ -86,25 +86,38 @@ export default {
       )
       return encryptedObj.toString()
     },
+    //解密
+    decrypt(word) {
+      //解密
+      let keyStr = '4cc36760803f4b39aa60dcae1dca161a';
+      var key = CryptoJS.enc.Utf8.parse(keyStr);
+      var decrypt = CryptoJS.AES.decrypt(word, key, {mode: CryptoJS.mode.ECB, padding: CryptoJS.pad.Pkcs7});
+      return CryptoJS.enc.Utf8.stringify(decrypt).toString();
+    },
+
+
     getForm() {
+      console.log(13123123)
       if (JSON.parse(this.until.loGet("pass")) != null) {
         this.form.username = JSON.parse(this.until.loGet("pass")).username;
+        this.form.username = this.decrypt(this.form.username)
         this.form.password = JSON.parse(this.until.loGet("pass")).password;
+        this.form.password = this.decrypt(this.form.password)
       }
     },
 
     login2() {
-        if (!this.form.code){
-            return  Toast.fail("请输入验证码!")
-        }
-        if (this.form.code != this.identifyCode){
-            this.refreshCode()
-            return  Toast.fail("验证码错误!")
-        }
-        let param = JSON.parse(JSON.stringify(this.form))
-        param.imei = "60b55be1ac54a468"
-        param.password = this.encrypt(this.form.password)
-        param.username = this.encrypt(this.form.username)
+      if (!this.form.code) {
+        return Toast.fail("请输入验证码!")
+      }
+      if (this.form.code != this.identifyCode) {
+        this.refreshCode()
+        return Toast.fail("验证码错误!")
+      }
+      let param = JSON.parse(JSON.stringify(this.form))
+      param.imei = "60b55be1ac54a468"
+      param.password = this.encrypt(this.form.password)
+      param.username = this.encrypt(this.form.username)
       this.api.getSysLogin(param).then(res => {
         if (res.code === 200) {
           Toast('登录成功');
@@ -126,31 +139,29 @@ export default {
 
     login() {
 
-      if (!this.form.code){
-        return  Toast.fail("请输入验证码!")
+      if (!this.form.code) {
+        return Toast.fail("请输入验证码!")
       }
-      if (this.form.code != this.identifyCode){
+      if (this.form.code != this.identifyCode) {
         this.refreshCode()
-        return  Toast.fail("验证码错误!")
+        return Toast.fail("验证码错误!")
       }
       this.$bridge.callHandler("h5_androidId", "", androidId => {
         this.form.imei = androidId
         this.form.password = this.encrypt(this.form.password)
         this.form.username = this.encrypt(this.form.username)
         this.api.getSysLogin(this.form).then(res => {
-
-          if (res.code === 400){
+          if (res.code === 400) {
             this.refreshCode()
             this.form.username = ''
             this.form.password = ''
             this.form.code = ''
             Toast(res.msg);
           }
-
           if (res.code === 200) {
             Toast('登录成功');
             this.until.loSave("userInfo", JSON.stringify(res.data.userInfo));
-            // this.until.loSave("pass", JSON.stringify(this.form));
+            this.until.loSave("pass", JSON.stringify(this.form));
             let temp = {
               userId: res.data.userInfo.userId,
               token: res.data.token,
