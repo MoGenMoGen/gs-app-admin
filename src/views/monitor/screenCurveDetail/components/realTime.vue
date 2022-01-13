@@ -331,7 +331,7 @@
                             value:y[index]
                         })
                     })
-                    this.$refs.echarts.drawEcharts(x,y)
+                    this.$refs.echarts.drawEcharts(x,y,this.unit)
                 }
             })
 
