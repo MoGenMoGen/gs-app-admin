@@ -29,7 +29,7 @@
         </van-sticky>
 
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="immediate">
-            <div v-for="(item,index) in dataList" :key="item.id"class="listItem">
+            <div v-for="(item,index) in dataList" :key="item.id" class="listItem">
                 <div class="itemTop" @click="toDetail(item)" >
                     <div>{{item.pumpNo}}<span></span>{{item.pumpNm}}<span></span>{{item.region}}
                         <!--<p v-if="item.status==1" class="green">在线</p>-->
