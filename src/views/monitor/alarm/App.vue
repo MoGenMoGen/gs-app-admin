@@ -76,10 +76,10 @@
         name: "alarm",
         data() {
             return {
-                tab1:'',
+                tab1:'实时监控',
                 tab2:'',
                 tab2Show:false,
-                menuList1:['实时监控','出水低压','出水超压','无负压异常','频率异常','泵房断电断网'],
+                menuList1:['实时监控','出水低压','出水超压','无负压异常','频率异常','泵房断电断网','未选'],
                 menuList2:[
                     '水箱水位低',
                     '水箱水位高',
@@ -142,7 +142,7 @@
             },
             changeTab2(val){
                 this.tab2 = val
-                this.tab1 = ''
+                this.tab1 = '未选'
                 console.log(val)
                 if (this.tab2 == ''){
                     this.dataForm.type = "出水低压,出水超压,无负压异常,1号泵频率异常,2号泵频率异常,3号泵频率异常,4号泵频率异常"
@@ -245,6 +245,12 @@
         }
         .van-tabs__nav--card{
             margin: 0;
+        }
+        .van-tab:last-of-type{
+            display: none;
+        }
+        .van-tab:nth-last-of-type(2){
+            border: 0;
         }
     }
 
