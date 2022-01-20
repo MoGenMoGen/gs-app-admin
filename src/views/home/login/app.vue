@@ -23,7 +23,7 @@
       </div>
       <div style="height: 10px"></div>
 
-      <van-button type="info" round block @click="login">登录</van-button>
+      <van-button type="info" round block @click="login2">登录</van-button>
     </div>
 
   </div>
@@ -97,7 +97,6 @@ export default {
 
 
     getForm() {
-      console.log(13123123)
       if (JSON.parse(this.until.loGet("pass")) != null) {
         this.form.username = JSON.parse(this.until.loGet("pass")).username;
         this.form.username = this.decrypt(this.form.username)

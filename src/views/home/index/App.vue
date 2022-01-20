@@ -212,11 +212,11 @@
                         img: monitor10,
                         aHref: ""
                     },
-                    {
-                        nm: "生产报表",
-                        img: monitor11,
-                        aHref: "../productionReport/productionReport.html"
-                    },
+                    // {
+                    //     nm: "生产报表",
+                    //     img: monitor11,
+                    //     aHref: "../productionReport/productionReport.html"
+                    // },
                     {
                         nm: "报警信息",
                         img: monitor12,

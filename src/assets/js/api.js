@@ -461,7 +461,7 @@ class api {
 
     getMonitorPage(data) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/monitor/page?query=" + data).then(res => {
+            untilApi.get("/gs/monitorLatest/page?query=" + data).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
@@ -483,7 +483,7 @@ class api {
 
     operateDoor(id, v) {
         return new Promise((resolve, reject) => {
-            untilApi.get("/gs/hik/synControl?doorUuid=" + id + '&command=' + v).then(res => {
+            untilApi.get("/gs/hk/doorControl?uuid=" + id + '&type=' + v).then(res => {
                 if (res.code === 200) {
                     resolve(res);
                 }
