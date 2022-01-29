@@ -1,8 +1,10 @@
 <template>
     <div id="container">
         <van-sticky>
-            <my-header title="门禁监控" @back="back" @search="searchShow = true"> </my-header>
+            <my-header title="门禁监控" @back="back" :search-status="false"> </my-header>
+          <van-search v-model="searchData.pumpNm" placeholder="请输入门禁点名称搜索" @input="search" />
         </van-sticky>
+
         <van-list  v-model="loading"  :finished="finished" finished-text="没有更多了"   @load="onLoad"  :immediate-check="immediate"  style="margin-top: 0.2rem">
             <div   v-for="(item,index) in dataList" :key="index" @click="toDetail(item)" class="listItem">
                 <div class="itemTop">
@@ -29,16 +31,16 @@
             </div>
         </van-list>
       <!--搜索弹窗-->
-      <van-popup v-model="searchShow" position="bottom" :style="{ height: '80%' }" closeable round close-icon="close">
-        <van-form @submit="search" style="margin-top: 50px">
-          <van-field label="门禁点名称:" v-model="searchData.pumpNm" clearable></van-field>
-          <div style="margin: 16px;">
-            <van-button round block type="info" native-type="submit">
-              提 交
-            </van-button>
-          </div>
-        </van-form>
-      </van-popup>
+<!--      <van-popup v-model="searchShow" position="bottom" :style="{ height: '80%' }" closeable round close-icon="close">-->
+<!--        <van-form @submit="search" style="margin-top: 50px">-->
+<!--          <van-field label="门禁点名称:" v-model="searchData.pumpNm" clearable></van-field>-->
+<!--          <div style="margin: 16px;">-->
+<!--            <van-button round block type="info" native-type="submit">-->
+<!--              提 交-->
+<!--            </van-button>-->
+<!--          </div>-->
+<!--        </van-form>-->
+<!--      </van-popup>-->
 
 
     </div>
@@ -93,7 +95,7 @@
 
 
             search() {
-                this.searchShow = false;
+                //this.searchShow = false;
                 this.pageNo = 1;
                 this.dataList = [];
                 this.getList();
@@ -111,7 +113,7 @@
             getList() {
                 let qry = this.query.new();
                 if (this.searchData.pumpNm) {
-                    this.query.toW(qry, "nm", this.searchData.pumpNm, "LK");
+                    this.query.toW(qry, "doorName", this.searchData.pumpNm, "LK");
                 }
                 this.query.toP(qry, this.pageNo, this.pageSize);
                 this.api.getPumpDoor(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {

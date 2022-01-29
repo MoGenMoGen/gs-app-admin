@@ -172,8 +172,7 @@
         },
         mounted() {
             this.$nextTick(()=>{
-                console.log('mounted:'+this.pumpNo)
-
+                //nsole.log('mounted:'+this.pumpNo)
                 this.getList()
 
             })
@@ -181,7 +180,7 @@
         methods: {
 
             onLoad() {
-                console.log('onLoad:'+this.pumpNo)
+                //console.log('onLoad:'+this.pumpNo)
                 this.pageNo++
                 this.getList()
             },
