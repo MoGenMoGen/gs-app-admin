@@ -12,8 +12,10 @@
       <van-field left-icon="contact" v-model="form.username" label="|" placeholder="请输入用户名"
                  label-width="20"></van-field>
       <div style="height: 10px"></div>
-      <van-field left-icon="closed-eye" v-model="form.password" label="|" type="password" placeholder="请输入密码"
-                 label-width="20"></van-field>
+      <van-field left-icon="setting-o"   v-model="form.password" label="|" :type="passwordType?'password':'text'" placeholder="请输入密码"
+                 label-width="20">
+        <van-icon  slot="button"  :name="passwordType ? 'closed-eye' : 'eye-o'" @click="passwordType=!passwordType"/>
+      </van-field>
       <div style="height: 10px"></div>
       <van-field left-icon="other-pay" v-model="form.code" label="|" placeholder="请输入验证码"
                  label-width="20"></van-field>
@@ -43,6 +45,7 @@ export default {
       userIcon,
       pwdIcon,
       logo,
+        passwordType:true,
       identifyCode: '',
       form: {
         username: "",

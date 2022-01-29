@@ -103,8 +103,16 @@
         }
     };
 </script>
-
-<style lang="less" scoped>
+<style>
+    .van-nav-bar__title {
+        color: white;
+        margin-top: 35px;
+    }
+    .van-nav-bar__left, .van-nav-bar__right{
+        top:35px
+    }
+</style>
+<style lang="less">
     .van-nav-bar {
         z-index: 999;
         background-color: #1177B9;
