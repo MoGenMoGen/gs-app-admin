@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="myHeader">
         <div class='top-header'> </div>
         <van-nav-bar  :placeholder="true">
             <slot slot="title"  name="title">
@@ -57,6 +57,12 @@ export default {
 };
 </script>
 <style lang='less'  scoped>
+    /*.myHeader{*/
+        /*position: fixed;*/
+        /*top: 0;*/
+        /*left: 0;*/
+        /*width: 100%;*/
+    /*}*/
     .top-header{
         height: 0.5rem;
         width: 100%;

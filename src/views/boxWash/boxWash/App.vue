@@ -1,36 +1,53 @@
 <template>
   <div id="container">
-    <van-sticky>
+    <!--<van-sticky>-->
       <my-header title="水箱清洗" @back="back" @search="searchShow = true"></my-header>
-    </van-sticky>
+    <!--</van-sticky>-->
     <van-tabs v-model="active" color="#1177B9" @change="tabChange">
       <van-tab v-for="item in tabList" :title='item' :key="item">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
                   :immediate-check="immediate">
-          <div v-for="item in dataList" :key="item.id" @click="toDetail(item)">
-            <van-cell-group>
-              <van-field label="泵房编号:" v-model="item.pumpNo" readonly :border="false"
-                         label-width="120"></van-field>
-              <van-field label="泵房名称:" v-model="item.pumpNm" readonly :border="false"
-                         label-width="120"></van-field>
-              <van-field label="供水区域:" v-model="item.waterArea" readonly :border="false" label-width="120" ></van-field>
+          <div v-for="item in dataList" :key="item.id" @click="toDetail(item)" class="listItem">
+            <div class="itemTop">
+              <div>{{item.pumpNo}}<span></span>{{item.pumpNm}}<span></span>{{item.waterArea}}
+              </div>
+
+              <!--<img :src="arrowDownBlue" :class="{showMore:item.showMore}"/>-->
+            </div>
+            <div  style="margin-left: 10px;padding-bottom: 10px">
+              <span style="font-size: 10px;">计划清洗时间:{{item.startTm}}</span>
+            </div>
+
+            <div class="itemContent">
+              <p><span>分区楼层：</span>{{item.partitionFloor}}</p>
+              <p><span>供水模式：</span>{{item.arg2}}</p>
+              <p><span>清洗单位：</span>{{item.unitNm}}</p>
+              <p><span>清洗容积：</span>{{item.washVolume}}</p>
+              <p><span>受限空间状态：</span>{{item.confinedStatus == '2' ? '审核通过' : item.confinedStatus == '1' ? '审核中': '未提交'}}</p>
+            </div>
+            <van-cell-group style="padding-bottom: 0.2rem;width: 95%;margin: 0 auto">
+              <!--<van-field label="泵房编号:" v-model="item.pumpNo" readonly :border="false"-->
+                         <!--label-width="120"></van-field>-->
+              <!--<van-field label="泵房名称:" v-model="item.pumpNm" readonly :border="false"-->
+                         <!--label-width="120"></van-field>-->
+              <!--<van-field label="供水区域:" v-model="item.waterArea" readonly :border="false" label-width="120" ></van-field>-->
 
 
-              <van-field label="分区楼层:" v-model="item.partitionFloor" readonly :border="false" label-width="120"
-                         right-icon="arrow"></van-field>
+              <!--<van-field label="分区楼层:" v-model="item.partitionFloor" readonly :border="false" label-width="120"-->
+                         <!--right-icon="arrow"></van-field>-->
 
-              <van-field label="供水模式:" v-model="item.arg2" readonly :border="false"
-                         label-width="120"></van-field>
-              <van-field label="清洗单位:" v-model="item.unitNm" readonly :border="false"
-                         label-width="120"></van-field>
+              <!--<van-field label="供水模式:" v-model="item.arg2" readonly :border="false"-->
+                         <!--label-width="120"></van-field>-->
+              <!--<van-field label="清洗单位:" v-model="item.unitNm" readonly :border="false"-->
+                         <!--label-width="120"></van-field>-->
 
-              <van-field label="清洗容积:" v-model="item.washVolume" readonly :border="false"
-                         label-width="120"></van-field>
-              <van-field label="计划清洗时间:" v-model="item.startTm" readonly :border="false"
-                         label-width="120"></van-field>
+              <!--<van-field label="清洗容积:" v-model="item.washVolume" readonly :border="false"-->
+                         <!--label-width="120"></van-field>-->
+              <!--<van-field label="计划清洗时间:" v-model="item.startTm" readonly :border="false"-->
+                         <!--label-width="120"></van-field>-->
 
-              <van-field label="受限空间状态:" v-model=" item.confinedStatus == '2' ? '审核通过' : item.confinedStatus == '1' ? '审核中': '未提交'" readonly :border="false"
-                         label-width="120"></van-field>
+              <!--<van-field label="受限空间状态:" v-model=" item.confinedStatus == '2' ? '审核通过' : item.confinedStatus == '1' ? '审核中': '未提交'" readonly :border="false"-->
+                         <!--label-width="120"></van-field>-->
 
 
               <!--         item.confinedStatus == '2'?'审核通过':'审核中'                   <van-field label="清洗消毒人员:" v-model="item.washUser" readonly :border="false"-->
@@ -91,10 +108,14 @@
         <van-cell>
           <!-- 使用 title 插槽来自定义标题 -->
           <template #title>
-            <span>清洗前照片:</span>
-            <van-image width="80" height="80" :src="info.img1" @click="lookImg(info.img1)"/>
-            <span>清洗后照片:</span>
-            <van-image width="80" height="80" :src="info.img2" @click="lookImg(info.img2)"/>
+            <div>
+              <span>清洗前照片:</span>
+              <van-image width="80" height="80" :src="info.img1" @click="lookImg(info.img1)"/>
+            </div>
+            <div>
+              <span>清洗后照片:</span>
+              <van-image width="80" height="80" :src="info.img2" @click="lookImg(info.img2)"/>
+            </div>
           </template>
         </van-cell>
         <van-field v-if="info.cleanRecord !== null " v-model="info.cleanRecord" label="清洗消毒记录：" label-width="120"
@@ -110,7 +131,8 @@
             <!-- 使用 title 插槽来自定义标题 -->
             <template #title>
               <span>清洗存在问题</span>
-              <van-checkbox-group v-model="val4" direction="horizontal">
+              {{info.val8}}
+              <van-checkbox-group v-model="val4" direction="horizontal"  :disabled="info.val8 === 1">
                 <van-checkbox name="停水告知通知有误" shape="square" style="margin-top: 5px">停水告知通知有误
                 </van-checkbox>
                 <van-checkbox name="防护用品穿戴不规范" shape="square" style="margin-top: 5px">防护用品穿戴不规范
@@ -131,12 +153,12 @@
             <!-- 使用 title 插槽来自定义标题 -->
             <template #title>
               <span>总体考评:</span>
-              <van-rate style="margin-left: 20px" v-model="from.val5" :size="25" color="#ffd21e" void-icon="star"
+              <van-rate style="margin-left: 20px" v-model="from.val5" :size="25" color="#ffd21e" void-icon="star" :disabled="info.val8 === 1"
                         void-color="#eee"/>
             </template>
           </van-cell>
-          <van-field v-model="from.val6" label="其他说明事项" rows="3" type="textarea" placeholder="请输入其他说明事项"/>
-          <van-field v-model="from.val7" label="项目负责人" placeholder="请输入项目负责人"/>
+          <van-field v-model="from.val6" label="其他说明事项" rows="3" type="textarea" :disabled="info.val8 === 1" placeholder="请输入其他说明事项"/>
+          <van-field v-model="from.val7" label="项目负责人" placeholder="请输入项目负责人" :disabled="info.val8 === 1"/>
           <div style="height: 30px"></div>
           <van-button type="primary" @click="addEvaluation" block v-if="info.val8 !== 1">提交考评</van-button>
         </div>
@@ -365,3 +387,106 @@ export default {
 }
 </style>
 
+<style lang="less">
+  #container{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    .van-tabs{
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: scroll;
+      .van-tabs__content{
+        margin-top: 10px;
+        flex: 1;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  }
+  #container{
+    min-height: 100vh;
+    background: #F5F2F5;
+  }
+  .listItem{
+    background: #ffffff;
+    border-radius: 0.1rem;
+    margin: 0 auto 0.15rem;
+    width: 96%;
+    .itemTop{
+      display: flex;
+      align-items: center;
+      height: 1rem;
+      width: 95%;
+      margin: 0 auto;
+      div:first-of-type{
+        flex: 1;
+        display: flex;
+        align-items: center;
+        span{
+          display: inline-block;
+          width: 1px;
+          height: 0.1rem;
+          background: #000000;
+          opacity: 0.2;
+          margin: 0 0.2rem;
+        }
+        p{
+          height: 0.45rem;
+          line-height: 0.45rem;
+          padding: 0 0.1rem;
+          border-radius: 3px;
+          color: #ffffff;
+          margin-left: 0.2rem;
+        }
+        .red{
+          background: red;
+        }
+        .green{
+          background: green;
+        }
+      }
+
+      img{
+        width: 0.35rem;
+      }
+      .showMore{
+        transform:rotate(180deg);
+        -ms-transform:rotate(180deg); 	/* IE 9 */
+        -moz-transform:rotate(180deg); 	/* Firefox */
+        -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+        -o-transform:rotate(180deg); 	/* Opera */
+      }
+    }
+    .itemMore{
+
+    }
+
+    .itemContent{
+      width: 95%;
+      margin: 0 auto;
+      border-top:1px solid #E9E9E9;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0.2rem 0;
+
+      p{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        height: 0.5rem;
+        span{
+          color: #909090;
+          width: 1.6rem;
+          display: inline-block;
+          flex-shrink: 0;
+        }
+        img{
+          width: 0.45rem;
+        }
+      }
+
+    }
+  }
+</style>
