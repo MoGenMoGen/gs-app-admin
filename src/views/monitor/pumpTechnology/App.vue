@@ -115,17 +115,17 @@
 <style lang="less">
     .van-nav-bar {
         z-index: 999;
-        background-color: #1177B9;
+        background-color: #1177B9 !important;
         height: 75px;
     }
 
     .van-nav-bar__title {
-        color: white;
+        color: white !important;
         margin-top: 35px;
     }
 
     .van-nav-bar .van-icon {
-        color: white;
+        color: white !important;
     }
 
 </style>
