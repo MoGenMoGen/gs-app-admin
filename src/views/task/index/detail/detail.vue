@@ -16,9 +16,9 @@
                 <div><span>工单号：</span><p>{{info.id}}</p></div>
                 <div><span>工单来源：</span><p>{{info.orderSource}}</p></div>
                 <div><span>行政区域：</span><p>{{info.administrativeDivision}}</p></div>
-                <div><span>泵房名称：</span><p>1{{info.pump}}</p></div>
-                <div><span>发生地址：</span><textarea rows="3">1{{info.occurrenceAddress}} </textarea></div>
-                <div><span>接单部门：</span><p>1{{info.receivingNm}}</p></div>
+                <div><span>泵房名称：</span><p>{{info.pump}}</p></div>
+                <div><span>发生地址：</span><textarea rows="3">{{info.occurrenceAddress}} </textarea></div>
+                <div><span>接单部门：</span><p>{{info.receivingNm}}</p></div>
                 <div><span>处理时限：</span><p>{{info.processingDeadline}}</p></div>
                 <div><span>反映人：</span><p>{{info.reflecting}}</p></div>
                 <div><span>联系电话：</span><p>{{info.reflectingPhone}}</p></div>
