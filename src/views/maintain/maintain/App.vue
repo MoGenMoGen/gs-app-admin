@@ -1,24 +1,39 @@
 <template>
     <div id="container">
-        <my-header title="设备保养" @back="back" @search="searchShow = true"> </my-header>
+        <div class="myTop">
+            <my-header title="设备保养" @back="back" @search="searchShow = true"> </my-header>
+        </div>
         <van-tabs v-model="active" color="#1177B9" @change="tabChange">
-            <van-tab v-for="item in tabList" :title='item' :key="item">
-                <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"  :immediate-check="immediate">
-                    <div v-for="item in dataList" :key="item.id" @click="toDetail(item)">
-                        <van-cell-group>
-                            <van-field label="保养单位:" v-model="item.unitNm" readonly :border="false" label-width="140"></van-field>
-                            <van-field label="泵房编号:" v-model="item.pumpNo" readonly :border="false" label-width="140"></van-field>
-                            <van-field label="泵房名称:" v-model="item.pumpNm" readonly :border="false" label-width="140"></van-field>
-                            <van-field label="供水区域:" v-model="item.zoning" readonly :border="false" label-width="140" right-icon="arrow"></van-field>
-                            <van-field label="计划保养开始日期:" v-model="item.planTm" readonly :border="false" label-width="140"></van-field>
-                            <van-field label="计划保养结束日期:" v-model="item.plan2Tm" readonly :border="false" label-width="140"></van-field>
-                            <van-button block style="height: 5px" color="#F3F3F3"></van-button>
-                        </van-cell-group>
-                    </div>
-                </van-list>
-            </van-tab>
-        </van-tabs>
+                <van-tab v-for="item in tabList" :title='item' :key="item">
+                    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"  :immediate-check="immediate">
+                        <div v-for="item in dataList" :key="item.id" @click="toDetail(item)" class="listItem">
+                            <div class="itemTop">
+                                <div>{{item.pumpNo}}<span></span>{{item.pumpNm}}<span></span>{{item.region}}
+                                </div>
 
+                                <img :src="arrowDownBlue" :class="{showMore:item.showMore}"/>
+                            </div>
+                            <div  style="margin-left: 10px;padding-bottom: 10px">
+                                <span style="font-size: 10px;">计划保养开始日期:{{item.planTm}}</span>
+                            </div>
+
+                            <div class="itemContent">
+                                <p><span>计划保养结束日期：</span>{{item.plan2Tm}}</p>
+                                <p><span>保养单位：</span>{{item.unitNm}}</p>
+                            </div>
+                            <!--<van-cell-group>-->
+                                <!--<van-field label="保养单位:" v-model="item.unitNm" readonly :border="false" label-width="140"></van-field>-->
+                                <!--<van-field label="泵房编号:" v-model="item.pumpNo" readonly :border="false" label-width="140"></van-field>-->
+                                <!--<van-field label="泵房名称:" v-model="item.pumpNm" readonly :border="false" label-width="140"></van-field>-->
+                                <!--<van-field label="供水区域:" v-model="item.zoning" readonly :border="false" label-width="140" right-icon="arrow"></van-field>-->
+                                <!--<van-field label="计划保养开始日期:" v-model="item.planTm" readonly :border="false" label-width="140"></van-field>-->
+                                <!--<van-field label="计划保养结束日期:" v-model="item.plan2Tm" readonly :border="false" label-width="140"></van-field>-->
+                                <!--<van-button block style="height: 5px" color="#F3F3F3"></van-button>-->
+                            <!--</van-cell-group>-->
+                        </div>
+                    </van-list>
+                </van-tab>
+            </van-tabs>
         <!--详情弹窗-->
         <van-popup v-model="show" position="bottom" :style="{ height: '80%' }" closeable round close-icon="close">
 <!--            <van-nav-bar  title="保养详情"  left-arrow  @click-left="show = false"></van-nav-bar>-->
@@ -145,7 +160,24 @@
     };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
+    #container{
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        .van-tabs{
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: scroll;
+            .van-tabs__content{
+                margin-top: 10px;
+                flex: 1;
+                overflow-y: scroll;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+    }
     .van-cell {
         line-height: normal;
     }
@@ -160,6 +192,90 @@
     }
     .van-nav-bar .van-icon {
         color: white;
+    }
+    #container{
+        min-height: 100vh;
+        background: #F5F2F5;
+    }
+    .listItem{
+        background: #ffffff;
+        border-radius: 0.1rem;
+        margin: 0 auto 0.15rem;
+        width: 96%;
+        .itemTop{
+            display: flex;
+            align-items: center;
+            height: 1rem;
+            width: 95%;
+            margin: 0 auto;
+            div:first-of-type{
+                flex: 1;
+                display: flex;
+                align-items: center;
+                span{
+                    display: inline-block;
+                    width: 1px;
+                    height: 0.1rem;
+                    background: #000000;
+                    opacity: 0.2;
+                    margin: 0 0.2rem;
+                }
+                p{
+                    height: 0.45rem;
+                    line-height: 0.45rem;
+                    padding: 0 0.1rem;
+                    border-radius: 3px;
+                    color: #ffffff;
+                    margin-left: 0.2rem;
+                }
+                .red{
+                    background: red;
+                }
+                .green{
+                    background: green;
+                }
+            }
+
+            img{
+                width: 0.35rem;
+            }
+            .showMore{
+                transform:rotate(180deg);
+                -ms-transform:rotate(180deg); 	/* IE 9 */
+                -moz-transform:rotate(180deg); 	/* Firefox */
+                -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+                -o-transform:rotate(180deg); 	/* Opera */
+            }
+        }
+        .itemMore{
+
+        }
+
+        .itemContent{
+            width: 95%;
+            margin: 0 auto;
+            border-top:1px solid #E9E9E9;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0.2rem 0;
+
+            p{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                height: 0.5rem;
+                span{
+                    color: #909090;
+                    width: 1.3rem;
+                    display: inline-block;
+                    flex-shrink: 0;
+                }
+                img{
+                    width: 0.45rem;
+                }
+            }
+
+        }
     }
 </style>
 

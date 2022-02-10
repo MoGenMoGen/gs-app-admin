@@ -217,6 +217,7 @@
                 span{
                     color: #999999;
                     width: 90px;
+                    flex-shrink: 0;
                 }
                 /*右侧内容*/
                 p{
@@ -224,7 +225,7 @@
                 }
                 textarea{
                     color: #333333;
-                    width: 80%;
+                    flex: 1;
                     border: none;
                     resize: none;
                     cursor: pointer;
