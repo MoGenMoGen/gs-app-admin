@@ -13,7 +13,8 @@
                 <div  class="block" v-for="item in list" :key="item.id" @click="toDetail(item)">
                     <div class="item"><span>工单号：</span><p>{{item.id}}</p></div>
                     <div class="item"><span>工单来源：</span><p>{{item.orderSource}}</p></div>
-                    <div class="item"><span>接单部门：</span><p>{{item.receivingNm}}</p></div>
+                    <div class="item"><span>接单单位：</span><p>{{item.receivingNm}}</p></div>
+                    <div class="item"><span>接单部门：</span><p>{{item.deptNm}}</p></div>
                     <div class="item"><span>泵房编号：</span><p>{{item.pumpNo}}</p></div>
                     <div class="item"><span>泵房名称：</span><p>{{item.pump}}</p></div>
                     <div class="item"><span>处理状态：</span><p>{{item.status | statusFilter}}</p></div>

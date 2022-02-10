@@ -9,8 +9,11 @@
         <h2>工单信息</h2>
         <div><span>工单来源：</span>
           <p>{{ info.orderSource }}</p></div>
-        <div><span>部门名称：</span>
+        <div><span>接单单位：</span>
           <p>{{ info.receivingNm }}</p></div>
+        <div><span>接单部门：</span>
+          <p>{{ info.deptNm }}</p></div>
+
         <div><span>派单时间：</span>
           <p>{{ info.crtTm }}</p></div>
 
@@ -149,6 +152,10 @@ export default {
 
     //接单
     acceptTask() {
+      let dept = this.until.loGet("deptId");
+      if (this.info.deptId != dept){
+        return Toast('非本部门工单，无法操作');
+      }
       this.api.orderReceipt(this.id).then(res => {
         if (res.code === 200) {
           this.info.status2 = 2;

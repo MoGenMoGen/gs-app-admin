@@ -18,7 +18,7 @@
                 <div><span>行政区域：</span><p>{{info.administrativeDivision}}</p></div>
                 <div><span>泵房名称：</span><p>{{info.pump}}</p></div>
                 <div><span>发生地址：</span><textarea rows="3">{{info.occurrenceAddress}} </textarea></div>
-                <div><span>接单部门：</span><p>{{info.receivingNm}}</p></div>
+                <div><span>接单单位：</span><p>{{info.receivingNm}}</p></div>
                 <div><span>处理时限：</span><p>{{info.processingDeadline}}</p></div>
                 <div><span>反映人：</span><p>{{info.reflecting}}</p></div>
                 <div><span>联系电话：</span><p>{{info.reflectingPhone}}</p></div>
@@ -51,7 +51,7 @@
             </div>
 
             <div  class="block2" >
-                <h2>设施科处理信息</h2>
+                <h2>{{info.deptNm}}处理信息</h2>
                 <div><span>接单时间：</span><p>{{info.orderTm2}}</p></div>
                 <div><span>完成时间：</span><p>{{info.orderCompletionTm2}}</p></div>
                 <div><span>接单人员：</span><p>{{info.orderClerk2}}</p></div>
@@ -78,9 +78,9 @@
             <div  class="block2" >
                 <h2>回访信息</h2>
                 <div><span>回访时间：</span><p>{{info.revisitTm}}</p></div>
-                <div><span>人员名称：</span><p>{{info.returnUser}}</p></div>
+                <div><span>回访人员：</span><p>{{info.returnUser}}</p></div>
                 <div><span>回访情况：</span><p>{{info.returnVisit}}</p></div>
-                <div><span>回访结果：</span><p>{{info.returnVisitResults}}</p></div>
+<!--                <div><span>回访结果：</span><p>{{info.returnVisitResults}}</p></div>-->
                 <div><span>客户满意度：</span><p>{{info.customerSatisfaction}}</p></div>
             </div>
         </div>

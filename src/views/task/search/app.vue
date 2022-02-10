@@ -24,7 +24,7 @@
 
       <div class="item1">
 
-<!--接单部门-->
+<!--接单单位-->
         <p class="label"><span></span>处理单位</p>
         <div class="option-menu">
           <el-select v-model="form.receivingNm" placeholder="请选择">
@@ -138,13 +138,13 @@
 
         form:{
           orderSource:'',//工单来源
-          receivingNm:'',//接单部门
+          receivingNm:'',//接单单位
           status:'',//处理状态
         },
           detailId:'',
           show:false,
 
-        deptList:[],//接单部门
+        deptList:[],//接单单位
         sourceList:[],//工单来源
         height:'',//屏幕高度
         immediate:false,//初始化不加载必须用变量
@@ -154,7 +154,7 @@
         finished:false,
         title:'任务派单管理',
         source:'',//工单来源
-        jiedanbumen:'',//接单部门
+        jiedanbumen:'',//接单单位
         paidanbumen:'',//派单部门
         paidanDate:'',//派单日期
         minDate: new Date(2020, 0, 1),
@@ -266,10 +266,10 @@
         })
       },
 
-      //接单部门
+      //接单单位
       getDept(){
         this.api.getDeptList(3000).then(res=>{
-          window.console.log("接单部门列表。。。。。")
+          window.console.log("接单单位列表。。。。。")
           window.console.log(res)
           this.deptList=res.data.list
         })

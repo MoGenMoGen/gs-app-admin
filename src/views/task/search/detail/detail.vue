@@ -54,7 +54,7 @@
                 <div><span>回访时间：</span><p>{{info.revisitTm}}</p></div>
                 <div><span>人员名称：</span><p>{{info.returnUser}}</p></div>
                 <div><span>回访情况：</span><p>{{info.returnVisit}}</p></div>
-                <div><span>回访结果：</span><p>{{info.returnVisitResults}}</p></div>
+<!--                <div><span>回访结果：</span><p>{{info.returnVisitResults}}</p></div>-->
                 <div><span>客户满意度：</span><p>{{info.customerSatisfaction}}</p></div>
             </div>
         </div>

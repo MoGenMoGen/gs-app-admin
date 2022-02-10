@@ -1,11 +1,9 @@
 <template>
     <div id="container">
-        <van-nav-bar fixed title="泵房工艺" @click-left="back" left-arrow @click-right="searchShow = true">
-            <van-icon name="search" slot="right"></van-icon>
-        </van-nav-bar>
-        <div style="height: 75px"></div>
-
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
+      <van-sticky>
+        <my-header title="泵房工艺" @back="back" @search="searchShow = false"> </my-header>
+      </van-sticky>
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
                   :immediate-check="immediate">
             <div v-for="(item,index) in dataList" :key="index" @click="toDetail(item)">
                 <van-cell-group>
@@ -37,9 +35,11 @@
 
 <script>
     //import list from "@/components/monitorList";
-
+    import myHeader from "../../../components/myHeader/myHeader";
     export default {
+
         name: "monitor",
+
         data() {
             return {
                 info: {},
@@ -61,7 +61,7 @@
 
             };
         },
-        components: {},
+        components: {myHeader},
         created() {
         },
         mounted() {
@@ -104,29 +104,29 @@
     };
 </script>
 <style>
-    .van-nav-bar__title {
-        color: white;
-        margin-top: 35px;
-    }
-    .van-nav-bar__left, .van-nav-bar__right{
-        top:35px
-    }
+    /*.van-nav-bar__title {*/
+    /*    color: white !important;*/
+    /*    margin-top: 35px;*/
+    /*}*/
+    /*.van-nav-bar__left, .van-nav-bar__right{*/
+    /*    top:35px*/
+    /*}*/
 </style>
 <style lang="less">
-    .van-nav-bar {
-        z-index: 999;
-        background-color: #1177B9;
-        height: 75px;
-    }
-
-    .van-nav-bar__title {
-        color: white;
-        margin-top: 35px;
-    }
-
-    .van-nav-bar .van-icon {
-        color: white;
-    }
+    //.van-nav-bar {
+    //    z-index: 999;
+    //    background-color: #1177B9 !important;
+    //    height: 75px;
+    //}
+    //
+    //.van-nav-bar__title {
+    //    color: white;
+    //    margin-top: 35px;
+    //}
+    //
+    //.van-nav-bar .van-icon {
+    //    color: white !important;
+    //}
 
 </style>
 

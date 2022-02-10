@@ -66,6 +66,7 @@
                 <van-field v-model="info.community" label="所属社区:" readonly label-width="120"></van-field>
                 <van-field v-model="info.communityPhone" label="社区电话:" readonly label-width="120"></van-field>
                 <van-field v-model="info.sxsffk" label="生消分开:" readonly label-width="120"></van-field>
+
                 <van-field v-model="info.serverAddress" label="服务器地址:" readonly label-width="120"></van-field>
                 <van-field v-model="info.ip" label="IP地址:" readonly label-width="120"></van-field>
                 <van-field v-model="info.broadbandAccount" label="网关:" readonly label-width="120"></van-field>
@@ -81,15 +82,14 @@
                     <template #button>
                         <van-button size="small" type="info" @click="saveGps">保存当前定位</van-button>
                     </template>
-
                 </van-field>
                 <van-field v-model="info.pumpLocation" label="泵房位置:" readonly label-width="120" type="textarea" rows="2"></van-field>
                 <van-field v-model="info.bigEvent" label="泵房大事件:" readonly label-width="120" type="textarea" rows="2"></van-field>
-
-
-
                 <van-field v-model="info.wideVideo" label="广角监控数量:" readonly label-width="120" ></van-field>
 
+
+
+                <van-field  label="泵房图片路线图:" readonly label-width="120" ></van-field>
                 <van-image width="100" height="100" :src="info.pumpImg1" @click="showImg(info.pumpImg1)"></van-image>
                 <van-image width="100" height="100" :src="info.pumpImg2" @click="showImg(info.pumpImg2)"></van-image>
                 <van-image width="100" height="100" :src="info.pumpRoute" @click="showImg(info.pumpRoute)"></van-image>
@@ -191,6 +191,13 @@
             toDetail(item) {
                 this.show = true;
                 this.info = item;
+                if (this.info.sxsffk === '1'){
+                  this.info.sxsffk = '是'
+                }
+              if (this.info.sxsffk === '0'){
+                this.info.sxsffk = '否'
+              }
+
             },
             getList() {
                 let qry = this.query.new();

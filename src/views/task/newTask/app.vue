@@ -106,7 +106,7 @@
             </div>
 
             <div class="item1">
-                <p class="label"><span>*</span>接单部门</p>
+                <p class="label"><span>*</span>接单单位</p>
                 <div class="option-menu">
                     <el-select v-model="form.receivingId" placeholder="请选择">
                         <el-option  v-for="item in deptList" :key="item.id" :label="item.nm" :value="item.id"></el-option>
@@ -198,8 +198,8 @@
                 disableinput:false,
                 form: {
                     orderSource: '',//工单来源
-                    receivingId: '',//接单部门
-                    orderDate: '',//接单部门
+                    receivingId: '',//接单单位
+                    orderDate: '',//接单单位
                     dispatchDepartment: '',//派单部门
                     processingDeadline: '',//处理时限
                     occurrenceAddress: '',
@@ -223,7 +223,7 @@
                 maxDate: new Date(2025, 10, 1),
                 showDate: false,
                 showPump:false,
-                deptList: [],//接单部门
+                deptList: [],//接单单位
                 sourceList: [],//接单来源
                 paidanList: [],//派单部门
                 faultList: [],//故障分类
@@ -250,7 +250,7 @@
             resetForm() {
                 this.form = {
                     orderSource: '',//工单来源
-                    receivingId: '',//接单部门
+                    receivingId: '',//接单单位
                     dispatchDepartment: '',//派单部门
                     processingDeadline: '',//处理时限
                     reflecting: '',//反映人
@@ -277,7 +277,7 @@
                     this.until.back();
                 });
             },
-            //接单部门
+            //接单单位
             getDept() {
                 this.api.getDeptList(3000).then(res => {
                     this.deptList = res.data.list;

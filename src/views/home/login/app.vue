@@ -124,6 +124,7 @@ export default {
         if (res.code === 200) {
           Toast('登录成功');
           this.until.loSave("userInfo", JSON.stringify(res.data.userInfo));
+          this.until.loSave("deptId", res.data.deptId);
           this.until.loSave("pass", JSON.stringify(this.form));
           let temp = {
             userId: res.data.userInfo.userId,
@@ -163,6 +164,7 @@ export default {
           if (res.code === 200) {
             Toast('登录成功');
             this.until.loSave("userInfo", JSON.stringify(res.data.userInfo));
+            this.until.loSave("deptId", res.data.deptId);
             this.until.loSave("pass", JSON.stringify(this.form));
             let temp = {
               userId: res.data.userInfo.userId,

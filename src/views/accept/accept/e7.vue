@@ -1226,7 +1226,7 @@
 
 
 
-            //接单部门
+            //接单单位
             getDept() {
                 this.api.getDeptList(3000).then(res => {
                     for (let i = 0; i <res.data.list.length ; i++) {
