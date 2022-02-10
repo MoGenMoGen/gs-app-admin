@@ -4,41 +4,57 @@
             <my-header title="泵房档案" @back="back" @search="searchShow = true"> </my-header>
         </van-sticky>
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="immediate">
-            <div v-for="(item,index) in dataList" :key="index">
-                <van-cell-group>
-<!--                    <van-field label="泵房编号:" v-model="item.no" readonly :border="false">-->
-<!--                        <template #default>-->
-<!--                            <van-button  size="mini" type="info" @click="toNav(item)">去导航</van-button>-->
-<!--                        </template>-->
-<!--                    </van-field>-->
-                    <div @click="toDetail(item)">
-                        <van-field label="泵房编号:" v-model="item.no" readonly :border="false"></van-field>
-                        <van-field label="泵房名称:" v-model="item.nm" readonly :border="false"></van-field>
-                        <van-field label="小区名称:" v-model="item.estateNm" readonly :border="false"></van-field>
-                        <van-field label="分区楼层:" v-model="item.partitionFloor" readonly :border="false"></van-field>
-                        <van-field label="分区情况:" v-model="item.partitionSituation" readonly :border="false"></van-field>
-                        <van-field label="供水模式:" v-model="item.arg2" readonly :border="false"></van-field>
-                        <van-field label="物业电话:" v-model="item.propertyPhone" readonly :border="false"></van-field>
-                        <van-field label="广角监控数量:"  label-width="140" v-model="item.wideVideo" readonly :border="false"></van-field>
-                        <van-field label="泵房地址:" v-model="item.pumpLocation" readonly :border="false" type="textarea" rows="2"></van-field>
-                    </div>
-                    <van-cell title="路线图:" center :border="false">
-                        <template #default>
-                            <van-row>
-                                <van-col span="12">
-                                    <van-image @click="showImg(item.pumpRoute)" v-if="item.pumpRoute != null && item.pumpRoute !== ''" width="80" height="80"
-                                               :src="item.pumpRoute"></van-image>
-                                </van-col>
-                            </van-row>
-                        </template>
-                    </van-cell>
-                  <van-cell  center>
-                    <template #default>
-                      <van-button  size="mini" type="info" @click="toNav(item)">去导航</van-button>
-                    </template>
-                  </van-cell>
-                    <van-button block style="height: 5px" color="#F3F3F3"></van-button>
-                </van-cell-group>
+            <div v-for="(item,index) in dataList" :key="index" class="listItem">
+                <div class="itemTop" @click="toDetail(item)" >
+                    <div>{{item.no}}<span></span>{{item.nm}}<span></span>{{item.region}}</div>
+                </div>
+                <div  style="margin-left: 10px;padding-bottom: 10px">
+                    <span>分区情况：{{item.partitionSituation}}</span>
+                </div>
+
+                <div class="itemContent">
+                    <p><span>小区名称：</span>{{item.estateNm}}</p>
+                    <p><span>分区楼层：</span>{{item.partitionFloor}}</p>
+                    <p><span>供水模式：</span>{{item.arg2}}</p>
+                    <p><span>物业电话：</span>{{item.propertyPhone}}</p>
+                    <p><span>泵房地址：</span>{{item.pumpLocation}}</p>
+                    <p><span>路线图：</span><img :src="item.pumpRoute" @click.stop="showImg(item.pumpRoute)" v-if="item.pumpRoute != null && item.pumpRoute !== ''"  width="80" height="80"/></p>
+                    <p><span></span><van-button  size="mini" type="info" @click="toNav(item)">去导航</van-button></p>
+                </div>
+                <!--<van-cell-group>-->
+<!--&lt;!&ndash;                    <van-field label="泵房编号:" v-model="item.no" readonly :border="false">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <template #default>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <van-button  size="mini" type="info" @click="toNav(item)">去导航</van-button>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </template>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </van-field>&ndash;&gt;-->
+                    <!--<div @click="toDetail(item)">-->
+                        <!--<van-field label="泵房编号:" v-model="item.no" readonly :border="false"></van-field>-->
+                        <!--<van-field label="泵房名称:" v-model="item.nm" readonly :border="false"></van-field>-->
+                        <!--<van-field label="小区名称:" v-model="item.estateNm" readonly :border="false"></van-field>-->
+                        <!--<van-field label="分区楼层:" v-model="item.partitionFloor" readonly :border="false"></van-field>-->
+                        <!--<van-field label="分区情况:" v-model="item.partitionSituation" readonly :border="false"></van-field>-->
+                        <!--<van-field label="供水模式:" v-model="item.arg2" readonly :border="false"></van-field>-->
+                        <!--<van-field label="物业电话:" v-model="item.propertyPhone" readonly :border="false"></van-field>-->
+                        <!--<van-field label="广角监控数量:"  label-width="140" v-model="item.wideVideo" readonly :border="false"></van-field>-->
+                        <!--<van-field label="泵房地址:" v-model="item.pumpLocation" readonly :border="false" type="textarea" rows="2"></van-field>-->
+                    <!--</div>-->
+                    <!--<van-cell title="路线图:" center :border="false">-->
+                        <!--<template #default>-->
+                            <!--<van-row>-->
+                                <!--<van-col span="12">-->
+                                    <!--<van-image @click="showImg(item.pumpRoute)" v-if="item.pumpRoute != null && item.pumpRoute !== ''" width="80" height="80"-->
+                                               <!--:src="item.pumpRoute"></van-image>-->
+                                <!--</van-col>-->
+                            <!--</van-row>-->
+                        <!--</template>-->
+                    <!--</van-cell>-->
+                  <!--<van-cell  center>-->
+                    <!--<template #default>-->
+                      <!--<van-button  size="mini" type="info" @click="toNav(item)">去导航</van-button>-->
+                    <!--</template>-->
+                  <!--</van-cell>-->
+                    <!--<van-button block style="height: 5px" color="#F3F3F3"></van-button>-->
+                <!--</van-cell-group>-->
             </div>
         </van-list>
         <!--详情弹窗-->
@@ -235,6 +251,66 @@
         line-height: normal;
         padding: 8px 16px;
     }
+    .van-list{
+        margin-top: 0.15rem;
+    }
+    #container{
+        min-height: 100vh;
+        background: #F5F2F5;
+    }
+    .listItem{
+        background: #ffffff;
+        border-radius: 0.1rem;
+        margin: 0 auto 0.15rem;
+        width: 96%;
+        .itemTop{
+            display: flex;
+            align-items: center;
+            height: 1rem;
+            width: 95%;
+            margin: 0 auto;
+            div:first-of-type{
+                flex: 1;
+                display: flex;
+                align-items: center;
+                span{
+                    display: inline-block;
+                    width: 1px;
+                    height: 0.1rem;
+                    background: #000000;
+                    opacity: 0.2;
+                    margin: 0 0.2rem;
+                }
+                p{
+                    height: 0.45rem;
+                    line-height: 0.45rem;
+                    padding: 0 0.1rem;
+                    border-radius: 3px;
+                    color: #ffffff;
+                    margin-left: 0.2rem;
+                }
+            }
+        }
 
+
+        .itemContent{
+            width: 95%;
+            margin: 0 auto;
+            border-top:1px solid #E9E9E9;
+            padding: 0.2rem 0;
+            p{
+                display: flex;
+                align-items: center;
+                padding: 0.1rem 0;
+                >span{
+                    color: #909090;
+                    width: 1.3rem;
+                    display: inline-block;
+                    flex-shrink: 0;
+                }
+            }
+
+        }
+    }
 </style>
 

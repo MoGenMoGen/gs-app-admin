@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <template>
     <div id="container">
 <!--        <van-nav-bar fixed title="设备维修" @click-left="back" left-arrow @click-right="searchShow = true">-->
@@ -9,35 +9,68 @@
         <van-tabs v-model="active" color="#1177B9" @change="tabChange">
             <van-tab v-for="item in tabList" :title='item' :key="item">
                 <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="immediate">
-                    <div v-for="item in dataList" :key="item.id" @click="toDetail(item)">
-                        <van-cell-group>
-                            <van-field label="维修单号:" v-model="item.no" readonly :border="false" label-width="120"></van-field>
-                            <van-field label="泵房名称:" v-model="item.pumpNm" readonly :border="false" label-width="120"></van-field>
-                            <van-field label="维修单位:" v-model="item.repairUnitNm" readonly :border="false" label-width="120"></van-field>
-                            <van-field label="申请日期:" v-model="item.applicantTm" readonly :border="false" label-width="120"></van-field>
-                            <van-field label="预算:" v-model="item.budget" readonly :border="false" label-width="120"></van-field>
-                            <van-field label="维修事由:" v-model="item.cause" readonly :border="false" label-width="120"></van-field>
-                            <div style="margin-left: 10px;margin-bottom: 5px">
-                                <van-tag round type="primary" v-if="item.opinion1Status === 1">经办人正在审批</van-tag>
-                                <van-tag round type="primary" v-if="item.opinion2Status === 1">设施科副科长正在审批</van-tag>
-                                <van-tag round type="primary" v-if="item.opinion3Status === 1">设施科科长正在审批</van-tag>
-                                <van-tag round type="primary" v-if="item.opinion4Status === 1">分管经理正在审批</van-tag>
-                                <van-tag round type="primary" v-if="item.opinion5Status === 1">经理正在审批</van-tag>
+                    <div v-for="item in dataList" :key="item.id" @click="toDetail(item)" class="listItem">
+                        <div class="itemTop" @click="toDetail(item)" >
+                            <div>{{item.pumpNo}}<span></span>{{item.pumpNm}}<span></span>{{item.region}}</div>
+                        </div>
+                        <div  style="margin-left: 10px;padding-bottom: 10px">
+                            <span>维修单号：{{item.no}}</span>
+                        </div>
 
-                                <van-tag round type="success" v-if="item.opinion1Status === 2">经办人审批通过</van-tag>
-                                <van-tag round type="success" v-if="item.opinion2Status === 2">设施科副科长审批通过</van-tag>
-                                <van-tag round type="success" v-if="item.opinion3Status === 2">设施科科长审批通过</van-tag>
-                                <van-tag round type="success" v-if="item.opinion4Status === 2">分管经理审批通过</van-tag>
-                                <van-tag round type="success" v-if="item.opinion5Status === 2">经理审批通过</van-tag>
+                        <div class="itemContent">
+                            <p><span>申请单位：</span>{{item.applicantUnitNm}}</p>
+                            <p><span>申请日期：</span>{{item.applicantTm}}</p>
+                            <p><span>维修单位：</span>{{item.repairUnitNm}}</p>
+                            <p><span>预算：</span>{{item.budget}}</p>
+                            <p><span>维修事由：</span>{{item.cause}}</p>
+                        </div>
+                        <div style="margin-left: 10px;margin-bottom: 5px">
+                            <van-tag round type="primary" v-if="item.opinion1Status === 1">经办人正在审批</van-tag>
+                            <van-tag round type="primary" v-if="item.opinion2Status === 1">设施科副科长正在审批</van-tag>
+                            <van-tag round type="primary" v-if="item.opinion3Status === 1">设施科科长正在审批</van-tag>
+                            <van-tag round type="primary" v-if="item.opinion4Status === 1">分管经理正在审批</van-tag>
+                            <van-tag round type="primary" v-if="item.opinion5Status === 1">经理正在审批</van-tag>
 
-                                <van-tag round type="danger" v-if="item.opinion1Status === 3">经办人审批不通过</van-tag>
-                                <van-tag round type="danger" v-if="item.opinion2Status === 3">设施科副科长审批不通过</van-tag>
-                                <van-tag round type="danger" v-if="item.opinion3Status === 3">设施科科长审批不通过</van-tag>
-                                <van-tag round type="danger" v-if="item.opinion4Status === 3">分管经理审批不通过</van-tag>
-                                <van-tag round type="danger" v-if="item.opinion5Status === 3">经理审批不通过</van-tag>
-                            </div>
-                            <van-button block style="height: 5px" color="#F3F3F3"></van-button>
-                        </van-cell-group>
+                            <van-tag round type="success" v-if="item.opinion1Status === 2">经办人审批通过</van-tag>
+                            <van-tag round type="success" v-if="item.opinion2Status === 2">设施科副科长审批通过</van-tag>
+                            <van-tag round type="success" v-if="item.opinion3Status === 2">设施科科长审批通过</van-tag>
+                            <van-tag round type="success" v-if="item.opinion4Status === 2">分管经理审批通过</van-tag>
+                            <van-tag round type="success" v-if="item.opinion5Status === 2">经理审批通过</van-tag>
+
+                            <van-tag round type="danger" v-if="item.opinion1Status === 3">经办人审批不通过</van-tag>
+                            <van-tag round type="danger" v-if="item.opinion2Status === 3">设施科副科长审批不通过</van-tag>
+                            <van-tag round type="danger" v-if="item.opinion3Status === 3">设施科科长审批不通过</van-tag>
+                            <van-tag round type="danger" v-if="item.opinion4Status === 3">分管经理审批不通过</van-tag>
+                            <van-tag round type="danger" v-if="item.opinion5Status === 3">经理审批不通过</van-tag>
+                        </div>
+                        <!--<van-cell-group>-->
+                            <!--<van-field label="维修单号:" v-model="item.no" readonly :border="false" label-width="120"></van-field>-->
+                            <!--<van-field label="泵房名称:" v-model="item.pumpNm" readonly :border="false" label-width="120"></van-field>-->
+                            <!--<van-field label="维修单位:" v-model="item.repairUnitNm" readonly :border="false" label-width="120"></van-field>-->
+                            <!--<van-field label="申请日期:" v-model="item.applicantTm" readonly :border="false" label-width="120"></van-field>-->
+                            <!--<van-field label="预算:" v-model="item.budget" readonly :border="false" label-width="120"></van-field>-->
+                            <!--<van-field label="维修事由:" v-model="item.cause" readonly :border="false" label-width="120"></van-field>-->
+                            <!--<div style="margin-left: 10px;margin-bottom: 5px">-->
+                                <!--<van-tag round type="primary" v-if="item.opinion1Status === 1">经办人正在审批</van-tag>-->
+                                <!--<van-tag round type="primary" v-if="item.opinion2Status === 1">设施科副科长正在审批</van-tag>-->
+                                <!--<van-tag round type="primary" v-if="item.opinion3Status === 1">设施科科长正在审批</van-tag>-->
+                                <!--<van-tag round type="primary" v-if="item.opinion4Status === 1">分管经理正在审批</van-tag>-->
+                                <!--<van-tag round type="primary" v-if="item.opinion5Status === 1">经理正在审批</van-tag>-->
+
+                                <!--<van-tag round type="success" v-if="item.opinion1Status === 2">经办人审批通过</van-tag>-->
+                                <!--<van-tag round type="success" v-if="item.opinion2Status === 2">设施科副科长审批通过</van-tag>-->
+                                <!--<van-tag round type="success" v-if="item.opinion3Status === 2">设施科科长审批通过</van-tag>-->
+                                <!--<van-tag round type="success" v-if="item.opinion4Status === 2">分管经理审批通过</van-tag>-->
+                                <!--<van-tag round type="success" v-if="item.opinion5Status === 2">经理审批通过</van-tag>-->
+
+                                <!--<van-tag round type="danger" v-if="item.opinion1Status === 3">经办人审批不通过</van-tag>-->
+                                <!--<van-tag round type="danger" v-if="item.opinion2Status === 3">设施科副科长审批不通过</van-tag>-->
+                                <!--<van-tag round type="danger" v-if="item.opinion3Status === 3">设施科科长审批不通过</van-tag>-->
+                                <!--<van-tag round type="danger" v-if="item.opinion4Status === 3">分管经理审批不通过</van-tag>-->
+                                <!--<van-tag round type="danger" v-if="item.opinion5Status === 3">经理审批不通过</van-tag>-->
+                            <!--</div>-->
+                            <!--<van-button block style="height: 5px" color="#F3F3F3"></van-button>-->
+                        <!--</van-cell-group>-->
                     </div>
                 </van-list>
             </van-tab>
@@ -297,6 +330,69 @@
     .van-cell {
         line-height: normal;
 
+    }
+    .van-list{
+        margin-top: 0.15rem;
+    }
+    #container{
+        min-height: 100vh;
+        background: #F5F2F5;
+    }
+    .listItem{
+        background: #ffffff;
+        border-radius: 0.1rem;
+        margin: 0 auto 0.15rem;
+        width: 96%;
+        overflow: hidden;
+        padding-bottom: 0.1rem;
+        .itemTop{
+            display: flex;
+            align-items: center;
+            height: 1rem;
+            width: 95%;
+            margin: 0 auto;
+            div:first-of-type{
+                flex: 1;
+                display: flex;
+                align-items: center;
+                span{
+                    display: inline-block;
+                    width: 1px;
+                    height: 0.1rem;
+                    background: #000000;
+                    opacity: 0.2;
+                    margin: 0 0.2rem;
+                }
+                p{
+                    height: 0.45rem;
+                    line-height: 0.45rem;
+                    padding: 0 0.1rem;
+                    border-radius: 3px;
+                    color: #ffffff;
+                    margin-left: 0.2rem;
+                }
+            }
+        }
+
+
+        .itemContent{
+            width: 95%;
+            margin: 0 auto;
+            border-top:1px solid #E9E9E9;
+            padding: 0.2rem 0;
+            p{
+                display: flex;
+                align-items: center;
+                padding: 0.1rem 0;
+                >span{
+                    color: #909090;
+                    width: 1.3rem;
+                    display: inline-block;
+                    flex-shrink: 0;
+                }
+            }
+
+        }
     }
 </style>
 

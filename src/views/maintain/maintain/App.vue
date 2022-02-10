@@ -266,7 +266,7 @@
                 height: 0.5rem;
                 span{
                     color: #909090;
-                    width: 1.3rem;
+                    width: 2rem;
                     display: inline-block;
                     flex-shrink: 0;
                 }

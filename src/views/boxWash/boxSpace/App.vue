@@ -8,14 +8,26 @@
         <van-tabs v-model="active" color="#1177B9" @change="tabChange"  >
             <van-tab v-for="item in tabList" :title='item' :key="item">
                 <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="immediate">
-                    <div v-for="item in dataList" :key="item.id" @click="toDetail(item)">
-                        <van-cell-group>
-                            <van-field label="清洗单位:" v-model="item.unitNm" readonly :border="false" label-width="120"></van-field>
-                            <van-field label="泵房名称:" v-model="item.pumpNm" readonly :border="false" label-width="120"></van-field>
-                            <van-field label="单位:" v-model="item.unit" readonly :border="false" label-width="120" right-icon="arrow"></van-field>
-                            <van-field label="开工时间:" v-model="item.startTm" readonly :border="false" label-width="120"></van-field>
-                            <van-field label="填写人:" v-model="item.fillPerson" readonly :border="false" label-width="120"></van-field>
-                        </van-cell-group>
+                    <div v-for="item in dataList" :key="item.id" @click="toDetail(item)" class="listItem">
+                        <div class="itemTop" @click="toDetail(item)" >
+                            <div>{{item.pumpNo}}<span></span>{{item.pumpNm}}<span></span>{{item.region}}</div>
+                        </div>
+                        <div  style="margin-left: 10px;padding-bottom: 10px">
+                            <span>开工时间：{{item.startTm}}</span>
+                        </div>
+
+                        <div class="itemContent">
+                            <p><span>清洗单位：</span>{{item.unitNm}}</p>
+                            <p><span>单位：</span>{{item.unit}}</p>
+                            <p><span>填写人：</span>{{item.fillPerson}}</p>
+                        </div>
+                        <!--<van-cell-group>-->
+                            <!--<van-field label="清洗单位:" v-model="item.unitNm" readonly :border="false" label-width="120"></van-field>-->
+                            <!--<van-field label="泵房名称:" v-model="item.pumpNm" readonly :border="false" label-width="120"></van-field>-->
+                            <!--<van-field label="单位:" v-model="item.unit" readonly :border="false" label-width="120" right-icon="arrow"></van-field>-->
+                            <!--<van-field label="开工时间:" v-model="item.startTm" readonly :border="false" label-width="120"></van-field>-->
+                            <!--<van-field label="填写人:" v-model="item.fillPerson" readonly :border="false" label-width="120"></van-field>-->
+                        <!--</van-cell-group>-->
                     </div>
                 </van-list>
             </van-tab>
@@ -354,6 +366,67 @@
     .van-cell {
         line-height: normal;
 
+    }
+    .van-list{
+        margin-top: 0.15rem;
+    }
+    #container{
+        min-height: 100vh;
+        background: #F5F2F5;
+    }
+    .listItem{
+        background: #ffffff;
+        border-radius: 0.1rem;
+        margin: 0 auto 0.15rem;
+        width: 96%;
+        .itemTop{
+            display: flex;
+            align-items: center;
+            height: 1rem;
+            width: 95%;
+            margin: 0 auto;
+            div:first-of-type{
+                flex: 1;
+                display: flex;
+                align-items: center;
+                span{
+                    display: inline-block;
+                    width: 1px;
+                    height: 0.1rem;
+                    background: #000000;
+                    opacity: 0.2;
+                    margin: 0 0.2rem;
+                }
+                p{
+                    height: 0.45rem;
+                    line-height: 0.45rem;
+                    padding: 0 0.1rem;
+                    border-radius: 3px;
+                    color: #ffffff;
+                    margin-left: 0.2rem;
+                }
+            }
+        }
+
+
+        .itemContent{
+            width: 95%;
+            margin: 0 auto;
+            border-top:1px solid #E9E9E9;
+            padding: 0.2rem 0;
+            p{
+                display: flex;
+                align-items: center;
+                padding: 0.1rem 0;
+                >span{
+                    color: #909090;
+                    width: 1.3rem;
+                    display: inline-block;
+                    flex-shrink: 0;
+                }
+            }
+
+        }
     }
 </style>
 

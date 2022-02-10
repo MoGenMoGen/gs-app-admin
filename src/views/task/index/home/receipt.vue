@@ -3,17 +3,33 @@
     <div class="main">
         <div class="content">
             <van-list v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad" :immediate-check="immediate" >
-                <div  class="block" v-for="item in list" :key="item.id" @click="toDetail(item)">
-                    <div class="item"><span>工单号：</span><p>{{item.id}}</p></div>
-                    <div class="item"><span>工单来源：</span><p>{{item.orderSource}}</p></div>
-                    <div class="item"><span>接单单位：</span><p>{{item.receivingNm}}</p></div>
-                    <div class="item"><span>接单部门：</span><p>{{item.deptNm}}</p></div>
-                    <div class="item"><span>泵房编号：</span><p>{{item.pumpNo}}</p></div>
-                    <div class="item"><span>泵房名称：</span><p>{{item.pump}}</p></div>
-                    <div class="item"><span>处理状态：</span><p>{{item.status2 | statusFilter}}</p></div>
-                    <div class="item"><span>问题类别：</span><p>{{item.fault}}</p></div>
-                    <div class="item"><span>派单部门：</span><p>{{item.dispatchDepartment}}</p></div>
-                    <div class="item"><span>派单时间：</span><p>{{item.crtTm}}</p></div>
+                <div v-for="item in list" :key="item.id" @click="toDetail(item)" class="listItem">
+                    <div class="itemTop" @click="toDetail(item)" >
+                        <div>{{item.pumpNo}}<span></span>{{item.pump}}<span></span>{{item.administrativeDivision}}</div>
+                    </div>
+                    <div  style="margin-left: 10px;padding-bottom: 10px">
+                        <span>工单号：{{item.id}}</span>
+                    </div>
+
+                    <div class="itemContent">
+                        <p><span>工单来源：</span>{{item.orderSource}}</p>
+                        <p><span>接单单位：</span>{{item.receivingNm}}</p>
+                        <p><span>接单部门：</span>{{item.deptNm}}</p>
+                        <p><span>处理状态：</span>{{item.status2 | statusFilter}}</p>
+                        <p><span>问题类别：</span>{{item.fault}}</p>
+                        <p><span>派单部门：</span>{{item.dispatchDepartment}}</p>
+                        <p><span>派单时间</span>{{item.crtTm}}</p>
+                    </div>
+                    <!--<div class="item"><span>工单号：</span><p>{{item.id}}</p></div>-->
+                    <!--<div class="item"><span>工单来源：</span><p>{{item.orderSource}}</p></div>-->
+                    <!--<div class="item"><span>接单单位：</span><p>{{item.receivingNm}}</p></div>-->
+                    <!--<div class="item"><span>接单部门：</span><p>{{item.deptNm}}</p></div>-->
+                    <!--<div class="item"><span>泵房编号：</span><p>{{item.pumpNo}}</p></div>-->
+                    <!--<div class="item"><span>泵房名称：</span><p>{{item.pump}}</p></div>-->
+                    <!--<div class="item"><span>处理状态：</span><p>{{item.status2 | statusFilter}}</p></div>-->
+                    <!--<div class="item"><span>问题类别：</span><p>{{item.fault}}</p></div>-->
+                    <!--<div class="item"><span>派单部门：</span><p>{{item.dispatchDepartment}}</p></div>-->
+                    <!--<div class="item"><span>派单时间：</span><p>{{item.crtTm}}</p></div>-->
                 </div>
             </van-list>
         </div>
@@ -109,7 +125,62 @@
 
 <style scoped lang="less">
     .main{
+        min-height: 100vh;
+        background: #F5F2F5;
+    }
+    .listItem{
+        background: #ffffff;
+        border-radius: 0.1rem;
+        margin: 0 auto 0.15rem;
+        width: 96%;
+        .itemTop{
+            display: flex;
+            align-items: center;
+            height: 1rem;
+            width: 95%;
+            margin: 0 auto;
+            div:first-of-type{
+                flex: 1;
+                display: flex;
+                align-items: center;
+                span{
+                    display: inline-block;
+                    width: 1px;
+                    height: 0.1rem;
+                    background: #000000;
+                    opacity: 0.2;
+                    margin: 0 0.2rem;
+                }
+                p{
+                    height: 0.45rem;
+                    line-height: 0.45rem;
+                    padding: 0 0.1rem;
+                    border-radius: 3px;
+                    color: #ffffff;
+                    margin-left: 0.2rem;
+                }
+            }
+        }
 
+
+        .itemContent{
+            width: 95%;
+            margin: 0 auto;
+            border-top:1px solid #E9E9E9;
+            padding: 0.2rem 0;
+            p{
+                display: flex;
+                align-items: center;
+                padding: 0.1rem 0;
+                >span{
+                    color: #909090;
+                    width: 1.3rem;
+                    display: inline-block;
+                    flex-shrink: 0;
+                }
+            }
+
+        }
     }
     /*
         内容区域
