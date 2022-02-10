@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "author": "wyh https://eg.zjfld.net/    127.0.0.1   http://61.130.113.44:6143/   192.168.0.80",
   "scripts": {
-    "dev": "node --max_old_space_size=4096 build/dev-server.js --proxy=https://eg.zjfld.net/",
+    "dev": "node --max_old_space_size=4096 build/dev-server.js --proxy=https://dceg.zjfld.net/",
     "build": "node build/build.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",

@@ -44,7 +44,18 @@ compiler.plugin('compilation', function (compilation) {
 var argv = require('optimist').argv;
 function proxy() {
   var context = ["/sys", "/gs", "/general"];
-  var options = { target:argv.proxy};
+  var options = {
+    target:argv.proxy,
+      changeOrigin: true,
+      pathRewrite: {
+          '^/': '/' // pathRewrite方法重写url, 这样配置出来的url为http://localhost:8081/api/seller
+          // '^/api': '/' // pathRewrite方法重写url, 这样配置出来的url为http://localhost:8081/seller
+      },
+      secure: false,
+      headers: {
+          Referer: argv.proxy
+      }
+  };
   app.use(proxyMiddleware(options.filter || context, options))
 }
 proxy();
