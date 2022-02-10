@@ -4,23 +4,23 @@
             <my-header title="设备保养" @back="back" @search="searchShow = true"> </my-header>
         </div>
         <van-tabs v-model="active" color="#1177B9" @change="tabChange">
-                <van-tab v-for="item in tabList" :title='item' :key="item">
+                <van-tab v-for="item in tabList" :key="item.name">
+                    <template #title> {{item.name}}<van-badge :content="item.total" /></template>
                     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"  :immediate-check="immediate">
                         <div v-for="item in dataList" :key="item.id" @click="toDetail(item)" class="listItem">
                             <div class="itemTop">
-                                <div>{{item.pumpNo}}<span></span>{{item.pumpNm}}<span></span>{{item.region}}
-                                </div>
-
-                                <img :src="arrowDownBlue" :class="{showMore:item.showMore}"/>
-                            </div>
-                            <div  style="margin-left: 10px;padding-bottom: 10px">
-                                <span style="font-size: 10px;">计划保养开始日期:{{item.planTm}}</span>
-                            </div>
-
-                            <div class="itemContent">
-                                <p><span>计划保养结束日期：</span>{{item.plan2Tm}}</p>
+                                <div>{{item.pumpNo}}<span></span>{{item.pumpNm}}<span></span>{{item.region}}</div>
+                                <p><span>保养时间：</span>{{item.planTm}} 至 {{item.plan2Tm}}</p>
                                 <p><span>保养单位：</span>{{item.unitNm}}</p>
                             </div>
+                            <!--<div  style="margin-left: 10px;padding-bottom: 10px">-->
+                                <!--<span style="font-size: 10px;">计划保养开始日期:{{item.planTm}}</span>-->
+                            <!--</div>-->
+
+                            <!--<div class="itemContent">-->
+                                <!--<p><span>计划保养结束日期：</span>{{item.plan2Tm}}</p>-->
+                                <!--<p><span>保养单位：</span>{{item.unitNm}}</p>-->
+                            <!--</div>-->
                             <!--<van-cell-group>-->
                                 <!--<van-field label="保养单位:" v-model="item.unitNm" readonly :border="false" label-width="140"></van-field>-->
                                 <!--<van-field label="泵房编号:" v-model="item.pumpNo" readonly :border="false" label-width="140"></van-field>-->
@@ -84,7 +84,16 @@
                     pumpNo:'',
                     estateNm:''
                 },
-                tabList: ['待保养', '已保养', '逾期'],
+                tabList: [{
+                    name:'待保养',
+                    total:0
+                },{
+                    name:'已保养',
+                    total:0
+                },{
+                    name:'逾期',
+                    total:0
+                }],
                 tabIndex: 0,
                 searchText: '',
                 active: '',
@@ -98,9 +107,24 @@
         },
         components: {myHeader},
         mounted() {
+            this.getTotal()
             this.getList()
         },
         methods: {
+            getTotal(){
+                this.tabList.forEach(item=>{
+                    let qry = this.query.new();
+                    this.query.toW(qry, 'status', item.name, "EQ");
+                    this.query.toP(qry, 1, 1);
+                    this.api.getMaintainTask(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
+                        if (res.code === 200){
+                            // 加载状态结束
+                           item.total = res.page.total
+                        }
+                    })
+                })
+
+            },
             search(){
                 this.searchShow = false;
                 this.pageNo = 1;
@@ -203,15 +227,13 @@
         margin: 0 auto 0.15rem;
         width: 96%;
         .itemTop{
-            display: flex;
-            align-items: center;
-            height: 1rem;
+            padding: 0.1rem 0;
             width: 95%;
-            margin: 0 auto;
-            div:first-of-type{
-                flex: 1;
+            margin: 0.15rem auto;
+            >div:first-of-type{
                 display: flex;
                 align-items: center;
+                padding: 0.1rem 0;
                 span{
                     display: inline-block;
                     width: 1px;
@@ -228,23 +250,17 @@
                     color: #ffffff;
                     margin-left: 0.2rem;
                 }
-                .red{
-                    background: red;
-                }
-                .green{
-                    background: green;
-                }
             }
-
-            img{
-                width: 0.35rem;
-            }
-            .showMore{
-                transform:rotate(180deg);
-                -ms-transform:rotate(180deg); 	/* IE 9 */
-                -moz-transform:rotate(180deg); 	/* Firefox */
-                -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
-                -o-transform:rotate(180deg); 	/* Opera */
+            >p{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                padding: 0.1rem 0;
+                >span{
+                    width: 1.3rem;
+                    display: inline-block;
+                    flex-shrink: 0;
+                }
             }
         }
         .itemMore{

@@ -7,19 +7,16 @@
             <div v-for="(item,index) in dataList" :key="index" class="listItem">
                 <div class="itemTop" @click="toDetail(item)" >
                     <div>{{item.no}}<span></span>{{item.nm}}<span></span>{{item.region}}</div>
+                    <p><span>分区情况：</span>{{item.partitionSituation}}</p>
+                    <p><span>供水模式：</span>{{item.arg2}}<van-button  size="mini" type="info" @click.stop="toNav(item)" style="margin-left: auto;">去导航</van-button></p>
                 </div>
-                <div  style="margin-left: 10px;padding-bottom: 10px">
-                    <span>分区情况：{{item.partitionSituation}}</span>
-                </div>
-
                 <div class="itemContent">
-                    <p><span>小区名称：</span>{{item.estateNm}}</p>
+                    <!--<p><span>小区名称：</span>{{item.estateNm}}</p>-->
                     <p><span>分区楼层：</span>{{item.partitionFloor}}</p>
-                    <p><span>供水模式：</span>{{item.arg2}}</p>
                     <p><span>物业电话：</span>{{item.propertyPhone}}</p>
                     <p><span>泵房地址：</span>{{item.pumpLocation}}</p>
                     <p><span>路线图：</span><img :src="item.pumpRoute" @click.stop="showImg(item.pumpRoute)" v-if="item.pumpRoute != null && item.pumpRoute !== ''"  width="80" height="80"/></p>
-                    <p><span></span><van-button  size="mini" type="info" @click="toNav(item)">去导航</van-button></p>
+                    <!--<p><span></span><van-button  size="mini" type="info" @click="toNav(item)">去导航</van-button></p>-->
                 </div>
                 <!--<van-cell-group>-->
 <!--&lt;!&ndash;                    <van-field label="泵房编号:" v-model="item.no" readonly :border="false">&ndash;&gt;-->
@@ -263,16 +260,15 @@
         border-radius: 0.1rem;
         margin: 0 auto 0.15rem;
         width: 96%;
+        overflow: hidden;
         .itemTop{
-            display: flex;
-            align-items: center;
-            height: 1rem;
+            padding: 0.1rem 0;
             width: 95%;
-            margin: 0 auto;
-            div:first-of-type{
-                flex: 1;
+            margin: 0.15rem auto;
+            >div:first-of-type{
                 display: flex;
                 align-items: center;
+                padding: 0.1rem 0;
                 span{
                     display: inline-block;
                     width: 1px;
@@ -290,8 +286,18 @@
                     margin-left: 0.2rem;
                 }
             }
+            >p{
+                width: 100%;
+                display: flex;
+                align-items: center;
+                padding: 0.1rem 0;
+                >span{
+                    width: 1.3rem;
+                    display: inline-block;
+                    flex-shrink: 0;
+                }
+            }
         }
-
 
         .itemContent{
             width: 95%;
