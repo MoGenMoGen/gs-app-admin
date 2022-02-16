@@ -2,18 +2,36 @@
     <div id="container">
         <van-sticky>
             <my-header title="泵房档案" :searchStatus='false' @back="back"> </my-header>
-        </van-sticky>
-		<div class="div-search">
-		        <input placeholder="搜索泵房名称" v-model="searchTxt" />
-		</div>
+			<div class="div-search">
+			        <input placeholder="搜索泵房名称" v-model="searchTxt" />
+			</div>
+			<div class="tab">
+			  <ul>
+			    <li v-for="item in zoneList" @click="toChoose(item)" :key="item.id">
+			      <p :class="{ active: tabId == item.id }">
+			        {{ item.nm }}
+			      </p>
+			      <span>{{
+			        item.total
+			      }}</span>
+			    </li>
+			  </ul>
+			</div>
+		</van-sticky>
+	
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="immediate">
             <div v-for="(item,index) in dataList" :key="index" class="listItem">
-                <div class="itemTop" @click="toDetail(item)" >
+                <div class="itemTop"  >
                     <div>{{item.no}}<span></span>{{item.nm}}<span></span>{{item.region}}</div>
                     <p><span>分区情况：</span>{{item.partitionSituation}}</p>
                     <p><span>供水模式：</span>{{item.arg2}}<van-button  size="mini" type="info" @click.stop="toNav(item)" style="margin-left: auto;">去导航</van-button></p>
-                </div>
-                <div class="itemContent">
+					<img
+					  :src="arrowDownBlue"
+					  :class="{ showMore:item.showMore}"
+					  @click="toShowMore(item,index)"
+					/>
+				</div>
+                <div class="itemContent" @click.stop="toDetail(item)" v-if="item.showMore==true">
                     <!--<p><span>小区名称：</span>{{item.estateNm}}</p>-->
                     <p><span>分区楼层：</span>{{item.partitionFloor}}</p>
                     <p><span>物业电话：</span>{{item.propertyPhone}}</p>
@@ -139,12 +157,54 @@
 <script>
     import {ImagePreview,Toast} from 'vant';
     import myHeader from "../../../components/myHeader/myHeader";
+	import arrowDownBlue from "./img/向下.png";
     export default {
         components: {myHeader},
         name: "pump",
         data() {
             return {
+				arrowDownBlue,
+				region:'',
 				searchTxt:'',
+				zoneList: [
+				  {
+				    id: 1,
+				    nm: "全部",
+				    seq: 0,
+				    total: 2134,
+				  },
+				  {
+				    id: 2,
+				    nm: "鄞州区",
+				    seq: 0,
+				    total: 1233,
+				  },
+				  {
+				    id: 3,
+				    nm: "海曙区",
+				    seq: 0,
+				    total: 445,
+				  },
+				  {
+				    id: 4,
+				    nm: "江北区",
+				    seq: 0,
+				    total: 452,
+				  },
+				  {
+				    id: 5,
+				    nm: "镇海区",
+				    seq: 0,
+				    total: 214,
+				  },
+				  {
+				    id: 6,
+				    nm: "北仑区",
+				    seq: 0,
+				    total: 424,
+				  },
+				],
+				tabId: 1,
                 info: {},
                 searchData: {
                     pumpNm: ''
@@ -164,7 +224,9 @@
             };
         },
         mounted() {
+			// this.getRegion()
             this.getList()
+			
         },
 		watch: {
 		  searchTxt(newVal, oldVal) {
@@ -176,6 +238,41 @@
 		  },
 		},
         methods: {
+			toShowMore(item,index){
+				item.showMore=!item.showMore
+			},
+			toChoose(item) {
+			  if (this.tabId != item.id) {
+			    this.tabId = item.id;
+			    this.region = item.nm=='全部'?'':item.nm;
+			    this.finished = false;
+			    this.pageNo = 1;
+			    this.dataList = [];
+			    this.getList()
+			  }
+			},
+			getRegion(){
+			  this.zoneList = [
+			    {
+			      id: 1,
+			      nm: "全部",
+			      total:0,
+			    },
+			  ]
+			  let region = this.store.state.region
+			  this.api.getPumpCount(region).then(res => {
+			    res.data.map(res => {
+			      let a = {
+			        id: res.id,
+			        nm: res.nm,
+			        seq: res.seq,
+			        total: res.arg1,
+			      }
+			      this.zoneList.push(a)
+			      this.zoneList[0].total = this.zoneList[0].total + Number(res.arg1)
+			    })
+			  })
+			},
             getGps(){
                 this.$bridge.callHandler('h5_up_location', "", (res) => {
                     let parse = JSON.parse(res);
@@ -215,7 +312,7 @@
                 this.getList()
             },
             toDetail(item) {
-                this.show = true;
+				this.show=true
                 this.info = item;
                 if (this.info.sxsffk === '1'){
                   this.info.sxsffk = '是'
@@ -230,11 +327,17 @@
                 if (this.searchTxt) {
                     this.query.toW(qry, "nm", this.searchTxt, "LK");
                 }
+				if (this.region) {
+				    this.query.toW(qry, "region", this.region, "LK");
+				}
                 this.query.toP(qry, this.pageNo, this.pageSize);
                 this.query.toO(qry, "no", "asc");
                 this.api.getPumpPage(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
                     if (res.code === 200) {
                         this.dataList.push(...res.data.list);
+						this.dataList.forEach(item=>{
+							this.$set(item,'showMore',false)
+						})
                         // 加载状态结束
                         this.finished = this.dataList.length >= res.page.total;
                         this.loading = false;
@@ -282,6 +385,63 @@
 			font-size: 0.22rem;
 		}
 	}
+	.active {
+	  color: #1177b9 !important;
+	  border-bottom: 1rpx solid #1177b9;
+	}
+	.tab {
+	  height: 0.7rem;
+	  background: white;
+	  // position: fixed;
+	  width: 100vw;
+	  // top: 0.9rem;
+	  border-bottom: 1rpx solid #f4f6f8;
+	  display: flex;
+	  z-index: 10;
+	  box-sizing: border-box;
+	  ul {
+	    width: auto;
+	    overflow-x: auto;
+	    white-space: nowrap;
+	    display: flex;
+	  }
+	
+	  li {
+	    //   flex: 1;
+	    //display: flex;
+	    width: 2rem;
+	    align-items: center;
+	    justify-content: center;
+	
+	    display: flex;
+	    align-items: center;
+	    p {
+	      width: fit-content;
+	      height: 0.69rem;
+	      padding: 0 0.15rem;
+	      display: flex;
+	      align-items: center;
+	      justify-content: center;
+	      font-size: 0.28rem;
+		  color: #808080;
+	    }
+	    span {
+	      // position: absolute;
+	      background: red;
+	      border-radius: 40%;
+	      padding: 0.09rem;
+	      color: #fff;
+	      height:.25rem;
+	      line-height: .25rem;
+	      // right: 0;
+	      // top: 50%;
+	      font-size: 0.22rem;
+	      text-align: center;
+	      min-width: 0.38rem;
+	      // transform: translate(100%, -50%);
+	    }
+	  }
+	}
     .listItem{
         background: #ffffff;
         border-radius: 0.1rem;
@@ -292,6 +452,7 @@
             padding: 0.1rem 0;
             width: 95%;
             margin: 0.15rem auto;
+			position: relative;
             >div:first-of-type{
                 display: flex;
                 align-items: center;
@@ -313,6 +474,19 @@
                     margin-left: 0.2rem;
                 }
             }
+			img {
+			  width: 0.35rem;
+			  position: absolute;
+			  top: 0.1rem;
+			  right: 0.2rem;
+			}
+			.showMore {
+			  transform: rotate(180deg);
+			  -ms-transform: rotate(180deg); /* IE 9 */
+			  -moz-transform: rotate(180deg); /* Firefox */
+			  -webkit-transform: rotate(180deg); /* Safari 和 Chrome */
+			  -o-transform: rotate(180deg); /* Opera */
+			}
             >p{
                 width: 100%;
                 display: flex;

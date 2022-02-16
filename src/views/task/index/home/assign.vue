@@ -10,15 +10,20 @@
                     :immediate-check="immediate"
 
             >
-                <div v-for="item in list" :key="item.id" @click="toDetail(item)" class="listItem">
-                    <div class="itemTop" @click="toDetail(item)" >
+                <div v-for="item in list" :key="item.id"  class="listItem">
+                    <div class="itemTop"  >
                         <div>{{item.pumpNo}}<span></span>{{item.pump}}<span></span>{{item.administrativeDivision}}</div>
-                    </div>
-                    <div  style="margin-left: 10px;padding-bottom: 10px">
+						<img
+						  :src="arrowDownBlue"
+						  :class="{ showMore:item.showMore}"
+						  @click.stop="toShowMore(item,index)"
+						/>
+					</div>
+                    <div style="margin-left: 10px;padding-bottom: 10px">
                         <span>工单号：{{item.id}}</span>
                     </div>
 
-                    <div class="itemContent">
+                    <div class="itemContent" @click="toDetail(item)" v-if="item.showMore==true">
                         <p><span>工单来源：</span>{{item.orderSource}}</p>
                         <p><span>接单单位：</span>{{item.receivingNm}}</p>
                         <p><span>接单部门：</span>{{item.deptNm}}</p>
@@ -56,6 +61,7 @@
 
 <script>
     import detail from "../detail/detail";
+	import arrowDownBlue from "./img/向下.png";
     export default {
         name: "assign",
         components: {detail},
@@ -85,6 +91,9 @@
             }
         },
         methods:{
+			toShowMore(item,index){
+				item.showMore=!item.showMore
+			},
             closeInfo(){
                 this.show=false
             },
@@ -102,6 +111,9 @@
                 this.query.toP(qry, this.pageNo, this.pageSize);
                 this.api.getTaskOrder(encodeURIComponent(this.query.toJsonStr(qry))).then(res=>{
                     this.list.push(...res.data.list)
+					this.list.forEach(item=>{
+						this.$set(item,'showMore',false)
+					})
                     // 加载状态结束
                     if (this.list.length >= res.page.total) {
                         this.finished = true;
@@ -119,7 +131,7 @@
         },
         data(){
             return{
-
+				arrowDownBlue,
                 immediate:false,//初始化不加载必须用变量
                 pageNo:1,
                 pageSize:10,
@@ -149,6 +161,7 @@
         margin: 0 auto 0.15rem;
         width: 96%;
         .itemTop{
+			position: relative;
             display: flex;
             align-items: center;
             height: 1rem;
@@ -175,6 +188,20 @@
                     margin-left: 0.2rem;
                 }
             }
+			img{
+			  width: 0.35rem;
+					position: absolute;
+					top: 0.3rem;
+					right: 0.2rem;
+			}
+			.showMore{
+			  transform:rotate(180deg);
+			  -ms-transform:rotate(180deg); 	/* IE 9 */
+			  -moz-transform:rotate(180deg); 	/* Firefox */
+			  -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+			  -o-transform:rotate(180deg); 	/* Opera */
+			}
+			
         }
 
 

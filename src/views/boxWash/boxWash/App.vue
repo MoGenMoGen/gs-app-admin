@@ -1,31 +1,49 @@
 <template>
   <div id="container">
     <!--<van-sticky>-->
-      <my-header title="水箱清洗" @back="back" @search="searchShow = true"></my-header>
+      <my-header title="水箱清洗" @back="back"></my-header>
+	  <div class="searchBox">
+	  	<div class="div-search">
+	  	        <input placeholder="搜索清洗单位" v-model="searchTxt1" />
+	  	</div>
+	  	<div class="div-search">
+	  	        <input placeholder="搜索泵房编号" v-model="searchTxt2" />
+	  	</div>
+	  	<div class="div-search">
+	  	        <input placeholder="搜索泵房名称" v-model="searchTxt3" />
+	  	</div>
+	  </div>
+	  
     <!--</van-sticky>-->
     <van-tabs v-model="active" color="#1177B9" @change="tabChange">
       <van-tab v-for="item in tabList" :title='item' :key="item">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
                   :immediate-check="immediate">
-          <div v-for="item in dataList" :key="item.id" @click="toDetail(item)" class="listItem">
+          <div v-for="item in dataList" :key="item.id"  class="listItem">
             <div class="itemTop">
               <div>{{item.pumpNo}}<span></span>{{item.pumpNm}}<span></span>{{item.waterArea}}
               </div>
+			  <img
+			    :src="arrowDownBlue"
+			    :class="{ showMore:item.showMore}"
+			    @click.stop="toShowMore(item,index)"
+			  />
 
               <!--<img :src="arrowDownBlue" :class="{showMore:item.showMore}"/>-->
             </div>
             <div  style="margin-left: 10px;padding-bottom: 10px">
               <span style="font-size: 10px;">计划清洗时间:{{item.startTm}}</span>
             </div>
+			
 
-            <div class="itemContent">
+            <div class="itemContent" @click="toDetail(item)" v-if="item.showMore==true">
               <p><span>分区楼层：</span>{{item.partitionFloor}}</p>
               <p><span>供水模式：</span>{{item.arg2}}</p>
               <p><span>清洗单位：</span>{{item.unitNm}}</p>
               <p><span>清洗容积：</span>{{item.washVolume}}</p>
               <p><span>受限空间状态：</span>{{item.confinedStatus == '2' ? '审核通过' : item.confinedStatus == '1' ? '审核中': '未提交'}}</p>
             </div>
-            <van-cell-group style="padding-bottom: 0.2rem;width: 95%;margin: 0 auto">
+            <van-cell-group style="width: 95%;margin: 0 auto">
               <!--<van-field label="泵房编号:" v-model="item.pumpNo" readonly :border="false"-->
                          <!--label-width="120"></van-field>-->
               <!--<van-field label="泵房名称:" v-model="item.pumpNm" readonly :border="false"-->
@@ -189,12 +207,16 @@
 <script>
 import myHeader from "../../../components/myHeader/myHeader";
 import {Dialog, Toast, ImagePreview} from 'vant';
-
+	import arrowDownBlue from "./img/向下.png";
 export default {
   components: {myHeader},
   name: "boxWash",
   data() {
     return {
+		arrowDownBlue,
+		searchTxt1:'',
+		searchTxt2:'',
+		searchTxt3:'',
       info: {},
       val4: [],
       val3: [],
@@ -225,14 +247,33 @@ export default {
       finished: false,
     };
   },
+  watch: {
+    searchTxt1(newVal, oldVal) {
+      this.finished = false;
+      this.pageNo = 1;
+      this.dataList = [];
+      this.getList();
+    },
+	searchTxt2(newVal, oldVal) {
+	  this.finished = false;
+	  this.pageNo = 1;
+	  this.dataList = [];
+	  this.getList();
+	},searchTxt3(newVal, oldVal) {
+      this.finished = false;
+      this.pageNo = 1;
+      this.dataList = [];
+      this.getList();
+    },
+  },
   mounted() {
     this.getList()
   },
 
   methods: {
-
-
-
+	toShowMore(item,index){
+		item.showMore=!item.showMore
+	},
     //审核通过与否
     audit(item,status) {
       Dialog.confirm({
@@ -313,14 +354,14 @@ export default {
     },
     getList() {
       let qry = this.query.new();
-      if (this.searchData.pumpNm) {
-        this.query.toW(qry, "pumpNm", this.searchData.pumpNm, "LK");
+      if (this.searchTxt3) {
+        this.query.toW(qry, "pumpNm", this.searchTxt3, "LK");
       }
-      if (this.searchData.pumpNo) {
-        this.query.toW(qry, "pumpNo", this.searchData.pumpNo, "LK");
+      if (this.searchTxt2) {
+        this.query.toW(qry, "pumpNo", this.searchTxt2, "LK");
       }
-      if (this.searchData.unitNm) {
-        this.query.toW(qry, "unitNm", this.searchData.unitNm, "LK");
+      if (this.searchTxt1) {
+        this.query.toW(qry, "unitNm", this.searchTxt1, "LK");
       }
       if (this.tabIndex === 0) {
         this.query.toW(qry, 'status', '待清洗', "EQ");
@@ -350,6 +391,9 @@ export default {
       this.api.getBoxWashList2(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
         if (res.code === 200) {
           this.dataList.push(...res.data.list);
+		  this.dataList.forEach(item=>{
+		  	this.$set(item,'showMore',false)
+		  })
           // 加载状态结束
           this.finished = this.dataList.length >= res.page.total;
           this.loading = false;
@@ -409,12 +453,34 @@ export default {
     min-height: 100vh;
     background: #F5F2F5;
   }
+  .searchBox{
+	  display: flex;
+	  box-sizing: border-box;
+	  justify-content: space-between;
+	  padding: 0.2rem 0.2rem;
+	  width: 100%;
+	 .div-search {
+	 	width:30%;
+	 	background-color: #f4f6f8;
+	 	text-align: center;
+	 	input{
+	 		width: 80%;
+	 		height: 0.54rem;
+	 		border: 0.02rem solid #e5e5e5;
+	 		border-radius: 0.3rem;
+	 		padding: 0rem 0.2rem;
+	 		font-size: 0.22rem;
+	 	}
+	 } 
+  }
+ 
   .listItem{
     background: #ffffff;
     border-radius: 0.1rem;
     margin: 0 auto 0.15rem;
     width: 96%;
     .itemTop{
+		position: relative;
       display: flex;
       align-items: center;
       height: 1rem;
@@ -450,6 +516,9 @@ export default {
 
       img{
         width: 0.35rem;
+		position: absolute;
+		top: 0.3rem;
+		right: 0.2rem;
       }
       .showMore{
         transform:rotate(180deg);
