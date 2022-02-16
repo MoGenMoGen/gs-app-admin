@@ -1,8 +1,11 @@
 <template>
     <div id="container">
         <van-sticky>
-            <my-header title="泵房档案" @back="back" @search="searchShow = true"> </my-header>
+            <my-header title="泵房档案" :searchStatus='false' @back="back"> </my-header>
         </van-sticky>
+		<div class="div-search">
+		        <input placeholder="搜索泵房名称" v-model="searchTxt" />
+		</div>
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="immediate">
             <div v-for="(item,index) in dataList" :key="index" class="listItem">
                 <div class="itemTop" @click="toDetail(item)" >
@@ -141,6 +144,7 @@
         name: "pump",
         data() {
             return {
+				searchTxt:'',
                 info: {},
                 searchData: {
                     pumpNm: ''
@@ -162,6 +166,15 @@
         mounted() {
             this.getList()
         },
+		watch: {
+		  searchTxt(newVal, oldVal) {
+		    console.log("首次观测");
+		    this.finished = false;
+		    this.pageNo = 1;
+		    this.dataList = [];
+		    this.getList();
+		  },
+		},
         methods: {
             getGps(){
                 this.$bridge.callHandler('h5_up_location', "", (res) => {
@@ -214,8 +227,8 @@
             },
             getList() {
                 let qry = this.query.new();
-                if (this.searchData.pumpNm) {
-                    this.query.toW(qry, "nm", this.searchData.pumpNm, "LK");
+                if (this.searchTxt) {
+                    this.query.toW(qry, "nm", this.searchTxt, "LK");
                 }
                 this.query.toP(qry, this.pageNo, this.pageSize);
                 this.query.toO(qry, "no", "asc");
@@ -255,6 +268,20 @@
         min-height: 100vh;
         background: #F5F2F5;
     }
+	.div-search {
+		width:100%;
+		padding: 0.2rem 0rem;
+		background-color: #f4f6f8;
+		text-align: center;
+		input{
+			width: 80%;
+			height: 0.54rem;
+			border: 0.02rem solid #e5e5e5;
+			border-radius: 0.3rem;
+			padding: 0rem 0.2rem;
+			font-size: 0.22rem;
+		}
+	}
     .listItem{
         background: #ffffff;
         border-radius: 0.1rem;
