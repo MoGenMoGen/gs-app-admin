@@ -1,8 +1,8 @@
 const postImgUrl = "http://118.178.121.34:8080/uploads/";
 // const hostUrl = "https://www.zjfld.net:6143"; //  正式
 
-//const hostUrl = "https://61.130.113.44:6144"; //  二供内网正式
-const hostUrl = "https://dceg.zjfld.net/"; //  二供内网正式
+const hostUrl = "https://61.130.113.44:6144"; //  二供内网正式
+// const hostUrl = "https://dceg.zjfld.net/"; //  二供内网正式
 // const hostUrl = "http://192.168.0.80"; //  测试
 class until {
 
