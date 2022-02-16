@@ -3,15 +3,20 @@
     <div class="main">
         <div class="content">
             <van-list v-model="loading"  :finished="finished"  finished-text="没有更多了" @load="onLoad"  :immediate-check="immediate">
-                <div v-for="item in list" :key="item.id" @click="toDetail(item)" class="listItem">
-                    <div class="itemTop" @click="toDetail(item)" >
+                <div v-for="item in list" :key="item.id"  class="listItem">
+                    <div class="itemTop"  >
                         <div>{{item.pumpNo}}<span></span>{{item.pump}}<span></span>{{item.administrativeDivision}}</div>
+                    <img
+						  :src="arrowDownBlue"
+						  :class="{ showMore:item.showMore}"
+						  @click.stop="toShowMore(item)"
+						/>
                     </div>
                     <div  style="margin-left: 10px;padding-bottom: 10px">
                         <span>工单号：{{item.id}}</span>
                     </div>
 
-                    <div class="itemContent">
+                    <div class="itemContent"  @click="toDetail(item)" v-if="item.showMore==true">
                         <p><span>派单时间</span>{{item.crtTm}}</p>
                         <p><span>工单来源：</span>{{item.orderSource}}</p>
                         <p><span>接单单位：</span>{{item.receivingNm}}</p>
@@ -49,6 +54,7 @@
 <script>
     import detail from "../detail/detail";
     import confirmForm from "../confirmForm/confirmForm";
+	import arrowDownBlue from "./img/down.png";
     export default {
         name: "confirm",
         components:{
@@ -76,6 +82,7 @@
         },
         data(){
             return{
+				arrowDownBlue,
                 show:false,
                 showConfirm:false,
                 comfirmId:'',
@@ -93,6 +100,9 @@
             this.getList()
         },
         methods:{
+            toShowMore(item){
+				item.showMore=!item.showMore
+			},
             closeInfo(){
                 this.show=false
             },
@@ -113,6 +123,9 @@
                 this.query.toP(qry, this.pageNo, this.pageSize);
                 this.api.getTaskOrder2(encodeURIComponent(this.query.toJsonStr(qry))).then(res=>{
                     this.list.push(...res.data.list);
+                    this.list.forEach(item=>{
+						this.$set(item,'showMore',false)
+					})
                     // 加载状态结束
                     this.finished = this.list.length >= res.page.total;
                     this.loading = false;
@@ -140,6 +153,7 @@
         margin: 0 auto 0.15rem;
         width: 96%;
         .itemTop{
+			position: relative;
             display: flex;
             align-items: center;
             height: 1rem;
@@ -166,6 +180,19 @@
                     margin-left: 0.2rem;
                 }
             }
+            img{
+			  width: 0.35rem;
+					position: absolute;
+					top: 0.3rem;
+					right: 0.2rem;
+			}
+			.showMore{
+			  transform:rotate(180deg);
+			  -ms-transform:rotate(180deg); 	/* IE 9 */
+			  -moz-transform:rotate(180deg); 	/* Firefox */
+			  -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+			  -o-transform:rotate(180deg); 	/* Opera */
+			}
         }
 
 

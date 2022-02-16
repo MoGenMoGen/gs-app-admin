@@ -101,7 +101,14 @@ class api {
             });
         });
     }
-
+    //设备保养详情
+    getMaintainDtl(id) {
+        return new Promise((resolve) => {
+            untilApi.get("/gs/maintainTask/info/" + id).then(res => {
+                resolve(res.data)
+            });
+        });
+    }
     //设备维修列表
     getRepairPage(data) {
         return new Promise((resolve, reject) => {

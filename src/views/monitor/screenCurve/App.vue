@@ -47,16 +47,14 @@
             <p :class="{ active: tabId == item.id }">
               {{ item.nm }}
             </p>
-            <span>{{
-              item.total
-            }}</span>
+            <span>{{ item.total }}</span>
           </li>
         </ul>
       </div>
     </van-sticky>
 
     <van-list
-    style="margin-top:4px;"
+      style="margin-top: 4px"
       v-model="loading"
       :finished="finished"
       finished-text="没有更多了"
@@ -728,7 +726,7 @@ export default {
     toChoose(item) {
       if (this.tabId != item.id) {
         this.tabId = item.id;
-        this.searchData.region = item.nm=='全部'?'':item.nm;
+        this.searchData.region = item.nm == "全部" ? "" : item.nm;
         this.finished = false;
         this.pageNo = 1;
         this.dataList = [];
@@ -1012,31 +1010,35 @@ export default {
       height: 0.48rem;
       border-radius: 0.24rem;
       background: #ffffff;
+      width: 50%;
       p,
       input {
-        flex: 1;
+        // flex: 1;
         border: 0;
         text-indent: 0.2rem;
+        background: transparent;
+        width: 90%;
       }
       img {
         margin-right: 0.18rem;
+        width: 0.28rem;
       }
-      &:not(:last-of-type) {
-        width: 50%;
-        img {
-          width: 0.2rem;
-        }
-      }
-      &:last-of-type {
-        width: 50%;
-        input {
-          background: transparent;
-          width: 90%;
-        }
-        img {
-          width: 0.28rem;
-        }
-      }
+      // &:not(:last-of-type) {
+      //   width: 50%;
+      //   img {
+      //     width: 0.2rem;
+      //   }
+      // }
+      // &:last-of-type {
+      //   width: 50%;
+      //   input {
+      //     background: transparent;
+      //     width: 90%;
+      //   }
+      //   img {
+      //     width: 0.28rem;
+      //   }
+      // }
     }
   }
   .active {
@@ -1084,8 +1086,8 @@ export default {
         border-radius: 40%;
         padding: 0.09rem;
         color: #fff;
-        height:.25rem;
-        line-height: .25rem;
+        height: 0.25rem;
+        line-height: 0.25rem;
         // right: 0;
         // top: 50%;
         font-size: 0.22rem;

@@ -56,7 +56,7 @@ export default {
   }
 };
 </script>
-<style lang='less'  scoped>
+<style lang='less'  >
     /*.myHeader{*/
         /*position: fixed;*/
         /*top: 0;*/
@@ -69,13 +69,14 @@ export default {
         background: #1177B9;
     }
     .van-nav-bar {
-        height: 54px;
+        height: 54px !important;
         background: #1177B9;
     }
 
     .van-nav-bar__title {
         max-width: 70%;
         margin: 0 auto;
+        margin-top:0px !important;  
         color: #323233;
         font-weight: 500;
         font-size: 16px;

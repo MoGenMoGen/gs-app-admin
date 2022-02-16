@@ -16,7 +16,7 @@
 						<img
 						  :src="arrowDownBlue"
 						  :class="{ showMore:item.showMore}"
-						  @click.stop="toShowMore(item,index)"
+						  @click.stop="toShowMore(item)"
 						/>
 					</div>
                     <div style="margin-left: 10px;padding-bottom: 10px">
@@ -61,7 +61,7 @@
 
 <script>
     import detail from "../detail/detail";
-	import arrowDownBlue from "./img/向下.png";
+	import arrowDownBlue from "./img/down.png";
     export default {
         name: "assign",
         components: {detail},
@@ -91,7 +91,7 @@
             }
         },
         methods:{
-			toShowMore(item,index){
+			toShowMore(item){
 				item.showMore=!item.showMore
 			},
             closeInfo(){

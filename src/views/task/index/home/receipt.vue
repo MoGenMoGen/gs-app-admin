@@ -3,15 +3,20 @@
     <div class="main">
         <div class="content">
             <van-list v-model="loading" :finished="finished" finished-text="没有更多了"  @load="onLoad" :immediate-check="immediate" >
-                <div v-for="item in list" :key="item.id" @click="toDetail(item)" class="listItem">
-                    <div class="itemTop" @click="toDetail(item)" >
+                <div v-for="item in list" :key="item.id"  class="listItem">
+                    <div class="itemTop"  >
                         <div>{{item.pumpNo}}<span></span>{{item.pump}}<span></span>{{item.administrativeDivision}}</div>
+                   <img
+						  :src="arrowDownBlue"
+						  :class="{ showMore:item.showMore}"
+						  @click.stop="toShowMore(item)"
+						/>
                     </div>
                     <div  style="margin-left: 10px;padding-bottom: 10px">
                         <span>工单号：{{item.id}}</span>
                     </div>
 
-                    <div class="itemContent">
+                    <div class="itemContent" @click="toDetail(item)" v-if="item.showMore==true">
                         <p><span>工单来源：</span>{{item.orderSource}}</p>
                         <p><span>接单单位：</span>{{item.receivingNm}}</p>
                         <p><span>接单部门：</span>{{item.deptNm}}</p>
@@ -42,6 +47,8 @@
 
 <script>
     import orderForm from "../detail/orderForm";
+	import arrowDownBlue from "./img/down.png";
+
     export default {
         name: "complete",
         components:{
@@ -70,6 +77,9 @@
             }
         },
         methods:{
+            toShowMore(item){
+				item.showMore=!item.showMore
+			},
             acceptTask(){
 
             },
@@ -96,7 +106,10 @@
                 this.query.toP(qry, this.pageNo, this.pageSize);
                 this.api.getTaskOrder(encodeURIComponent(this.query.toJsonStr(qry))).then(res=>{
                     this.list.push(...res.data.list);
-                    // 加载状态结束
+                   	this.list.forEach(item=>{
+						this.$set(item,'showMore',false)
+					})
+                   //  加载状态结束
                     this.finished = this.list.length >= res.page.total;
                     this.loading = false;
                     this.pageNo++
@@ -107,6 +120,8 @@
         },
         data(){
             return{
+				arrowDownBlue,
+
                 type:3,
                 detailId:'',
                 immediate:false,//初始化不加载必须用变量
@@ -135,6 +150,8 @@
         width: 96%;
         .itemTop{
             display: flex;
+			position: relative;
+
             align-items: center;
             height: 1rem;
             width: 95%;
@@ -160,6 +177,19 @@
                     margin-left: 0.2rem;
                 }
             }
+            	img{
+			  width: 0.35rem;
+					position: absolute;
+					top: 0.3rem;
+					right: 0.2rem;
+			}
+			.showMore{
+			  transform:rotate(180deg);
+			  -ms-transform:rotate(180deg); 	/* IE 9 */
+			  -moz-transform:rotate(180deg); 	/* Firefox */
+			  -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
+			  -o-transform:rotate(180deg); 	/* Opera */
+			}
         }
 
 

@@ -3,7 +3,7 @@
   <div>
 
     <my-header :title="title" @back="back">
-      <van-icon name="arrow-left" slot="left" color="white" ></van-icon>
+      <!-- <van-icon name="arrow-left" slot="left" color="white" ></van-icon> -->
     </my-header>
     <div class="content">
       <div class="item1">
@@ -286,6 +286,7 @@
       },
       getSize(){
         this.height=window.innerHeight-314
+        console.log(1111,this.height);
       },
       changeDate(){
         // window.console.log(this.currentDate)
@@ -300,6 +301,7 @@
         this.showDate=true
       },
       back(){
+        console.log(111);
         this.until.back()
       },
 
