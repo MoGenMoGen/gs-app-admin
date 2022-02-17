@@ -16,20 +16,11 @@
     <!-- <van-sticky :offset-top="82"> -->
     <!-- <van-sticky > -->
       <div class="search">
-        <!-- <div @click="zoneShow=true">
-                    <p>{{searchData.region?searchData.region : '行政区域'}}</p>
-                    <img :src="arrowDown"/>
-                </div>
-                <div @click="searchShow=true">
-                    <p>{{searchData.pumpNm?searchData.pumpNm : '泵房名称'}}</p>
-                    <img :src="arrowDown"/>
-                </div> -->
-
         <div>
           <input
             placeholder="泵房名称"
             v-model="searchData.pumpNm"
-            @keyup.enter="search"
+            @input="search"
           />
           <img :src="searchImg" />
         </div>
@@ -37,7 +28,7 @@
           <input
             placeholder="泵房编号"
             v-model="searchData.cd"
-            @keyup.enter="search"
+            @input="search"
           />
           <img :src="searchImg" />
         </div>
@@ -48,7 +39,7 @@
             <p :class="{ active: tabId == item.id }">
               {{ item.nm }}
             </p>
-            <span>{{ item.total }}</span>
+            <span>{{ item.arg1 }}</span>
           </li>
         </ul>
       </div>
@@ -668,44 +659,8 @@ export default {
       searchShow: false,
       zoneShow: false,
       pumpList: [],
-      zoneList: [
-        {
-          id: 1,
-          nm: "全部",
-          seq: 0,
-          total: 2134,
-        },
-        {
-          id: 2,
-          nm: "鄞州区",
-          seq: 0,
-          total: 1233,
-        },
-        {
-          id: 3,
-          nm: "海曙区",
-          seq: 0,
-          total: 445,
-        },
-        {
-          id: 4,
-          nm: "江北区",
-          seq: 0,
-          total: 452,
-        },
-        {
-          id: 5,
-          nm: "镇海区",
-          seq: 0,
-          total: 214,
-        },
-        {
-          id: 6,
-          nm: "北仑区",
-          seq: 0,
-          total: 424,
-        },
-      ],
+      zoneList: [ ],
+
       tabId: 1,
       loading: false,
       finished: false,
@@ -719,10 +674,24 @@ export default {
     };
   },
   mounted() {
+    this.getRegionTotal()
     this.getList();
-    this.getPump();
+    //this.getPump();
   },
   methods: {
+    getRegionTotal(){
+
+      this.api.getApiUrl("/gs/monitorLatest/regionTotal")
+          .then((res) => {
+            if (res.code === 200) {
+              console.log(res)
+              this.zoneList = res.data
+            }
+          });
+
+    },
+
+
     //切换tab
     toChoose(item) {
       if (this.tabId != item.id) {
@@ -761,7 +730,7 @@ export default {
       console.log("search");
       //     this.searchShow = false;
       this.pageNo = 1;
-      this.dataList = [];
+
       this.getList();
     },
     searchPump() {
@@ -810,7 +779,6 @@ export default {
     },
     //泵房确定选择
     onConfirm(e) {
-      console.log(e);
       this.searchData.pumpNm = e.nm;
       this.searchShow = false;
       this.finished = false;
@@ -820,9 +788,7 @@ export default {
     },
     //行政区域确定
     zoneConfirm(e) {
-      console.log(e);
       this.searchData.region = e;
-      console.log(this.searchData);
       this.zoneShow = false;
       this.finished = false;
       this.pageNo = 1;
@@ -888,13 +854,14 @@ export default {
       this.$set(this.dataList, index, info);
     },
     getList() {
+      this.dataList = [];
       this.loading = true;
       let qry = this.query.new();
       if (this.searchData.pumpNm) {
         this.query.toW(qry, "pumpNm", this.searchData.pumpNm, "LK");
       }
       if (this.searchData.region) {
-        this.query.toW(qry, "region", this.searchData.region, "LK");
+        this.query.toW(qry, "waterArea", this.searchData.region, "EQ");
       }
       if (this.searchData.cd) {
         this.query.toW(qry, "pumpNo", this.searchData.cd, "LK");

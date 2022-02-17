@@ -1,56 +1,41 @@
 <template>
   <!--    完成工单-->
-  <div>
+  <div class="main">
     <div class="content">
-      <van-list
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-        :immediate-check="immediate"
-      >
+      <van-list  v-model="loading" :finished="finished"  finished-text="没有更多了"
+                 @load="onLoad"  :immediate-check="immediate" >
         <div v-for="item in list" :key="item.id" class="listItem">
           <div class="itemTop">
-            <div>
-              {{ item.pumpNo }}<span></span>{{ item.pump }}<span></span
-              >{{ item.administrativeDivision }}
-            </div>
-            <img
-              :src="arrowDownBlue"
-              :class="{ showMore: item.showMore }"
-              @click.stop="toShowMore(item)"
-            />
+            <div>{{ item.pumpNo }}<span></span>{{ item.pump }}<span></span>{{ item.administrativeDivision }}</div>
+            <img :src="arrowDownBlue"  :class="{ showMore:item.showMore}"  @click.stop="toShowMore(item)" />
           </div>
-          <div style="margin-left: 10px; padding-bottom: 10px">
-            <span>工单号：{{ item.id }}</span>
+          <div style="margin-left: 10px;padding-bottom: 10px">
+            <span>派单时间: {{ item.crtTm }}</span>
           </div>
-
-          <div
-            class="itemContent"
-            @click="toDetail(item)"
-            v-if="item.showMore == true"
-          >
+          <div style="margin-left: 10px;padding-bottom: 10px">
+            <span>问题类别: {{ item.fault }}</span>
+          </div>
+          <div style="margin-left: 10px;padding-bottom: 10px">
+            <span>接单单位: {{ item.receivingNm }}</span>
+          </div>
+          <div style="margin-left: 10px;padding-bottom: 10px">
+            <span>接单部门: {{ item.deptNm }}</span>
+          </div>
+          <div class="itemContent" @click="toDetail(item)" v-if="item.showMore==true">
+            <p><span>工单编号：</span>{{ item.id }}</p>
             <p><span>工单来源：</span>{{ item.orderSource }}</p>
-            <p><span>接单单位：</span>{{ item.receivingNm }}</p>
-            <p><span>接单部门：</span>{{ item.deptNm }}</p>
-            <p><span>处理状态：</span>{{ item.status | statusFilter }}</p>
-            <p><span>问题类别：</span>{{ item.fault }}</p>
-            <p><span>派单部门：</span>{{ item.dispatchDepartment }}</p>
-            <p><span>派单时间</span>{{ item.crtTm }}</p>
+            <p><span>发生地址：</span>{{ item.occurrenceAddress }}</p>
+            <p><span>处理时限：</span>{{item.processingDeadline}}</p>
+            <p><span>反映人：</span>{{item.reflecting}}</p>
+            <p><span>联系电话：</span>{{item.reflectingPhone}}</p>
+            <p><span>问题详情：</span>{{item.problem}}</p>
+            <p><span>派单部门：</span>{{item.dispatchDepartment}}</p>
+            <p><span>派单人：</span>{{item.sendUser}}</p>
+            <p><span>接单备注：</span>{{item.remarks}}</p>
           </div>
-          <!--<div class="item"><span>工单号：</span><p>{{item.id}}</p></div>-->
-          <!--<div class="item"><span>工单来源：</span><p>{{item.orderSource}}</p></div>-->
-          <!--<div class="item"><span>接单单位：</span><p>{{item.receivingNm}}</p></div>-->
-          <!--<div class="item"><span>接单部门：</span><p>{{item.deptNm}}</p></div>-->
-          <!--<div class="item"><span>泵房编号：</span><p>{{item.pumpNo}}</p></div>-->
-          <!--<div class="item"><span>泵房名称：</span><p>{{item.pump}}</p></div>-->
-          <!--<div class="item"><span>处理状态：</span><p>{{item.status | statusFilter}}</p></div>-->
-          <!--<div class="item"><span>问题类别：</span><p>{{item.fault}}</p></div>-->
-          <!--<div class="item"><span>派单部门：</span><p>{{item.dispatchDepartment}}</p></div>-->
-          <!--<div class="item"><span>派单时间：</span><p>{{item.crtTm}}</p></div>-->
-          <!--<img src="./img/arrow.png" >-->
         </div>
       </van-list>
+
     </div>
 
     <van-popup v-model="show" position="top" :styles="{ height: '100%' }">
@@ -179,6 +164,10 @@ export default {
 </script>
 
 <style scoped lang="less">
+.van-list {
+  margin-top: 0.15rem;
+}
+
 .main {
   min-height: 100vh;
   background: #f5f2f5;

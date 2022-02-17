@@ -1,14 +1,17 @@
 <template>
-  <div class="login">
+  <div class="login" :style="{background: 'url('+bg+') no-repeat'}">
     <div class="form">
-      <div style="height: 200px"></div>
-      <van-row gutter="10">
-        <van-col span="3">
-          <van-icon :name="logo" size="20"></van-icon>
-        </van-col>
-        <van-col span="21"><p class="p" style="white-space: nowrap">宁波二次供水智慧管理</p></van-col>
-      </van-row>
-      <div style="height: 50px"></div>
+      <div style="height: 150px"></div>
+
+      <div style="margin: 0 auto;width: 32px">
+          <img :src="logo">
+      </div>
+      <div style="height: 20px"></div>
+      <div>
+        <p class="p" style="white-space: nowrap">{{title}}</p>
+      </div>
+
+      <div style="height: 20px"></div>
       <van-field left-icon="contact" v-model="form.username" label="|" placeholder="请输入用户名"
                  label-width="20"></van-field>
       <div style="height: 10px"></div>
@@ -34,7 +37,6 @@
 <script type="text/ecmascript-6">
 import userIcon from "./img/user-icon.png";
 import pwdIcon from "./img/pwd-icon.png";
-import logo from "./img/logo.png";
 import {Toast} from 'vant';
 import CryptoJS from 'crypto-js'
 import sidentify from "./sidentify";
@@ -44,8 +46,10 @@ export default {
     return {
       userIcon,
       pwdIcon,
-      logo,
+      logo:'',
+      bg:'',
         passwordType:true,
+      title:'',
       identifyCode: '',
       form: {
         username: "",
@@ -56,10 +60,27 @@ export default {
     };
   },
   mounted() {
+    this.getInfo()
     this.refreshCode()
     this.getForm();
   },
   methods: {
+
+    getInfo(){
+      //标题
+      this.api.getUrl('/sys/show/info/4342212067988480').then(res => {
+        this.title = res.data.nm
+      })
+      //logo
+      this.api.getUrl('/sys/show/info/5835575343272960').then(res => {
+        this.logo = res.data.nm
+      })
+      //背景
+      this.api.getUrl('/sys/show/info/5835666987930624').then(res => {
+        this.bg = res.data.nm
+      })
+
+    },
 
     // 生成一个随机数
     randomNum(min, max) {
@@ -201,7 +222,7 @@ export default {
 }
 
 .login {
-  background: url("./img/bg.png") no-repeat;
+  //background: url("./img/bg.png") no-repeat;
   height: calc(100vh);
   background-size: cover;
 }

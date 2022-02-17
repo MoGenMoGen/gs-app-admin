@@ -6,7 +6,7 @@
                 <span style="color: white">{{title}}</span>
             </slot>
             <slot slot="left"  name="left">
-                <van-icon  name="arrow-left" color="#ffffff" size="25" @click="back"></van-icon>
+                <van-icon v-if="showLeft"  name="arrow-left" color="#ffffff" size="25" @click="back"></van-icon>
             </slot>
             <slot slot="right"  name="right">
                 <van-icon v-if="addStatus" style="margin-right: 20px"  name="plus" color="#ffffff" size="25" @click="add"></van-icon>
@@ -76,7 +76,7 @@ export default {
     .van-nav-bar__title {
         max-width: 70%;
         margin: 0 auto;
-        margin-top:0px !important;  
+        margin-top:0px !important;
         color: #323233;
         font-weight: 500;
         font-size: 16px;

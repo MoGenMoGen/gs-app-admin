@@ -152,13 +152,15 @@ export default {
 
     //接单
     acceptTask() {
-      let dept = this.until.loGet("deptId");
-      if (this.info.deptId != dept){
-        return Toast('非本部门工单，无法操作');
-      }
+      // let dept = this.until.loGet("deptId");
+      // if (this.info.deptId != dept){
+      //   return Toast('非本部门工单，无法操作');
+      // }
       this.api.orderReceipt(this.id).then(res => {
         if (res.code === 200) {
           this.info.status2 = 2;
+        }else {
+          return Toast(res.msg);
         }
       })
     },

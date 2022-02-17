@@ -181,6 +181,16 @@ class api {
             });
         });
     }
+    getApiUrl(url){
+        return new Promise((resolve, reject) => {
+            untilApi.get(url).then(res => {
+                if (res.code === 200) {
+                    resolve(res);
+                }
+            });
+        });
+    }
+
 
     //获取前期验收
     getAcceptList(data) {

@@ -1,7 +1,9 @@
 <template>
   <div id="container">
-<!--    <main-header :title="title"></main-header>-->
-    <van-nav-bar  title="个人中心"  />
+<!--    <van-nav-bar  title="个人中心"  />-->
+    <my-header title="个人中心" :search-status="false" :showLeft="false">    </my-header>
+<!--      <van-icon name="arrow-left" ></van-icon>-->
+
     <div class="account">
       <div class="avatar-info">
         <div class="avatar-img">
@@ -18,11 +20,11 @@
               <span>{{info.mob}}</span>
             </p>
             <p>
-              <span>单位：</span>
+              <span>部门：</span>
               <span>{{info.arg2}}</span>
             </p>
           </div>
-          <img :src="arrow" alt />
+<!--          <img :src="arrow" alt />-->
         </div>
       </div>
       <div class="change-pwd">
@@ -51,12 +53,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import { Dialog ,Toast } from 'vant';
+  import {Toast } from 'vant';
 import aboutUs from "./img/about-us.png";
 import arrow from "./img/arrow-right.png";
 import avatar from "./img/avatar.png";
 import changePwd from "./img/change-pwd.png";
-
+  import myHeader from "../../../components/myHeader/myHeader";
 export default {
   data() {
     return {
@@ -102,7 +104,7 @@ export default {
       });
     }
   },
-  components: {}
+  components: {myHeader}
 };
 </script>
 
