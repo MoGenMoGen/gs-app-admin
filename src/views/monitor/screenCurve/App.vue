@@ -10,7 +10,7 @@
       <echarts-show ref="echarts"></echarts-show>
     </van-popup>
     <van-sticky>
-      <my-header title="实时监控" @back="back" :searchStatus="false">
+      <my-header title="泵房监控" @back="back" :searchStatus="false">
       </my-header>
     <!-- </van-sticky> -->
     <!-- <van-sticky :offset-top="82"> -->
@@ -56,7 +56,7 @@
       <div v-for="(item, index) in dataList" :key="item.id" class="listItem">
         <div class="itemTop" @click="toDetail(item)">
           <div>
-            {{ item.pumpNo }}<span></span>{{ item.pumpNm }}<span></span
+            {{ item.pumpNo }}<span></span>{{ item.pumpNm }}{{item.nm}}<span></span
             >{{ item.region }}
             <!--<p v-if="item.status==1" class="green">在线</p>-->
             <!--<p v-if="item.status==0" class="red">离线</p>-->
@@ -77,7 +77,8 @@
           >
         </div>
 
-        <div class="itemContent" v-show="!item.showMore">
+        <!-- <div class="itemContent" v-show="!item.showMore"> -->
+        <div class="itemContent" >
           <p @click="toShow(item.pumpNo, 'outPressure', '出水压力', item)">
             <span>出水压力：</span>{{ item.outPressure }}
           </p>
