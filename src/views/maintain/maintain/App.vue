@@ -398,7 +398,7 @@ export default {
   .search {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     width: 100%;
     background: #f5f2f5;
     padding: 0.25rem 2%;
@@ -411,8 +411,7 @@ export default {
       height: 0.48rem;
       border-radius: 0.24rem;
       background: #ffffff;
-      width: 33.3%;
-
+      width: 31%;
       p,
       input {
         // flex: 1;

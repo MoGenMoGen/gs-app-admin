@@ -1,9 +1,11 @@
 <template>
     <div id="container">
         <van-sticky>
-            <my-header title="视频监控" @back="back" @search="searchShow = true"></my-header>
+            <my-header title="视频监控" @back="back" :searchStatus='false'></my-header>
         </van-sticky>
-
+		<div class="div-search">
+		        <input placeholder="搜索摄像头名称" v-model="searchTxt" />
+		</div>
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
                   :immediate-check="immediate">
             <div v-for="item in dataList" :key="item.id" @click="toDetail(item)">
@@ -49,7 +51,7 @@
         data() {
             return {
                 hls: null,
-
+				searchTxt:'',//搜索字段
                 videoUrl: "",
                 cameraName: "",
                 canPlay: true,
@@ -74,7 +76,14 @@
             };
         },
         components: {myHeader},
-        watch: {},
+        watch: {
+          searchTxt(newVal, oldVal) {
+            this.finished = false;
+            this.pageNo = 1;
+            this.dataList = [];
+            // this.getList();
+          },
+        },
         computed: {
 
         },
@@ -175,7 +184,7 @@
             getList() {
                 let qry = this.query.new();
                 if (this.searchData.pumpNm) {
-                    this.query.toW(qry, "cameraName", this.searchData.pumpNm, "LK");
+                    this.query.toW(qry, "cameraName", this.searchTxt, "LK");
                 }
                 this.query.toP(qry, this.pageNo, this.pageSize);
                 this.api.getSysPumpCameraPage(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
@@ -206,7 +215,20 @@
         justify-content: center;
         height: 100%;
     }
-
+	.div-search{
+		width:100%;
+		padding: 0.2rem 0rem;
+		background-color: #f4f6f8;
+		text-align: center;
+		input{
+			width: 80%;
+			height: 0.54rem;
+			border: 0.02rem solid #e5e5e5;
+			border-radius: 0.3rem;
+			padding: 0rem 0.2rem;
+			font-size: 0.22rem;
+		}
+	}
     .van-nav-bar {
         z-index: 999;
         background-color: #1177B9;

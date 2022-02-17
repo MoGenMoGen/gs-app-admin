@@ -305,6 +305,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
 .van-cell {
   line-height: normal;
   padding: 8px 16px;
@@ -377,6 +378,16 @@ export default {
       justify-content: center;
       font-size: 0.28rem;
       color: #808080;
+
+	.van-button--info {
+		    color: #1989fa;
+		    background-color: #ffffff;
+		    border: 0px solid #1989fa;
+	}
+    .van-cell {
+        line-height: normal;
+        padding: 8px 16px;
+
     }
 
     span {
@@ -395,6 +406,7 @@ export default {
       // transform: translate(100%, -50%);
     }
   }
+}
 }
 
 .listItem {
@@ -484,5 +496,6 @@ export default {
 
   }
 }
+
 </style>
 

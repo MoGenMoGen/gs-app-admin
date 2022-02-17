@@ -1,7 +1,7 @@
 <template>
   <div id="container">
     <!--<van-sticky>-->
-      <my-header title="水箱清洗" @back="back"></my-header>
+      <my-header title="水箱清洗" @back="back" :searchStatus='false'></my-header>
 	  <div class="searchBox">
 	  	<div class="div-search">
 	  	        <input placeholder="搜索清洗单位" v-model="searchTxt1" />
@@ -17,6 +17,7 @@
     <!--</van-sticky>-->
     <van-tabs v-model="active" color="#1177B9" @change="tabChange">
       <van-tab v-for="item in tabList" :title='item' :key="item">
+		   <template #title> {{item}} <p>11</p></template>
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
                   :immediate-check="immediate">
           <div v-for="item in dataList" :key="item.id"  class="listItem">
@@ -409,11 +410,16 @@ export default {
 ;
 </script>
 
-<style lang="less" scoped>
+<style lang="less" >
 .van-cell {
   line-height: normal;
 
 }
+
+	/deep/.van-tab__text--ellipsis{
+		display: flex !important;
+		overflow: visible !important;
+	}
 
 .van-nav-bar {
   z-index: 999;

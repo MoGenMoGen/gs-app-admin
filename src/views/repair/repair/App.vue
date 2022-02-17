@@ -4,8 +4,10 @@
 <!--        <van-nav-bar fixed title="设备维修" @click-left="back" left-arrow @click-right="searchShow = true">-->
 <!--            <van-icon name="search" slot="right"></van-icon>-->
 <!--        </van-nav-bar>-->
-        <my-header title="设备维修" @back="back" @search="searchShow = true"> </my-header>
-
+        <my-header title="设备维修" @back="back"  :searchStatus='false'> </my-header>
+		<div class="div-search">
+		        <input placeholder="请输入泵房名称" v-model="searchTxt" />
+		</div>
         <van-tabs v-model="active" color="#1177B9" @change="tabChange">
             <van-tab v-for="item in tabList" :title='item' :key="item">
                 <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" :immediate-check="immediate">
@@ -161,6 +163,7 @@
         data() {
             return {
                 action: false,
+				searchTxt:'',
                 info: {
                     opinion1:'',
                     opinion2:'',
@@ -190,6 +193,14 @@
         mounted() {
             this.getList()
         },
+		watch: {
+		  searchTxt(newVal, oldVal) {
+		    this.finished = false;
+		    this.pageNo = 1;
+		    this.dataList = [];
+		    // this.getList();
+		  },
+		},
         methods: {
             upd(val) {
                 Dialog.confirm({
@@ -298,8 +309,8 @@
             getList() {
                 let qry = this.query.new();
                 this.query.toO(qry, "applicantTm", "desc");
-                if (this.searchData.pumpNm) {
-                    this.query.toW(qry, "pumpNm", this.searchData.pumpNm, "LK");
+                if (this.searchTxt) {
+                    this.query.toW(qry, "pumpNm",this.searchTxt , "LK");
                 }
                 if (this.tabIndex === 0) {
                     this.query.toW(qry, 'allStatus', 0, "EQ");
@@ -338,6 +349,20 @@
         min-height: 100vh;
         background: #F5F2F5;
     }
+	.div-search {
+		width:100%;
+		padding: 0.2rem 0rem;
+		background-color: #f4f6f8;
+		text-align: center;
+		input{
+			width: 80%;
+			height: 0.54rem;
+			border: 0.02rem solid #e5e5e5;
+			border-radius: 0.3rem;
+			padding: 0rem 0.2rem;
+			font-size: 0.22rem;
+		}
+	}
     .listItem{
         background: #ffffff;
         border-radius: 0.1rem;
