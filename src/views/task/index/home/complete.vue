@@ -113,6 +113,8 @@ export default {
       let qry = this.query.new();
       this.query.toO(qry, "crtTm", "desc");
       this.query.toW(qry, "status", "4,5", "IN");
+      this.query.toW(qry, "orderSource", this.orderSource, "EQ");
+      this.query.toW(qry, "receivingNm", this.receivingNm, "EQ");
       this.query.toP(qry, this.pageNo, this.pageSize);
       this.api
         .getTaskOrder(encodeURIComponent(this.query.toJsonStr(qry)))
@@ -148,6 +150,30 @@ export default {
       show: false,
       list: [],
     };
+  },
+  props: {
+    orderSource: {
+      type: String,
+      default: "",
+    },
+    receivingNm: {
+      type: String,
+      default: "",
+    },
+    // status: {
+    //   type: String,
+    //   default: "",
+    // },
+  },
+  watch: {
+    orderSource() {
+      (this.pageNo = 1), (this.list = []);
+      this.getList();
+    },
+    receivingNm() {
+      (this.pageNo = 1), (this.list = []);
+      this.getList();
+    },
   },
 };
 </script>

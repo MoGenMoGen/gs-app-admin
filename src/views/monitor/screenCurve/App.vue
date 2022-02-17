@@ -12,8 +12,9 @@
     <van-sticky>
       <my-header title="实时监控" @back="back" :searchStatus="false">
       </my-header>
-    </van-sticky>
-    <van-sticky :offset-top="82">
+    <!-- </van-sticky> -->
+    <!-- <van-sticky :offset-top="82"> -->
+    <!-- <van-sticky > -->
       <div class="search">
         <!-- <div @click="zoneShow=true">
                     <p>{{searchData.region?searchData.region : '行政区域'}}</p>
@@ -1001,7 +1002,7 @@ export default {
     justify-content: space-between;
     width: 100%;
     background: #f5f2f5;
-    padding: 0.25rem 2%;
+    padding: 0.15rem 2%;
     box-sizing: border-box;
     > div {
       display: flex;

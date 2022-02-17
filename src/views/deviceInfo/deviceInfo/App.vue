@@ -1,11 +1,22 @@
 <template>
   <div id="container">
-    <my-header title="设备信息" @back="back" :searchStatus="false">
-    </my-header>
-    <div class="inputbox">
-      <div class="input_title">泵房名称</div>
-      <input type="text"  v-model="searchData.pumpNm" placeholder="请输入泵房名称" @input='search' />
-    </div>
+    <van-sticky>
+      <my-header title="设备信息" @back="back" :searchStatus="false">
+      </my-header>
+      <div style="padding:.15rem 0;background:#f5f2f5">
+        <div class="inputbox">
+        <div class="input_title">泵房名称</div>
+        <input
+          type="text"
+          v-model="searchData.pumpNm"
+          placeholder="请输入泵房名称"
+          @input="search"
+        />
+      </div>
+      </div>
+      
+    </van-sticky>
+
     <van-list
       v-model="loading"
       :finished="finished"
@@ -14,7 +25,7 @@
       :immediate-check="immediate"
     >
       <div
-        v-for="(item, index) in dataList"
+        v-for="(item, index) in [...dataList,...dataList]"
         :key="index"
         @click="toDetail(item)"
         class="listItem"
@@ -166,8 +177,8 @@ export default {
   },
   methods: {
     search() {
-    //   this.searchShow = false;
-    console.log(111111111111111,this.searchData.pumpNm);
+      //   this.searchShow = false;
+      console.log(111111111111111, this.searchData.pumpNm);
       this.pageNo = 1;
       this.dataList = [];
       this.getList();
@@ -187,9 +198,9 @@ export default {
       if (this.searchData.pumpNm) {
         this.query.toW(qry, "pumpNm", this.searchData.pumpNm, "LK");
       }
-    //   if (this.searchData.alias) {
-    //     this.query.toW(qry, "alias", this.searchData.alias, "LK");
-    //   }
+      //   if (this.searchData.alias) {
+      //     this.query.toW(qry, "alias", this.searchData.alias, "LK");
+      //   }
       this.query.toP(qry, this.pageNo, this.pageSize);
       this.api
         .getPumpDevicePage(encodeURIComponent(this.query.toJsonStr(qry)))
@@ -220,29 +231,29 @@ export default {
 <style lang="less" scoped>
 .inputbox {
   width: 96%;
-  margin: 0.4rem auto;
-  border-radius: 0.8rem;
-  height: 0.8rem;
+  margin: 0rem auto;
+  border-radius: 0.52rem;
+  height: 0.52rem;
   border: 1px solid #d5d5d5;
   display: flex;
-  background:#fff;
+  background: #fff;
   .input_title {
     width: 28%;
     padding-left: 0.2rem;
     box-sizing: border-box;
-    height: 0.8rem;
-    line-height: 0.8rem;
-    border-right:1px solid #d5d5d5;
-    color:#303030;
+    height: 0.52rem;
+    line-height: 0.52rem;
+    border-right: 1px solid #d5d5d5;
+    color: #303030;
   }
   input {
     flex: 1;
     padding-left: 0.2rem;
-    height: 0.8rem;
-    line-height: 0.8rem;
-    border:none;
-    border-top-right-radius: .8rem;
-    border-bottom-right-radius: .8rem;
+    height: 0.52rem;
+    line-height: 0.52rem;
+    border: none;
+    border-top-right-radius: 0.52rem;
+    border-bottom-right-radius: 0.52rem;
   }
 }
 .van-cell {
@@ -250,7 +261,7 @@ export default {
   padding: 8px 16px;
 }
 .van-list {
-  margin-top: 0.15rem;
+  // margin-top: 0.15rem;
 }
 #container {
   min-height: 100vh;
