@@ -58,7 +58,7 @@
       >
         <div class="itemTop">
           <div>
-            {{ item.pumpNo }}<span></span>{{ item.pumpNm }}<span></span
+            {{ item.pumpNo }}<span></span>{{ item.pumpNm }} {{ item.zoning }}<span></span
           >{{ item.region }}
           </div>
           <p>
