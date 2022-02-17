@@ -24,7 +24,7 @@
         <div class='top-header'> </div>
         <van-nav-bar left-arrow>
             <slot slot="title"  name="title">
-                <van-search style="margin-top: 20px" @input="searchPump" @focus="show = true" v-model="value" shape="round" background="#1177B9"
+                <van-search style="margin-top: 8px" @input="searchPump" @focus="show = true" v-model="value" shape="round" background="#1177B9"
                             placeholder="搜索泵房名称"></van-search>
             </slot>
 

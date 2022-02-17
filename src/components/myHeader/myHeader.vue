@@ -57,12 +57,6 @@ export default {
 };
 </script>
 <style lang='less'>
-/*.myHeader{*/
-/*position: fixed;*/
-/*top: 0;*/
-/*left: 0;*/
-/*width: 100%;*/
-/*}*/
 .top-header {
   height: 0.5rem;
   width: 100%;
