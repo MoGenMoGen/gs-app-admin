@@ -11,7 +11,7 @@
             <p :class="{ active: tabId == item.id }">
               {{ item.nm }}
             </p>
-            <span>{{ item.arg1 }}</span>
+            <van-tag round type="danger">{{ item.arg1 }}</van-tag>
           </li>
         </ul>
       </div>
@@ -43,8 +43,13 @@
       </div>
     </van-list>
     <!--详情弹窗-->
-    <van-popup v-model="show" position="bottom" :style="{ height: '90%' }" closeable round close-icon="close">
-      <van-cell-group style="margin-top: 50px">
+    <van-popup v-model="show" position="right" :style="{ height: '100%',width:'100%' }">
+      <van-sticky>
+        <my-header title="详情" @back="show = false" :searchStatus='false'></my-header>
+      </van-sticky>
+
+
+      <van-cell-group>
         <van-field v-model="info.no" label="泵房编号:" readonly label-width="120"></van-field>
         <van-field v-model="info.nm" label="泵房名称:" readonly label-width="120"></van-field>
         <van-field v-model="info.guarantee" label="是否过保:" readonly label-width="120"></van-field>
@@ -92,9 +97,9 @@
 
 
         <van-field label="泵房图片路线图:" readonly label-width="120"></van-field>
-        <van-image width="100" height="100" :src="info.pumpImg1" @click="showImg(info.pumpImg1)"></van-image>
-        <van-image width="100" height="100" :src="info.pumpImg2" @click="showImg(info.pumpImg2)"></van-image>
-        <van-image width="100" height="100" :src="info.pumpRoute" @click="showImg(info.pumpRoute)"></van-image>
+        <van-image width="100" height="100" v-if="info.pumpImg1" :src="info.pumpImg1" @click="showImg(info.pumpImg1)"></van-image>
+        <van-image width="100" height="100" v-if="info.pumpImg2" :src="info.pumpImg2" @click="showImg(info.pumpImg2)"></van-image>
+        <van-image width="100" height="100" v-if="info.pumpRoute" :src="info.pumpRoute" @click="showImg(info.pumpRoute)"></van-image>
         <van-field v-model="info.equipmentNm" label="设备供应商:" readonly label-width="120"></van-field>
         <van-field v-model="info.equipmentPhone" label="设备联系人及电话:" readonly label-width="150"></van-field>
         <van-field v-model="info.lnspectionNm" label="巡检单位:" readonly label-width="120"></van-field>
@@ -172,15 +177,12 @@ export default {
   methods: {
 
     getRegionTotal(){
-
       this.api.getApiUrl("/gs/pump/regionTotal")
           .then((res) => {
             if (res.code === 200) {
-              console.log(res)
               this.zoneList = res.data
             }
           });
-
     },
 
     toShowMore(item, index) {
@@ -192,31 +194,14 @@ export default {
         this.region = item.nm == '全部' ? '' : item.nm;
         this.finished = false;
         this.pageNo = 1;
+        this.pageSize = 10;
         this.dataList = [];
-        this.getList()
+        setTimeout(() =>{
+          this.getList()
+        },1000);
+
+
       }
-    },
-    getRegion() {
-      this.zoneList = [
-        {
-          id: 1,
-          nm: "全部",
-          total: 0,
-        },
-      ]
-      let region = this.store.state.region
-      this.api.getPumpCount(region).then(res => {
-        res.data.map(res => {
-          let a = {
-            id: res.id,
-            nm: res.nm,
-            seq: res.seq,
-            total: res.arg1,
-          }
-          this.zoneList.push(a)
-          this.zoneList[0].total = this.zoneList[0].total + Number(res.arg1)
-        })
-      })
     },
     getGps() {
       this.$bridge.callHandler('h5_up_location', "", (res) => {

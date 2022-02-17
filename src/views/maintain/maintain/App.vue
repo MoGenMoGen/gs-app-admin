@@ -284,7 +284,9 @@ export default {
         this.finished = false;
         this.pageNo = 1;
         this.dataList = [];
-        this.getList()
+        setTimeout(() =>{
+          this.getList()
+        },1000);
       }
     },
 
@@ -331,9 +333,14 @@ export default {
 
 <style lang="less" scoped>
 #container {
+  min-height: 600vh;
+  background: #F5F2F5;
+}
+
+#container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 600vh;
   .tab {
     height: 0.7rem;
     background: white;
@@ -372,22 +379,6 @@ export default {
         font-size: 0.28rem;
         color: #808080;
       }
-
-      //span {
-      //  // position: absolute;
-      //  background: red;
-      //  border-radius: 40%;
-      //  padding: 0.09rem;
-      //  color: #fff;
-      //  height: .25rem;
-      //  line-height: .25rem;
-      //  // right: 0;
-      //  // top: 50%;
-      //  font-size: 0.22rem;
-      //  text-align: center;
-      //  min-width: 0.38rem;
-      //  // transform: translate(100%, -50%);
-      //}
     }
   }
   .active {
@@ -481,10 +472,10 @@ export default {
   color: white;
 }
 
-#container {
-  min-height: 100vh;
-  background: #f5f2f5;
-}
+//#container {
+//  min-height: 100vh;
+//  background: #f5f2f5;
+//}
 
 .listItem {
   background: #ffffff;
