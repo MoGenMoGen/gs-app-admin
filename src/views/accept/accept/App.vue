@@ -1,11 +1,16 @@
 <template>
   <div id="container">
     <van-sticky>
-      <my-header title="前期验收" @back="back" @search="searchShow = true"></my-header>
-      <van-tabs v-model="active"  @change="tabChange">
+      <my-header title="前期验收" @back="back" :searchStatus='false'></my-header>
+      <div class="div-search">
+      		  <input placeholder="搜索前期编号" v-model="searchTxt1"/>
+        <input placeholder="搜索泵房名称" v-model="searchTxt2"/>
+      </div>
+	  <van-tabs v-model="active"  @change="tabChange">
         <van-tab title="未转入泵房" name="0"></van-tab>
         <van-tab title="已转入泵房" name="1"></van-tab>
       </van-tabs>
+	
     </van-sticky>
 
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
@@ -233,6 +238,8 @@ export default {
   components: {myHeader, e2, e4, e6, e5, e11, e10, e9, e7, e12, e13, e3},
   data() {
     return {
+		searchTxt1:'',
+		searchTxt2:'',
       id: '',
       info: {},
       show1: false,
@@ -264,6 +271,20 @@ export default {
       immediate: false,//初始化不加载必须用变量
       finished: false,
     };
+  },
+  watch: {
+    searchTxt1(newVal, oldVal) {
+      this.finished = false;
+      this.pageNo = 1;
+      this.dataList = [];
+      this.getList();
+    },
+	searchTxt2(newVal, oldVal) {
+	  this.finished = false;
+	  this.pageNo = 1;
+	  this.dataList = [];
+	  this.getList();
+	},
   },
   mounted() {
     this.getList()
@@ -354,11 +375,11 @@ export default {
     },
     getList() {
       let qry = this.query.new();
-      if (this.searchData.pumpNm) {
-        this.query.toW(qry, "pumpNm", this.searchData.pumpNm, "LK");
+      if (this.searchTxt2) {
+        this.query.toW(qry, "pumpNm", this.searchTxt2, "LK");
       }
-      if (this.searchData.earlyNo) {
-        this.query.toW(qry, "earlyNo", this.searchData.earlyNo, "LK");
+      if (this.searchTxt1) {
+        this.query.toW(qry, "earlyNo", this.searchTxt1, "LK");
       }
       if (this.searchData.unitNm) {
         this.query.toW(qry, "unitNm", this.searchData.unitNm, "LK");
@@ -389,7 +410,22 @@ export default {
   line-height: normal;
 
 }
-
+.div-search {
+  width: 100%;
+  padding: 0.2rem 0rem;
+  background-color: #f4f6f8;
+  text-align: center;
+display: flex;
+justify-content: space-around;
+  input {
+    width: 40%;
+    height: 0.54rem;
+    border: 0.02rem solid #e5e5e5;
+    border-radius: 0.3rem;
+    padding: 0rem 0.2rem;
+    font-size: 0.22rem;
+  }
+}
 /*.van-nav-bar {*/
 /*    z-index: 999;*/
 /*    background-color: #1177B9;*/

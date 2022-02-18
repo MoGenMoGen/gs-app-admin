@@ -17,7 +17,8 @@
     <!--</van-sticky>-->
     <van-tabs v-model="active" color="#1177B9" @change="tabChange">
       <van-tab v-for="item in tabList" :title='item' :key="item">
-        <!--		   <template #title> {{item}}</template>-->
+        		   <template #title> {{item}}<span style="padding: 0 4px; background-color: #ee0a24 ;border-radius: 12px;color: #fff;
+			margin-left: 2px;">123</span></template>
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
                   :immediate-check="immediate">
           <div v-for="item in dataList" :key="item.id" class="listItem">
@@ -407,10 +408,6 @@ export default {
 }
 
 
-.van-tab__text--ellipsis::deep{
-		display: flex !important;
-		overflow: visible !important;
-	}
 
 .van-nav-bar {
   z-index: 999;
@@ -446,6 +443,13 @@ export default {
       overflow-y: scroll;
       -webkit-overflow-scrolling: touch;
     }
+	.van-tab__text--ellipsis{
+			display: flex !important;
+			overflow: visible !important;
+			font-size: 10px;
+			
+		}
+	
   }
 }
 

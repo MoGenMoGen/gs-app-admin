@@ -8,8 +8,13 @@
             <echarts-show  ref="echarts"></echarts-show>
         </van-popup>
         <van-sticky>
-            <my-header title="能耗管理" @back="back" @search="searchShow = true"> </my-header>
+            <my-header title="能耗管理" @back="back" :searchStatus='false'> </my-header>
         </van-sticky>
+		<div class="div-search">
+		  <div  @click="showPop" :style="{color:searchTxt?'#000':''}">
+		   {{searchTxt?searchTxt:'搜索泵房名称'}}
+			</div>	
+		</div>
         <!--<van-sticky :offset-top="82">-->
         <!--<div class="search">-->
 
@@ -298,6 +303,7 @@
         name: "monitor",
         data() {
             return {
+				searchTxt:'',
                 arrowRight,
                 arrowDown,
                 arrowDownBlue,
@@ -338,6 +344,9 @@
             this.getPump()
         },
         methods: {
+			showPop(){
+				this.searchShow=true
+			},
             //显示图表曲线
             async toShow(pumpNo,valNm,title,info){
                 this.pumpNo = pumpNo
@@ -405,7 +414,8 @@
             //泵房确定选择
             onConfirm(e){
                 console.log(e)
-                this.searchData.pumpNm = e.nm
+                // this.searchData.pumpNm = e.nm
+				this.searchTxt=e.nm
                 this.searchShow = false
                 this.finished = false
                 this.pageNo = 1
@@ -627,6 +637,23 @@
                 }
             }
         }
+		.div-search {
+		  width: 100%;
+		  padding: 0.2rem 0rem;
+		  background-color: #ffffff;
+		  // text-align: center;
+		  div {
+		    width: 80%;
+		    height: 0.54rem;
+		    border: 0.02rem solid #e5e5e5;
+		    border-radius: 0.3rem;
+		    padding: 0rem 0.2rem;
+		    font-size: 0.22rem;
+			margin:0 auto;
+			line-height: 0.54rem;
+			color: #969799;
+		  }
+		}
         .listItem{
             background: #ffffff;
             border-radius: 0.1rem;

@@ -23,7 +23,7 @@
           <div>{{ item.no }}<span></span>{{ item.nm }}<span></span>{{ item.waterArea }}</div>
           <p><span>分区情况：</span>{{ item.partitionSituation }}</p>
           <p><span>供水模式：</span>{{ item.arg2 }}
-            <van-button size="mini" type="info" @click.stop="toNav(item)" style="margin-left: auto;">去导航</van-button>
+            <van-button size="mini" type="info" @click.stop="toNav(item)" style="margin-left: auto;">导航</van-button>
           </p>
           <img
               :src="arrowDownBlue"
@@ -406,7 +406,11 @@ export default {
     width: 95%;
     margin: 0.15rem auto;
     position: relative;
-
+	.van-button--info {
+		    color: #1989fa;
+		    background-color: #ffffff;
+		    border: 0px solid #1989fa;
+	}
     > div:first-of-type {
       display: flex;
       align-items: center;

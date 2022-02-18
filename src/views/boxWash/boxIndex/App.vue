@@ -1,6 +1,6 @@
 <template>
     <div id="container">
-        <my-header title="水箱清洗" @back="back" > </my-header>
+        <my-header title="水箱清洗" :searchStatus='false'@back="back" > </my-header>
         <van-cell title="水箱清洗" icon="shop-o" center is-link style="height: 80px" @click="toPage(1)">
             <van-icon size="1rem" slot="icon"   :name="img"   style="line-height: inherit;margin-right: 20px"></van-icon>
         </van-cell>

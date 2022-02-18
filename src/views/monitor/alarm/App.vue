@@ -4,7 +4,7 @@
 <!--        <div style="height: 75px"></div>-->
 
         <van-sticky>
-            <my-header title="实时警报" @back="back" > </my-header>
+            <my-header title="实时警报" @back="back" :searchStatus='false'> </my-header>
             <div class="search">
                 <van-tabs swipeable type="card" color="#1177B9" @click="changeTab" v-model="tab1">
                     <van-tab :name="item" :title="item" v-for="(item,index) in menuList1" :key="index"></van-tab>
