@@ -17,17 +17,17 @@
       <div class="search">
         <div>
           <input
-              placeholder="泵房名称"
-              v-model="searchData.pumpNm"
-              @input="search"
+            placeholder="泵房名称"
+            v-model="searchData.pumpNm"
+            @input="debounce(search, 1000)()"
           />
           <img :src="searchImg" />
         </div>
         <div>
           <input
-              placeholder="泵房编号"
-              v-model="searchData.cd"
-              @input="search"
+            placeholder="泵房编号"
+            v-model="searchData.cd"
+            @input="debounce(search, 1000)()"
           />
           <img :src="searchImg" />
         </div>
@@ -45,26 +45,26 @@
     </van-sticky>
 
     <van-list
-        style="margin-top: 4px"
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-        :immediate-check="immediate"
+      style="margin-top: 4px"
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+      :immediate-check="immediate"
     >
       <div v-for="(item, index) in dataList" :key="item.id" class="listItem">
         <div class="itemTop" @click="toDetail(item)">
           <div>
             {{ item.pumpNo }}<span></span>{{ item.pumpNm }}<span></span
-          >{{ item.region }}
+            >{{ item.region }}
             <!--<p v-if="item.status==1" class="green">在线</p>-->
             <!--<p v-if="item.status==0" class="red">离线</p>-->
           </div>
 
           <img
-              :src="arrowDownBlue"
-              :class="{ showMore: item.showMore }"
-              @click.stop="switchVal(item, index)"
+            :src="arrowDownBlue"
+            :class="{ showMore: item.showMore }"
+            @click.stop="switchVal(item, index)"
           />
         </div>
         <div style="margin-left: 10px; padding-bottom: 10px">
@@ -72,7 +72,7 @@
           <van-tag type="warning" v-if="item.status === '0'">离线</van-tag>
 
           <span style="font-size: 10px; margin-left: 10px"
-          >最后通讯:{{ item.datetimes }}</span
+            >最后通讯:{{ item.datetimes }}</span
           >
         </div>
 
@@ -98,8 +98,8 @@
               <span>出水压力：</span>{{ item.outPressure }}
             </p>
             <p
-                @click="toShow(item.pumpNo, 'inPressure', '进水压力', item)"
-                v-if="item.configVal.val16 === '1'"
+              @click="toShow(item.pumpNo, 'inPressure', '进水压力', item)"
+              v-if="item.configVal.val16 === '1'"
             >
               <span>进水压力：</span>{{ item.inPressure }}
             </p>
@@ -107,25 +107,25 @@
               <span>设定压力：</span>{{ item.setPressure }}
             </p>
             <p
-                @click="toShow(item.pumpNo, 'levelV', '水箱液位', item)"
-                v-if="item.configVal.val5 === '1'"
+              @click="toShow(item.pumpNo, 'levelV', '水箱液位', item)"
+              v-if="item.configVal.val5 === '1'"
             >
               <span>水箱液位：</span>{{ item.levelV }}
             </p>
           </div>
           <div
-              class="itemContent"
-              v-if="item.configVal.val10 === '1' || item.configVal.val9 === '1'"
+            class="itemContent"
+            v-if="item.configVal.val10 === '1' || item.configVal.val9 === '1'"
           >
             <p
-                @click="toShow(item.pumpNo, 'turbidity', '浊度', item)"
-                v-if="item.configVal.val10 === '1'"
+              @click="toShow(item.pumpNo, 'turbidity', '浊度', item)"
+              v-if="item.configVal.val10 === '1'"
             >
               <span>浊度：</span>{{ item.turbidity }}
             </p>
             <p
-                @click="toShow(item.pumpNo, 'residualChlorine', '余氯', item)"
-                v-if="item.configVal.val9 === '1'"
+              @click="toShow(item.pumpNo, 'residualChlorine', '余氯', item)"
+              v-if="item.configVal.val9 === '1'"
             >
               <span>余氯：</span>{{ item.residualChlorine }}
             </p>
@@ -135,45 +135,45 @@
               <span>电源电压：</span>{{ item.voltage }}
             </p>
             <p
-                @click="
+              @click="
                 toShow(item.pumpNo, 'operatingFrequency', '运行频率', item)
               "
             >
               <span>运行频率：</span>{{ item.operatingFrequency }}
             </p>
             <p
-                @click="toShow(item.pumpNo, 'voltage1', 'A相电压', item)"
-                v-if="item.configVal.val7 === '1'"
+              @click="toShow(item.pumpNo, 'voltage1', 'A相电压', item)"
+              v-if="item.configVal.val7 === '1'"
             >
               <span>A相电压：</span>{{ item.voltage1 }}
             </p>
             <p
-                @click="toShow(item.pumpNo, 'current1', 'A相电流', item)"
-                v-if="item.configVal.val7 === '1'"
+              @click="toShow(item.pumpNo, 'current1', 'A相电流', item)"
+              v-if="item.configVal.val7 === '1'"
             >
               <span>A相电流：</span>{{ item.current1 }}
             </p>
             <p
-                @click="toShow(item.pumpNo, 'voltage2', 'B相电压', item)"
-                v-if="item.configVal.val7 === '1'"
+              @click="toShow(item.pumpNo, 'voltage2', 'B相电压', item)"
+              v-if="item.configVal.val7 === '1'"
             >
               <span>B相电压：</span>{{ item.voltage2 }}
             </p>
             <p
-                @click="toShow(item.pumpNo, 'current2', 'B相电流', item)"
-                v-if="item.configVal.val7 === '1'"
+              @click="toShow(item.pumpNo, 'current2', 'B相电流', item)"
+              v-if="item.configVal.val7 === '1'"
             >
               <span>B相电流：</span>{{ item.current2 }}
             </p>
             <p
-                @click="toShow(item.pumpNo, 'voltage3', 'C相电压', item)"
-                v-if="item.configVal.val7 === '1'"
+              @click="toShow(item.pumpNo, 'voltage3', 'C相电压', item)"
+              v-if="item.configVal.val7 === '1'"
             >
               <span>C相电压：</span>{{ item.voltage3 }}
             </p>
             <p
-                @click="toShow(item.pumpNo, 'current3', 'C相电流', item)"
-                v-if="item.configVal.val7 === '1'"
+              @click="toShow(item.pumpNo, 'current3', 'C相电流', item)"
+              v-if="item.configVal.val7 === '1'"
             >
               <span>C相电流：</span>{{ item.current3 }}
             </p>
@@ -182,7 +182,7 @@
             <div class="pump">
               <p>泵1</p>
               <p
-                  @click="
+                @click="
                   toShow(
                     item.pumpNo,
                     'operatingFrequency1',
@@ -194,24 +194,24 @@
                 <span>运行频率：</span>{{ item.operatingFrequency1 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'pumpCurrent1', '泵1运行电流', item)
                 "
               >
                 <span>运行电流：</span>{{ item.pumpCurrent1 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'operationHours1', '泵1运行时间', item)
                 "
               >
                 <span>运行时间：</span>{{ item.operationHours1 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'temperatureP1', '泵1泵体温度', item)
                 "
-                  v-if="item.configVal.val3 === '1'"
+                v-if="item.configVal.val3 === '1'"
               >
                 <span>泵体温度：</span>{{ item.temperatureP1 }}
               </p>
@@ -228,7 +228,7 @@
             <div class="pump" v-if="item.configVal.val14 === '1'">
               <p>泵2</p>
               <p
-                  @click="
+                @click="
                   toShow(
                     item.pumpNo,
                     'operatingFrequency2',
@@ -236,30 +236,30 @@
                     item
                   )
                 "
-                  v-if="item.configVal.val14 === '1'"
+                v-if="item.configVal.val14 === '1'"
               >
                 <span>运行频率：</span>{{ item.operatingFrequency2 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'pumpCurrent2', '泵2运行电流', item)
                 "
-                  v-if="item.configVal.val14 === '1'"
+                v-if="item.configVal.val14 === '1'"
               >
                 <span>运行电流：</span>{{ item.pumpCurrent2 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'operationHours2', '泵2运行时间', item)
                 "
               >
                 <span>运行时间：</span>{{ item.operationHours2 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'temperatureP2', '泵2泵体温度', item)
                 "
-                  v-if="item.configVal.val3 === '1'"
+                v-if="item.configVal.val3 === '1'"
               >
                 <span>泵体温度：</span>{{ item.temperatureP2 }}
               </p>
@@ -275,14 +275,14 @@
             </div>
             <!--泵房2没有 泵房3显示在这里-->
             <div
-                class="pump"
-                v-if="
+              class="pump"
+              v-if="
                 item.configVal.val14 !== '1' && item.configVal.val13 === '1'
               "
             >
               <p>泵3</p>
               <p
-                  @click="
+                @click="
                   toShow(
                     item.pumpNo,
                     'operatingFrequency3',
@@ -290,30 +290,30 @@
                     item
                   )
                 "
-                  v-if="item.configVal.val13 === '1'"
+                v-if="item.configVal.val13 === '1'"
               >
                 <span>运行频率：</span>{{ item.operatingFrequency3 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'pumpCurrent3', '泵3运行电流', item)
                 "
-                  v-if="item.configVal.val13 === '1'"
+                v-if="item.configVal.val13 === '1'"
               >
                 <span>运行电流：</span>{{ item.pumpCurrent3 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'operationHours3', '泵3运行时间', item)
                 "
               >
                 <span>运行时间：</span>{{ item.operationHours3 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'temperatureP3', '泵3泵体温度', item)
                 "
-                  v-if="item.configVal.val3 === '1'"
+                v-if="item.configVal.val3 === '1'"
               >
                 <span>泵体温度：</span>{{ item.temperatureP3 }}
               </p>
@@ -329,8 +329,8 @@
             </div>
             <!--泵房2 泵房3 都没有 泵房4显示在这里-->
             <div
-                class="pump"
-                v-if="
+              class="pump"
+              v-if="
                 item.configVal.val14 !== '1' &&
                 item.configVal.val13 !== '1' &&
                 item.configVal.val12 === '1'
@@ -338,7 +338,7 @@
             >
               <p>泵4</p>
               <p
-                  @click="
+                @click="
                   toShow(
                     item.pumpNo,
                     'operatingFrequency4',
@@ -346,30 +346,30 @@
                     item
                   )
                 "
-                  v-if="item.configVal.val12 === '1'"
+                v-if="item.configVal.val12 === '1'"
               >
                 <span>运行频率：</span>{{ item.operatingFrequency3 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'pumpCurrent4', '泵3运行电流', item)
                 "
-                  v-if="item.configVal.val12 === '1'"
+                v-if="item.configVal.val12 === '1'"
               >
                 <span>运行电流：</span>{{ item.pumpCurrent3 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'operationHours4', '泵3运行时间', item)
                 "
               >
                 <span>运行时间：</span>{{ item.operationHours3 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'temperatureP4', '泵3泵体温度', item)
                 "
-                  v-if="item.configVal.val3 === '1'"
+                v-if="item.configVal.val3 === '1'"
               >
                 <span>泵体温度：</span>{{ item.temperatureP3 }}
               </p>
@@ -389,7 +389,7 @@
             <div class="pump" v-if="item.configVal.val13 === '1'">
               <p>泵3</p>
               <p
-                  @click="
+                @click="
                   toShow(
                     item.pumpNo,
                     'operatingFrequency3',
@@ -397,30 +397,30 @@
                     item
                   )
                 "
-                  v-if="item.configVal.val13 === '1'"
+                v-if="item.configVal.val13 === '1'"
               >
                 <span>运行频率：</span>{{ item.operatingFrequency3 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'pumpCurrent3', '泵3运行电流', item)
                 "
-                  v-if="item.configVal.val13 === '1'"
+                v-if="item.configVal.val13 === '1'"
               >
                 <span>运行电流：</span>{{ item.pumpCurrent3 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'operationHours3', '泵3运行时间', item)
                 "
               >
                 <span>运行时间：</span>{{ item.operationHours3 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'temperatureP3', '泵3泵体温度', item)
                 "
-                  v-if="item.configVal.val3 === '1'"
+                v-if="item.configVal.val3 === '1'"
               >
                 <span>泵体温度：</span>{{ item.temperatureP3 }}
               </p>
@@ -437,7 +437,7 @@
             <div class="pump" v-if="item.configVal.val12 === '1'">
               <p>泵4</p>
               <p
-                  @click="
+                @click="
                   toShow(
                     item.pumpNo,
                     'operatingFrequency4',
@@ -445,30 +445,30 @@
                     item
                   )
                 "
-                  v-if="item.configVal.val12 === '1'"
+                v-if="item.configVal.val12 === '1'"
               >
                 <span>运行频率：</span>{{ item.operatingFrequency3 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'pumpCurrent4', '泵3运行电流', item)
                 "
-                  v-if="item.configVal.val12 === '1'"
+                v-if="item.configVal.val12 === '1'"
               >
                 <span>运行电流：</span>{{ item.pumpCurrent3 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'operationHours4', '泵3运行时间', item)
                 "
               >
                 <span>运行时间：</span>{{ item.operationHours3 }}
               </p>
               <p
-                  @click="
+                @click="
                   toShow(item.pumpNo, 'temperatureP4', '泵3泵体温度', item)
                 "
-                  v-if="item.configVal.val3 === '1'"
+                v-if="item.configVal.val3 === '1'"
               >
                 <span>泵体温度：</span>{{ item.temperatureP3 }}
               </p>
@@ -494,8 +494,8 @@
               <span>泵房噪音：</span>{{ item.noise }}
             </p>
             <p
-                @click="toShow(item.pumpNo, 'cumulativeFlow', '累计流量', item)"
-                v-if="item.configVal.val1 === '1'"
+              @click="toShow(item.pumpNo, 'cumulativeFlow', '累计流量', item)"
+              v-if="item.configVal.val1 === '1'"
             >
               <span>累计流量：</span>{{ item.cumulativeFlow }}
             </p>
@@ -503,10 +503,10 @@
               <span>泵房温度：</span>{{ item.temperature }}
             </p>
             <p
-                @click="
+              @click="
                 toShow(item.pumpNo, 'instantaneousFlow', '瞬间流量', item)
               "
-                v-if="item.configVal.val1 === '1'"
+              v-if="item.configVal.val1 === '1'"
             >
               <span>瞬间流量：</span>{{ item.instantaneousFlow }}
             </p>
@@ -576,44 +576,44 @@
 
     <!--泵房搜索弹窗-->
     <van-popup
-        v-model="searchShow"
-        position="bottom"
-        :style="{ height: '60%' }"
-        closeable
-        round
-        close-icon="close"
+      v-model="searchShow"
+      position="bottom"
+      :style="{ height: '60%' }"
+      closeable
+      round
+      close-icon="close"
     >
       <div class="pumpSearch">
         <input
-            placeholder="泵房名称"
-            v-model="pumpNm"
-            @keyup.enter="searchPump"
+          placeholder="泵房名称"
+          v-model="pumpNm"
+          @keyup.enter="searchPump"
         />
         <img :src="searchImg" />
       </div>
       <van-picker
-          title="泵房名称"
-          value-key="nm"
-          show-toolbar
-          :columns="pumpList"
-          @confirm="onConfirm"
-          @cancel="searchShow = false"
+        title="泵房名称"
+        value-key="nm"
+        show-toolbar
+        :columns="pumpList"
+        @confirm="onConfirm"
+        @cancel="searchShow = false"
       />
     </van-popup>
     <!--行政区域搜索弹窗-->
     <van-popup
-        v-model="zoneShow"
-        position="bottom"
-        :style="{ height: '40%' }"
-        round
-        close-icon="close"
+      v-model="zoneShow"
+      position="bottom"
+      :style="{ height: '40%' }"
+      round
+      close-icon="close"
     >
       <van-picker
-          title="行政区域"
-          show-toolbar
-          :columns="zoneList"
-          @confirm="zoneConfirm"
-          @cancel="zoneShow = false"
+        title="行政区域"
+        show-toolbar
+        :columns="zoneList"
+        @confirm="zoneConfirm"
+        @cancel="zoneShow = false"
       />
     </van-popup>
   </div>
@@ -658,7 +658,7 @@ export default {
       searchShow: false,
       zoneShow: false,
       pumpList: [],
-      zoneList: [ ],
+      zoneList: [],
 
       tabId: 1,
       loading: false,
@@ -670,26 +670,23 @@ export default {
       title: "",
       pumpNm: "",
       menuList: [],
+      timer:null
     };
   },
   mounted() {
-    this.getRegionTotal()
+    this.getRegionTotal();
     this.getList();
     //this.getPump();
   },
   methods: {
-    getRegionTotal(){
-
-      this.api.getApiUrl("/gs/monitorLatest/regionTotal")
-          .then((res) => {
-            if (res.code === 200) {
-              console.log(res)
-              this.zoneList = res.data
-            }
-          });
-
+    getRegionTotal() {
+      this.api.getApiUrl("/gs/monitorLatest/regionTotal").then((res) => {
+        if (res.code === 200) {
+          console.log(res);
+          this.zoneList = res.data;
+        }
+      });
     },
-
 
     //切换tab
     toChoose(item) {
@@ -725,11 +722,19 @@ export default {
         });
       }
     },
+    debounce(fn, wait) {
+      return () => {
+        if (this.timer) {
+          clearTimeout(this.timer); //清除这个定时器
+        }
+        this.timer = setTimeout(fn, wait);
+      };
+    },
     search() {
       console.log("search");
       //     this.searchShow = false;
       this.pageNo = 1;
-
+      this.dataList = [];
       this.getList();
     },
     searchPump() {
@@ -743,7 +748,7 @@ export default {
     },
     toDetail(item) {
       this.until.href(
-          "screenCurveDetail.html?pumpNo=" +
+        "screenCurveDetail.html?pumpNo=" +
           item.pumpNo +
           "&config=" +
           item.config
@@ -768,13 +773,13 @@ export default {
       this.query.toP(qry, 1, 50);
       this.query.toO(qry, "no", "asc");
       this.api
-          .getPumpPage(encodeURIComponent(this.query.toJsonStr(qry)))
-          .then((res) => {
-            if (res.code === 200) {
-              this.pumpList = res.data.list;
-              console.log(this.pumpList);
-            }
-          });
+        .getPumpPage(encodeURIComponent(this.query.toJsonStr(qry)))
+        .then((res) => {
+          if (res.code === 200) {
+            this.pumpList = res.data.list;
+            console.log(this.pumpList);
+          }
+        });
     },
     //泵房确定选择
     onConfirm(e) {
@@ -868,41 +873,41 @@ export default {
       this.query.toP(qry, this.pageNo, this.pageSize);
       this.query.toO(qry, "pumpNo", "asc");
       this.api
-          .getMonitorLatest(encodeURIComponent(this.query.toJsonStr(qry)))
-          .then((res) => {
-            console.log(res);
-            if (res.code === 200) {
-              res.data.list.forEach((item) => {
-                item.showMore = false;
-                item.configVal = {
-                  val1: "0",
-                  val2: "0",
-                  val3: "0",
-                  val4: "0",
-                  val5: "0",
-                  val6: "0",
-                  val7: "0",
-                  val8: "0",
-                  val9: "0",
-                  val10: "0",
-                  val11: "0",
-                  val12: "0",
-                  val13: "0",
-                  val14: "0",
-                  val15: "0",
-                  val16: "0",
-                  vShow: false, //是否打开过
-                  num: 1, //有几个泵房 肯定至少有1个
-                };
-                this.dataList.push(item);
-              });
-              // this.dataList.push(...res.data.list);
-              // 加载状态结束
-              this.finished = this.dataList.length >= res.page.total;
-              this.loading = false;
-              this.pageNo++;
-            }
-          });
+        .getMonitorLatest(encodeURIComponent(this.query.toJsonStr(qry)))
+        .then((res) => {
+          console.log(res);
+          if (res.code === 200) {
+            res.data.list.forEach((item) => {
+              item.showMore = false;
+              item.configVal = {
+                val1: "0",
+                val2: "0",
+                val3: "0",
+                val4: "0",
+                val5: "0",
+                val6: "0",
+                val7: "0",
+                val8: "0",
+                val9: "0",
+                val10: "0",
+                val11: "0",
+                val12: "0",
+                val13: "0",
+                val14: "0",
+                val15: "0",
+                val16: "0",
+                vShow: false, //是否打开过
+                num: 1, //有几个泵房 肯定至少有1个
+              };
+              this.dataList.push(item);
+            });
+            // this.dataList.push(...res.data.list);
+            // 加载状态结束
+            this.finished = this.dataList.length >= res.page.total;
+            this.loading = false;
+            this.pageNo++;
+          }
+        });
     },
   },
   filters: {

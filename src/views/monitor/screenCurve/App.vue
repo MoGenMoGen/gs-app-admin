@@ -20,7 +20,7 @@
           <input
             placeholder="泵房名称"
             v-model="searchData.pumpNm"
-            @input="search"
+            @input="debounce(search, 1000)()"
           />
           <img :src="searchImg" />
         </div>
@@ -672,6 +672,8 @@ export default {
       title: "",
       pumpNm: "",
       menuList: [],
+      timer:null
+
     };
   },
   mounted() {
@@ -727,11 +729,19 @@ export default {
         });
       }
     },
+     debounce(fn, wait) {
+      return () => {
+        if (this.timer) {
+          clearTimeout(this.timer); //清除这个定时器
+        }
+        this.timer = setTimeout(fn, wait);
+      };
+    },
     search() {
       console.log("search");
       //     this.searchShow = false;
       this.pageNo = 1;
-
+      this.dataList = [];
       this.getList();
     },
     searchPump() {

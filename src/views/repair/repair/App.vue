@@ -198,7 +198,8 @@ export default {
       dataList: [],
       immediate: false,//初始化不加载必须用变量
       finished: false,
-      repairInfoList: []
+      repairInfoList: [],
+      timer:null,
     };
   },
   components: {myHeader},
@@ -207,14 +208,25 @@ export default {
   },
   watch: {
     searchTxt(newVal, oldVal) {
-      this.finished = false;
-      this.pageNo = 1;
-      this.dataList = [];
-
-      this.getList();
+     this.debounce(this.search, 1000)()
     },
   },
   methods: {
+    debounce(fn, wait) {
+      return () => {
+        if (this.timer) {
+          clearTimeout(this.timer); //清除这个定时器
+        }
+        this.timer = setTimeout(fn, wait);
+      };
+    },
+    search() {
+      //     this.searchShow = false;
+      this.pageNo = 1;
+      this.pageSize = 10;
+      this.dataList = [];
+      this.getList();
+    },
     upd(val) {
       Dialog.confirm({
         title: '注意',

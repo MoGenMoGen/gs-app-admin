@@ -10,13 +10,13 @@
       <echarts-show ref="echarts"></echarts-show>
     </van-popup>
     <van-sticky>
-      <my-header title="水质监控" @back="back" :searchStatus='false'>
+      <my-header title="水质监控" @back="back" :searchStatus="false">
       </my-header>
       <div class="div-search">
         <input
           placeholder="搜索泵房名称"
           v-model="searchData.pumpNm"
-          @input="search"
+          @input="debounce(search, 1000)()"
         />
       </div>
     </van-sticky>
@@ -647,6 +647,8 @@ export default {
       title: "",
       pumpNm: "",
       menuList: [],
+      flag: true, //是否可以搜索
+      timer: null,
     };
   },
   mounted() {
@@ -677,19 +679,20 @@ export default {
         });
       }
     },
+    debounce(fn, wait) {
+      return () => {
+        if (this.timer) {
+          clearTimeout(this.timer); //清除这个定时器
+        }
+        this.timer = setTimeout(fn, wait);
+      };
+    },
     search() {
       //     this.searchShow = false;
-    //   this.finished=false;
-      //this.loading=true;
-      console.log(11111111111)
-      this.finished = false;
       this.pageNo = 1;
       this.pageSize = 10;
       this.dataList = [];
-      setTimeout(() =>{
-        this.getList()
-      },1000);
-
+      this.getList();
     },
     searchPump() {
       this.getPump();
@@ -698,7 +701,6 @@ export default {
       this.until.back();
     },
     onLoad() {
-      console.log(444444);
       this.getList();
     },
     toDetail(item) {
@@ -743,7 +745,7 @@ export default {
       this.finished = false;
       this.pageNo = 1;
       this.dataList = [];
-      console.log(4444444444);
+      // console.log(4444444444);
       this.getList();
     },
     //行政区域确定
@@ -815,8 +817,10 @@ export default {
       info.configVal = configVal;
       this.$set(this.dataList, index, info);
     },
-    getList() {
-      console.log(33333333)
+
+    async getList() {
+      // console.log("pageNo1", this.pageNo);
+
       this.loading = true;
       let qry = this.query.new();
       if (this.searchData.pumpNm) {
@@ -825,42 +829,46 @@ export default {
       this.query.toW(qry, "waterFlag", 1, "EQ");
       this.query.toP(qry, this.pageNo, this.pageSize);
       this.query.toO(qry, "pumpNo", "asc");
-
-      this.api
-        .getSysMonitorLatestPage(encodeURIComponent(this.query.toJsonStr(qry)))
-        .then((res) => {
-          if (res.code === 200) {
-            res.data.list.forEach((item) => {
-              item.showMore = false;
-              item.configVal = {
-                val1: "0",
-                val2: "0",
-                val3: "0",
-                val4: "0",
-                val5: "0",
-                val6: "0",
-                val7: "0",
-                val8: "0",
-                val9: "0",
-                val10: "0",
-                val11: "0",
-                val12: "0",
-                val13: "0",
-                val14: "0",
-                val15: "0",
-                val16: "0",
-                vShow: false, //是否打开过
-                num: 1, //有几个泵房 肯定至少有1个
-              };
-              this.dataList.push(item);
-            });
-            // this.dataList.push(...res.data.list);
-            // 加载状态结束
-            this.finished = this.dataList.length >= res.page.total;
-            this.loading = false;
-            this.pageNo++;
-          }
+      let res = await this.api.getSysMonitorLatestPage(
+        encodeURIComponent(this.query.toJsonStr(qry))
+      );
+      // console.log(res);
+      if (res.code === 200) {
+        res.data.list.forEach((item) => {
+          item.showMore = false;
+          item.configVal = {
+            val1: "0",
+            val2: "0",
+            val3: "0",
+            val4: "0",
+            val5: "0",
+            val6: "0",
+            val7: "0",
+            val8: "0",
+            val9: "0",
+            val10: "0",
+            val11: "0",
+            val12: "0",
+            val13: "0",
+            val14: "0",
+            val15: "0",
+            val16: "0",
+            vShow: false, //是否打开过
+            num: 1, //有几个泵房 肯定至少有1个
+          };
+          // this.dataList.push(item);
         });
+        // console.log("pageNo2", this.pageNo);
+        // if(this.pageNo==1)
+        // this.dataList=res.data.list
+        // else
+
+        this.dataList.push(...res.data.list);
+        // 加载状态结束
+        this.finished = this.dataList.length >= res.page.total;
+        this.loading = false;
+        this.pageNo++;
+      }
     },
   },
   filters: {

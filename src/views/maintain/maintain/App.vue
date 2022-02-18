@@ -2,27 +2,31 @@
   <div id="container">
     <!-- <div class="myTop"> -->
     <van-sticky>
-      <my-header title="设备保养" @back="back" :searchStatus="false"></my-header>
+      <my-header
+        title="设备保养"
+        @back="back"
+        :searchStatus="false"
+      ></my-header>
       <div class="search">
         <div>
           <input
-              placeholder="保养单位"
-              v-model="searchData.unitNm"
-              @input="search"
+            placeholder="保养单位"
+            v-model="searchData.unitNm"
+            @input="debounce(search, 1000)()"
           />
         </div>
         <div>
           <input
-              placeholder="泵房编号"
-              v-model="searchData.pumpNo"
-              @input="search"
+            placeholder="泵房编号"
+            v-model="searchData.pumpNo"
+            @input="debounce(search, 1000)()"
           />
         </div>
         <div>
           <input
-              placeholder="泵房名称"
-              v-model="searchData.estateNm"
-              @input="search"
+            placeholder="泵房名称"
+            v-model="searchData.estateNm"
+            @input="debounce(search, 1000)()"
           />
         </div>
       </div>
@@ -36,149 +40,141 @@
           </li>
         </ul>
       </div>
-
     </van-sticky>
 
     <!-- </div> -->
 
-
-
     <van-list
-        v-model="loading"
-        :finished="finished"
-        finished-text="没有更多了"
-        @load="onLoad"
-        :immediate-check="immediate"
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+      :immediate-check="immediate"
     >
       <div
-          v-for="item in dataList"
-          :key="item.id"
-          @click="toDetail(item)"
-          class="listItem"
+        v-for="item in dataList"
+        :key="item.id"
+        @click="toDetail(item)"
+        class="listItem"
       >
         <div class="itemTop">
           <div>
-            {{ item.pumpNo }}<span></span>{{ item.pumpNm }} {{ item.zoning }}<span></span
-          >{{ item.region }}
+            {{ item.pumpNo }}<span></span>{{ item.pumpNm }} {{ item.zoning
+            }}<span></span>{{ item.region }}
           </div>
-          <p>
-            <span>保养时间：</span>{{ item.planTm }} 至 {{ item.plan2Tm }}
-          </p>
+          <p><span>保养时间：</span>{{ item.planTm }} 至 {{ item.plan2Tm }}</p>
           <p><span>保养单位：</span>{{ item.unitNm }}</p>
         </div>
       </div>
     </van-list>
 
-<!--    <van-tabs v-model="active" color="#1177B9" @change="tabChange">-->
-<!--      <van-tab v-for="item in tabList" :key="item.name">-->
-<!--        <template #title> {{ item.name }}-->
-<!--          <van-badge :content="item.total"/>-->
-<!--        </template>-->
+    <!--    <van-tabs v-model="active" color="#1177B9" @change="tabChange">-->
+    <!--      <van-tab v-for="item in tabList" :key="item.name">-->
+    <!--        <template #title> {{ item.name }}-->
+    <!--          <van-badge :content="item.total"/>-->
+    <!--        </template>-->
 
-
-<!--        -->
-<!--      </van-tab>-->
-<!--    </van-tabs>-->
-
-
+    <!--        -->
+    <!--      </van-tab>-->
+    <!--    </van-tabs>-->
 
     <!--详情弹窗-->
     <van-popup
-        v-model="show"
-        position="bottom"
-        :style="{ height: '80%' }"
-        closeable
-        round
-        close-icon="close"
+      v-model="show"
+      position="bottom"
+      :style="{ height: '80%' }"
+      closeable
+      round
+      close-icon="close"
     >
       <!--            <van-nav-bar  title="保养详情"  left-arrow  @click-left="show = false"></van-nav-bar>-->
       <van-cell-group style="margin-top: 50px">
         <van-field
-            label="保养单位:"
-            v-model="info.unitNm"
-            readonly
-            label-width="140"
+          label="保养单位:"
+          v-model="info.unitNm"
+          readonly
+          label-width="140"
         ></van-field>
         <van-field
-            label="泵房编号:"
-            v-model="info.pumpNo"
-            readonly
-            label-width="140"
+          label="泵房编号:"
+          v-model="info.pumpNo"
+          readonly
+          label-width="140"
         ></van-field>
         <van-field
-            label="泵房名称:"
-            v-model="info.estateNm"
-            readonly
-            label-width="140"
+          label="泵房名称:"
+          v-model="info.estateNm"
+          readonly
+          label-width="140"
         ></van-field>
         <van-field
-            label="供水模式:"
-            v-model="info.zoning"
-            readonly
-            label-width="140"
+          label="供水模式:"
+          v-model="info.zoning"
+          readonly
+          label-width="140"
         ></van-field>
         <van-field
-            label="设备套数:"
-            v-model="info.deviceNum"
-            readonly
-            label-width="140"
+          label="设备套数:"
+          v-model="info.deviceNum"
+          readonly
+          label-width="140"
         ></van-field>
         <van-field
-            label="计划保养开始日期:"
-            v-model="info.planTm"
-            readonly
-            label-width="140"
+          label="计划保养开始日期:"
+          v-model="info.planTm"
+          readonly
+          label-width="140"
         ></van-field>
         <van-field
-            label="计划保养结束日期:"
-            v-model="info.plan2Tm"
-            readonly
-            label-width="140"
+          label="计划保养结束日期:"
+          v-model="info.plan2Tm"
+          readonly
+          label-width="140"
         ></van-field>
         <van-field
-            label="保养人姓名:"
-            v-model="info.user"
-            readonly
-            label-width="140"
+          label="保养人姓名:"
+          v-model="info.user"
+          readonly
+          label-width="140"
         ></van-field>
         <van-field
-            label="保养完成情况:"
-            v-model="info.status"
-            readonly
-            label-width="140"
+          label="保养完成情况:"
+          v-model="info.status"
+          readonly
+          label-width="140"
         ></van-field>
         <van-field
-            label="任务结束时间:"
-            v-model="info.taskTm"
-            readonly
-            label-width="140"
+          label="任务结束时间:"
+          v-model="info.taskTm"
+          readonly
+          label-width="140"
         ></van-field>
       </van-cell-group>
     </van-popup>
     <!--搜索弹窗-->
     <van-popup
-        v-model="searchShow"
-        position="bottom"
-        :style="{ height: '80%' }"
-        closeable
-        round
-        close-icon="close"
+      v-model="searchShow"
+      position="bottom"
+      :style="{ height: '80%' }"
+      closeable
+      round
+      close-icon="close"
     >
       <van-form @submit="search" style="margin-top: 50px">
         <van-field
-            label="保养单位:"
-            v-model="searchData.unitNm"
-            clearable
+          label="保养单位:"
+          v-model="searchData.unitNm"
+          clearable
         ></van-field>
         <van-field
-            label="泵房编号:"
-            v-model="searchData.pumpNo"
-            clearable
+          label="泵房编号:"
+          v-model="searchData.pumpNo"
+          clearable
         ></van-field>
         <van-field
-            label="泵房名称:"
-            v-model="searchData.estateNm"
-            clearable
+          label="泵房名称:"
+          v-model="searchData.estateNm"
+          clearable
         ></van-field>
         <div style="margin: 16px">
           <van-button round block type="info" native-type="submit">
@@ -208,17 +204,17 @@ export default {
       tabId: 0,
       tabList: [
         {
-          id:0,
+          id: 0,
           name: "待保养",
           total: 0,
         },
         {
-          id:1,
+          id: 1,
           name: "已保养",
           total: 0,
         },
         {
-          id:2,
+          id: 2,
           name: "逾期",
           total: 0,
         },
@@ -232,9 +228,10 @@ export default {
       dataList: [],
       immediate: false, //初始化不加载必须用变量
       finished: false,
+      timer: null,
     };
   },
-  components: {myHeader},
+  components: { myHeader },
   mounted() {
     this.getTotal();
     this.getList();
@@ -246,23 +243,34 @@ export default {
         this.query.toW(qry, "status", item.name, "EQ");
         this.query.toP(qry, 1, 1);
         this.api
-            .getMaintainTask(encodeURIComponent(this.query.toJsonStr(qry)))
-            .then((res) => {
-              if (res.code === 200) {
-                // 加载状态结束
-                item.total = res.page.total;
-              }
-            });
+          .getMaintainTask(encodeURIComponent(this.query.toJsonStr(qry)))
+          .then((res) => {
+            if (res.code === 200) {
+              // 加载状态结束
+              item.total = res.page.total;
+            }
+          });
       });
     },
+    debounce(fn, wait) {
+      return () => {
+        if (this.timer) {
+          clearTimeout(this.timer); //清除这个定时器
+        }
+        this.timer = setTimeout(fn, wait);
+      };
+    },
     search() {
-      //   this.searchShow = false;
+      //     this.searchShow = false;
       this.pageNo = 1;
+      this.pageSize = 10;
       this.dataList = [];
       this.getList();
     },
     toDetail(item) {
-      this.until.href(`./maintainDtl.html?id=${item.id}&tabId=${this.tabIndex}`);
+      this.until.href(
+        `./maintainDtl.html?id=${item.id}&tabId=${this.tabIndex}`
+      );
       //   this.show = true;
       //   this.info = item;
     },
@@ -284,9 +292,9 @@ export default {
         this.finished = false;
         this.pageNo = 1;
         this.dataList = [];
-        setTimeout(() =>{
-          this.getList()
-        },1000);
+        setTimeout(() => {
+          this.getList();
+        }, 1000);
       }
     },
 
@@ -313,16 +321,16 @@ export default {
       this.query.toP(qry, this.pageNo, this.pageSize);
       this.query.toO(qry, "crtTm", "desc");
       this.api
-          .getMaintainTask(encodeURIComponent(this.query.toJsonStr(qry)))
-          .then((res) => {
-            if (res.code === 200) {
-              this.dataList.push(...res.data.list);
-              // 加载状态结束
-              this.finished = this.dataList.length >= res.page.total;
-              this.loading = false;
-              this.pageNo++;
-            }
-          });
+        .getMaintainTask(encodeURIComponent(this.query.toJsonStr(qry)))
+        .then((res) => {
+          if (res.code === 200) {
+            this.dataList.push(...res.data.list);
+            // 加载状态结束
+            this.finished = this.dataList.length >= res.page.total;
+            this.loading = false;
+            this.pageNo++;
+          }
+        });
     },
     back() {
       this.until.back();
@@ -334,7 +342,7 @@ export default {
 <style lang="less" scoped>
 #container {
   min-height: 100%;
-  background: #F5F2F5;
+  background: #f5f2f5;
 }
 
 #container {
@@ -449,8 +457,6 @@ export default {
       -webkit-overflow-scrolling: touch;
     }
   }
-
-
 }
 
 .van-cell {

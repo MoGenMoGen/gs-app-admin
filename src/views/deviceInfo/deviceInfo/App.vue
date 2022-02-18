@@ -3,18 +3,17 @@
     <van-sticky>
       <my-header title="设备信息" @back="back" :searchStatus="false">
       </my-header>
-      <div style="padding:.15rem 0;background:#f5f2f5">
+      <div style="padding: 0.15rem 0; background: #f5f2f5">
         <div class="inputbox">
-        <div class="input_title">泵房名称</div>
-        <input
-          type="text"
-          v-model="searchData.pumpNm"
-          placeholder="请输入泵房名称"
-          @input="search"
-        />
+          <div class="input_title">泵房名称</div>
+          <input
+            type="text"
+            v-model="searchData.pumpNm"
+            placeholder="请输入泵房名称"
+            @input="debounce(search, 1000)()"
+          />
+        </div>
       </div>
-      </div>
-      
     </van-sticky>
 
     <van-list
@@ -25,7 +24,7 @@
       :immediate-check="immediate"
     >
       <div
-        v-for="(item, index) in [...dataList,...dataList]"
+        v-for="(item, index) in dataList"
         :key="index"
         @click="toDetail(item)"
         class="listItem"
@@ -170,16 +169,25 @@ export default {
       pageSize: 10,
       total: 0,
       pumpNm: "",
+      timer: null,
     };
   },
   mounted() {
     this.getList();
   },
   methods: {
+    debounce(fn, wait) {
+      return () => {
+        if (this.timer) {
+          clearTimeout(this.timer); //清除这个定时器
+        }
+        this.timer = setTimeout(fn, wait);
+      };
+    },
     search() {
-      //   this.searchShow = false;
-      console.log(111111111111111, this.searchData.pumpNm);
+      //     this.searchShow = false;
       this.pageNo = 1;
+      this.pageSize = 10;
       this.dataList = [];
       this.getList();
     },
