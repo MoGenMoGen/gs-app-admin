@@ -650,7 +650,6 @@ export default {
     };
   },
   mounted() {
-      console.log(1111111111);
     this.getList();
     this.getPump();
   },
@@ -681,11 +680,16 @@ export default {
     search() {
       //     this.searchShow = false;
     //   this.finished=false;
-    this.loading=true;
+      //this.loading=true;
+      console.log(11111111111)
+      this.finished = false;
       this.pageNo = 1;
+      this.pageSize = 10;
       this.dataList = [];
-      this.getList();
-      console.log('search222222222');
+      setTimeout(() =>{
+        this.getList()
+      },1000);
+
     },
     searchPump() {
       this.getPump();
@@ -694,7 +698,7 @@ export default {
       this.until.back();
     },
     onLoad() {
-        console.log(333333333);
+      console.log(444444);
       this.getList();
     },
     toDetail(item) {
@@ -751,7 +755,6 @@ export default {
       this.finished = false;
       this.pageNo = 1;
       this.dataList = [];
-      console.log(55555555);
       this.getList();
     },
     //二进制转十进制
@@ -813,6 +816,7 @@ export default {
       this.$set(this.dataList, index, info);
     },
     getList() {
+      console.log(33333333)
       this.loading = true;
       let qry = this.query.new();
       if (this.searchData.pumpNm) {
@@ -825,7 +829,6 @@ export default {
       this.api
         .getSysMonitorLatestPage(encodeURIComponent(this.query.toJsonStr(qry)))
         .then((res) => {
-          console.log(res);
           if (res.code === 200) {
             res.data.list.forEach((item) => {
               item.showMore = false;

@@ -94,11 +94,10 @@
         <van-field v-model="info.bigEvent" label="泵房大事件:" readonly label-width="120" type="textarea"
                    rows="2"></van-field>
         <van-field v-model="info.wideVideo" label="广角监控数量:" readonly label-width="120"></van-field>
-
-
-        <van-field label="泵房图片路线图:" readonly label-width="120"></van-field>
+        <van-field label="泵房图:" readonly label-width="120"></van-field>
         <van-image width="100" height="100" v-if="info.pumpImg1" :src="info.pumpImg1" @click="showImg(info.pumpImg1)"></van-image>
         <van-image width="100" height="100" v-if="info.pumpImg2" :src="info.pumpImg2" @click="showImg(info.pumpImg2)"></van-image>
+        <van-field label="泵房路线图:" readonly label-width="120"></van-field>
         <van-image width="100" height="100" v-if="info.pumpRoute" :src="info.pumpRoute" @click="showImg(info.pumpRoute)"></van-image>
         <van-field v-model="info.equipmentNm" label="设备供应商:" readonly label-width="120"></van-field>
         <van-field v-model="info.equipmentPhone" label="设备联系人及电话:" readonly label-width="150"></van-field>

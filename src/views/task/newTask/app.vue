@@ -106,13 +106,23 @@
             </div>
 
             <div class="item1">
-                <p class="label"><span>*</span>接单单位</p>
+                <p class="label"><span></span>接单单位</p>
                 <div class="option-menu">
                     <el-select v-model="form.receivingId" placeholder="请选择">
                         <el-option  v-for="item in deptList" :key="item.id" :label="item.nm" :value="item.id"></el-option>
                     </el-select>
                 </div>
             </div>
+
+          <div class="item1">
+            <p class="label"><span>*</span>接单部门</p>
+            <div class="option-menu">
+              <el-select v-model="form.deptId" placeholder="请选择">
+                <el-option  v-for="item in dList" :key="item.id" :label="item.nm" :value="item.id"></el-option>
+              </el-select>
+            </div>
+          </div>
+
 
             <div class="item1">
                 <p class="label"><span>*</span>处理时限</p>
@@ -226,6 +236,7 @@
                 deptList: [],//接单单位
                 sourceList: [],//接单来源
                 paidanList: [],//派单部门
+                dList: [],//接单部门
                 faultList: [],//故障分类
                 regionList: [],//行政区域
                 pumpList: [],//泵房名称列表
@@ -267,7 +278,7 @@
             submitForm() {
                 this.form.crtTm = this.until.dateFormat(this.form.crtTm)
                 if (!this.form.processingDeadline  || !this.form.reflectingPhone
-                    || !this.form.problem || !this.form.remarks || !this.form.receivingId || !this.form.pump) {
+                    || !this.form.problem || !this.form.remarks || !this.form.deptId || !this.form.pump) {
                     Toast.fail('*号是必填字段');
                     return
                 }
@@ -281,12 +292,11 @@
             getDept() {
                 this.api.getDeptList(3000).then(res => {
                     this.deptList = res.data.list;
-                    this.api.getDeptList(3100).then(res => {
-                        for (let i = 0; i < res.data.list.length; i++) {
-                            this.deptList.push(res.data.list[i])
-                        }
-                    })
                 })
+
+              this.api.getDeptList(3100).then(res => {
+                this.dList = res.data.list;
+              })
                 this.form.sendUser =  JSON.parse(this.until.loGet('userInfo')).nickname;
             },
             //工单来源

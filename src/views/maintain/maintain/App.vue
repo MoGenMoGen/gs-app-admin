@@ -333,14 +333,14 @@ export default {
 
 <style lang="less" scoped>
 #container {
-  min-height: 600vh;
+  min-height: 100%;
   background: #F5F2F5;
 }
 
 #container {
   display: flex;
   flex-direction: column;
-  height: 600vh;
+  height: 100%;
   .tab {
     height: 0.7rem;
     background: white;

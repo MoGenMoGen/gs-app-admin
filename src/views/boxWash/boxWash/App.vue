@@ -21,7 +21,7 @@
 			margin-left: 2px;">123</span></template>
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
                   :immediate-check="immediate">
-          <div v-for="item in dataList" :key="item.id" class="listItem">
+          <div v-for="(item, index) in dataList" :key="item.id" class="listItem">
             <div class="itemTop">
               <div>{{ item.pumpNo }}<span></span>{{ item.pumpNm }}<span></span>{{ item.waterArea }}
               </div>
@@ -447,9 +447,9 @@ export default {
 			display: flex !important;
 			overflow: visible !important;
 			font-size: 10px;
-			
+
 		}
-	
+
   }
 }
 
