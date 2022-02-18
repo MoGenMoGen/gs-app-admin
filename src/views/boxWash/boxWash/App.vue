@@ -398,16 +398,19 @@ export default {
 ;
 </script>
 
-<style lang="less">
+
+<style lang="less" scoped>
+
 .van-cell {
   line-height: normal;
 
 }
 
-/deep/ .van-tab__text--ellipsis {
-  display: flex !important;
-  overflow: visible !important;
-}
+
+.van-tab__text--ellipsis::deep{
+		display: flex !important;
+		overflow: visible !important;
+	}
 
 .van-nav-bar {
   z-index: 999;
