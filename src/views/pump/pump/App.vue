@@ -71,7 +71,7 @@
         <van-field v-model="info.propertyPhone" label="物业电话:" readonly label-width="120"></van-field>
         <van-field v-model="info.community" label="所属社区:" readonly label-width="120"></van-field>
         <van-field v-model="info.communityPhone" label="社区电话:" readonly label-width="120"></van-field>
-        <van-field v-model="info.sxsffk" label="生消分开:" readonly label-width="120"></van-field>
+        <van-field v-model="info.sxsffk" label="生消是否分开:" readonly label-width="120"></van-field>
 
         <van-field v-model="info.serverAddress" label="服务器地址:" readonly label-width="120"></van-field>
         <van-field v-model="info.ip" label="IP地址:" readonly label-width="120"></van-field>
@@ -244,10 +244,10 @@ export default {
       this.show = true
       this.info = item;
       if (this.info.sxsffk === '1') {
-        this.info.sxsffk = '是'
+        this.info.sxsffk = '分开'
       }
       if (this.info.sxsffk === '0') {
-        this.info.sxsffk = '否'
+        this.info.sxsffk = '不分开'
       }
 
     },
