@@ -29,9 +29,9 @@
       </div>
       <div class="change-pwd">
         <img :src="changePwd" alt />
-        <div>
+        <div @click="show = true">
           <p>修改密码</p>
-          <img :src="arrow" alt />
+          <img :src="arrow" alt  />
         </div>
       </div>
       <div class="about-us">
@@ -49,6 +49,22 @@
 <!--      </div>-->
     </div>
     <tab cd="user"></tab>
+
+    <van-dialog v-model="show" title="修改密码" show-cancel-button @confirm="updPassword">
+      <van-form >
+        <van-field   v-model="passInfo.password"  name="原始密码"
+                     label="原始密码"   placeholder="原始密码"
+            :rules="[{ required: true, message: '请填写原始密码' }]"
+        />
+        <van-field   v-model="passInfo.newPassword"  name="新密码"
+                     label="新密码"   placeholder="新密码"
+                     :rules="[{ required: true, message: '请填写新密码' }]"
+        />
+
+      </van-form>
+
+    </van-dialog>
+
   </div>
 </template>
 
@@ -67,7 +83,12 @@ export default {
       arrow,
       avatar,
       changePwd,
-      info:''
+      info:'',
+      show:false,
+      passInfo:{
+        password:'',
+        newPassword:'',
+      },
     };
   },
   mounted(){
@@ -75,7 +96,6 @@ export default {
   },
   methods: {
     test(){
-
       this.$bridge.callHandler('h5_up_location', "", (res) => {
         let parse = JSON.parse(res);
         Toast(parse.dlat+"***"+parse.dlon)
@@ -89,8 +109,58 @@ export default {
           this.info = res.data;
         }
       });
+    },
+    updPassword(){
+      if (this.passInfo.newPassword !== '') {
+        if (!this.passwordValid(this.passInfo.newPassword)) {
+          return
+        }
+      }
 
 
+      this.api.updPassword(JSON.stringify(this.passInfo)).then(res => {
+        if (res.code === 200) {
+          Toast("修改成功");
+          this.quit()
+        }else {
+          Toast(res.msg);
+        }
+
+      });
+
+    },
+    passwordValid (pass) {
+      if (pass == null || pass.length < 8 || pass.length > 20 || pass.length === '') {
+        this.$message.error('密码位数不对，长度最少8位，最大20位。')
+        return false
+      }
+      // 是数字
+      let isDigit = /^.*[0-9]+.*/
+      // isLowerCase 小写字母
+      let isLowerCase = /^.*[a-z]+.*/
+      // isUpperCase 大写字母
+      let isUpperCase = /^.*[A-Z]+.*/
+      // 特殊字符
+      let regEx = /^.*[^a-zA-Z0-9]+.*/
+      // 记录匹配的次数
+      let num = 0
+      if (isDigit.test(pass)) {
+        num = num + 1
+      }
+      if (isLowerCase.test(pass)) {
+        num = num + 1
+      }
+      if (isUpperCase.test(pass)) {
+        num = num + 1
+      }
+      if (regEx.test(pass)) {
+        num = num + 1
+      }
+      if (num <= 3) {
+        Toast('密码复杂度不足,\n(1)大写字母\n(2)小写字母\n(3)数字\n(4)特殊符号\n密码至少需包含上述情形中的三种')
+        return false
+      }
+      return true
     },
 
     quit() {

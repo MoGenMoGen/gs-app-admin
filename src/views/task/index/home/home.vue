@@ -82,7 +82,7 @@
         @cancel="statusShow = false"
       />
     </van-popup>
-    <div style="height: 50px"></div>
+<!--    <div style="height: 50px"></div>-->
     <router-view
       :orderSource="searchData.orderSource"
       :receivingNm="searchData.receivingNm"
@@ -148,7 +148,6 @@ export default {
     },
     //工单状态确定
     statusConfirm(e) {
-      console.log(e);
       this.searchData.status = e.status;
       this.statusShow = false;
     },

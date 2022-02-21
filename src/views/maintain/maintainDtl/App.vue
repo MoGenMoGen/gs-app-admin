@@ -21,12 +21,12 @@
         <p v-if="info.pumpNm">{{ info.pumpNm }}</p>
       </div>
       <div class="label">
-        <p>供水模式：</p>
+        <p>供水分区：</p>
         <p v-if="info.zoning">{{ info.zoning }}</p>
       </div>
       <div class="label">
-        <p>设备套数：</p>
-        <p v-if="info.deviceNum">{{ info.deviceNum }}</p>
+        <p>供水模式：</p>
+        <p v-if="info.supplyMode">{{ info.supplyMode }}</p>
       </div>
       <div class="label">
         <p>计划开始日期：</p>
@@ -42,13 +42,13 @@
       </div>
       <!--          0：保存，1：已提交，2：逾期，3：等待清洗      -->
 
+<!--      <div class="label">-->
+<!--        <p>保养完成情况：</p>-->
+<!--        <p v-if="info.statusNm">{{ info.statusNm }}</p>-->
+<!--      </div>-->
       <div class="label">
-        <p>保养完成情况：</p>
-        <p v-if="info.statusNm">{{ info.statusNm }}</p>
-      </div>
-      <div class="label">
-        <p>任务结束时间：</p>
-        <p v-if="info.completeTm">{{ info.completeTm }}</p>
+        <p>实际保养时间：</p>
+        <p v-if="info.taskTm">{{ info.taskTm }}</p>
       </div>
 
       <img :src="icCs" class="overtime" v-if="tabId == 2" />

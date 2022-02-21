@@ -136,6 +136,15 @@ class api {
             });
         });
     }
+    //修改密码
+    updPassword(data) {
+        return new Promise((resolve) => {
+            untilApi.postData("/sys/user/password", data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+
 
     //修改泵房
     updPump(data) {
@@ -527,6 +536,14 @@ class api {
             });
         });
     }
+    confinedSpaceInfo(data) {
+        return new Promise((resolve) => {
+            untilApi.get("/gs/confinedSpace/infoByWash/"+data).then(res => {
+                resolve(res)
+            });
+        });
+    }
+
 
     //提交警报确认
     updAlarm(data) {

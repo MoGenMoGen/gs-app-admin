@@ -63,6 +63,7 @@
             }}<span></span>{{ item.region }}
           </div>
           <p><span>保养时间：</span>{{ item.planTm }} 至 {{ item.plan2Tm }}</p>
+          <p v-if="tabId == 1"><span>实际保养时间：</span>{{ item.taskTm }}</p>
           <p><span>保养单位：</span>{{ item.unitNm }}</p>
         </div>
       </div>
@@ -424,23 +425,6 @@ export default {
         margin-right: 0.18rem;
         width: 0.28rem;
       }
-
-      // &:not(:last-of-type) {
-      //   width: 50%;
-      //   img {
-      //     width: 0.2rem;
-      //   }
-      // }
-      // &:last-of-type {
-      //   width: 50%;
-      //   input {
-      //     background: transparent;
-      //     width: 90%;
-      //   }
-      //   img {
-      //     width: 0.28rem;
-      //   }
-      // }
     }
   }
 
@@ -501,7 +485,7 @@ export default {
 
       span {
         display: inline-block;
-        width: 1px;
+        //width: 10px;
         height: 0.1rem;
         background: #000000;
         opacity: 0.2;
@@ -525,7 +509,7 @@ export default {
       padding: 0.1rem 0;
 
       > span {
-        width: 1.3rem;
+        //width: 1.3rem;
         display: inline-block;
         flex-shrink: 0;
       }
