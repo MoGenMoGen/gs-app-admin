@@ -504,6 +504,7 @@ export default {
                 .then((res) => {
                   if (res.code === 200) {
                     Toast.success("提交成功");
+                    this.getTotal()
                     this.show = false;
                     this.pageNo = 1;
                     this.dataList = [];
@@ -580,8 +581,6 @@ export default {
               }
             });
           }
-
-
     },
 
     getList() {

@@ -69,16 +69,6 @@
       </div>
     </van-list>
 
-    <!--    <van-tabs v-model="active" color="#1177B9" @change="tabChange">-->
-    <!--      <van-tab v-for="item in tabList" :key="item.name">-->
-    <!--        <template #title> {{ item.name }}-->
-    <!--          <van-badge :content="item.total"/>-->
-    <!--        </template>-->
-
-    <!--        -->
-    <!--      </van-tab>-->
-    <!--    </van-tabs>-->
-
     <!--详情弹窗-->
     <van-popup
       v-model="show"
@@ -342,7 +332,7 @@ export default {
 
 <style lang="less" scoped>
 #container {
-  min-height: 100%;
+  //min-height: 100%;
   background: #f5f2f5;
 }
 

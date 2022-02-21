@@ -860,6 +860,7 @@ export default {
               console.log(res);
               if (res.code === 200) {
                 Toast.success("操作成功");
+                this.getTotal()
                 this.pageNo = 1;
                 this.dataList = [];
                 this.getList();
@@ -890,6 +891,7 @@ export default {
               console.log(res);
               if (res.code === 200) {
                 Toast.success("操作成功");
+                this.getTotal()
                 this.pageNo = 1;
                 this.dataList = [];
                 this.getList();
@@ -898,16 +900,10 @@ export default {
             });
           })
           .catch(() => {
-            // on cancel
+
           });
     },
 
-    // search() {
-    //   this.searchShow = false;
-    //   this.pageNo = 1;
-    //   this.dataList = [];
-    //   this.getList();
-    // },
     toDetail(item) {
       if (this.tabId != 0){
         this.api.getBoxWashDtl(item.id).then((res) => {
