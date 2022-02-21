@@ -1,7 +1,7 @@
 <template>
 <!--    工单详情-->
     <div >
-        <my-header :title="title">
+       <my-header :title="title">
             <van-icon name="arrow-left" slot="left" color="white" @click="back" ></van-icon>
 
             <div class="right" slot="right">
@@ -190,6 +190,12 @@
         width: 100%;
 
     }
+	.myHeader{
+		position: sticky;
+		    top: 0;
+		    z-index: 100;
+	}
+
     /*
         弹框，内容区域
          */
@@ -197,6 +203,8 @@
         /*每一个循环块*/
         background:  #F0F0F0;
         height: 100%;
+		overflow-y: scroll;
+		    max-height: 100%;
         .block2{
             background: white;
             border-bottom: 0.25rem solid #F0F0F0;

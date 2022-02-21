@@ -143,7 +143,12 @@ export default {
 .van-list {
   margin-top: 0.15rem;
 }
-
+.van-popup{
+	.content2{
+		overflow: scroll;
+		max-height: 100%;
+	}
+}
 .main {
   min-height: 100vh;
   background: #F5F2F5;

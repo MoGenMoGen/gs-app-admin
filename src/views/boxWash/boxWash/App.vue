@@ -1026,6 +1026,13 @@ export default {
 .van-cell {
   line-height: normal;
 }
+.van-popup{
+	overflow: visible;
+	.van-cell-group{
+		overflow: scroll;
+		max-height: 100%;
+	}
+}
 
 .van-nav-bar {
   z-index: 999;

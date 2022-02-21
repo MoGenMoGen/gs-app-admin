@@ -553,6 +553,13 @@ export default {
   line-height: normal;
   padding: 8px 16px;
 }
+.van-popup{
+	overflow: visible;
+	.van-cell-group{
+		overflow: scroll;
+		max-height: 100%;
+	}
+}
 
 .van-list {
   margin-top: 0.15rem;
