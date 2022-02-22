@@ -6,8 +6,9 @@
         <li v-for="item in tabbarDes" :key="item.page" @click="selected=item.page">
           <p :class="{ active: selected == item.page }">
             {{ item.txt }}
+              <span :class="{actice_border: selected == item.page }"></span>
           </p>
-          <van-tag round type="danger">{{ item.total }}</van-tag>
+          <van-tag class="span" round type="danger">{{ item.total }}</van-tag>
         </li>
       </ul>
     </div>
@@ -191,7 +192,7 @@ export default {
     p {
       width: fit-content;
       height: 0.69rem;
-      padding: 0 0.15rem;
+      margin: 0 0.15rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -209,7 +210,7 @@ export default {
         padding: 8px 16px;
       }
 
-      span {
+      .span {
         // position: absolute;
         background: red;
         border-radius: 40%;
@@ -229,7 +230,20 @@ export default {
 }
 
 .active {
-  color: #1177b9 !important;
-  border-bottom: 1 rpx solid #1177b9;
-}
+    color: #1177b9;
+    position: relative;
+    // border-bottom: 1rpx solid #1177b9;
+    .actice_border {
+      display: inline-block;
+      position: absolute;
+      bottom: 0.04rem;
+      left: 0;
+      // transform: translateX(-50%);
+      width: 100%;
+      height: 0.06rem;
+      background: #1177b9;
+      opacity: 1;
+      border-radius: 0.06rem;
+    }
+  }
 </style>

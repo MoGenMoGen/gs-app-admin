@@ -35,8 +35,9 @@
           <li v-for="item in tabList" @click="toChoose(item)" :key="item.id">
             <p :class="{ active: tabId == item.id }">
               {{ item.name }}
+              <span :class="{actice_border: tabId == item.id }"></span>
             </p>
-            <van-tag round type="danger">{{ item.total }}</van-tag>
+            <van-tag round type="danger"  class="span">{{ item.total }}</van-tag>
           </li>
         </ul>
       </div>
@@ -371,7 +372,7 @@ export default {
       p {
         width: fit-content;
         height: 0.69rem;
-        padding: 0 0.15rem;
+        margin: 0 0.15rem;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -381,8 +382,21 @@ export default {
     }
   }
   .active {
-    color: #1177b9 !important;
-    border-bottom: 1 rpx solid #1177b9;
+    color: #1177b9;
+    position: relative;
+    // border-bottom: 1rpx solid #1177b9;
+    .actice_border {
+      display: inline-block;
+      position: absolute;
+      bottom: 0.04rem;
+      left: 0;
+      // transform: translateX(-50%);
+      width: 100%;
+      height: 0.06rem;
+      background: #1177b9;
+      opacity: 1;
+      border-radius: 0.06rem;
+    }
   }
 
   .search {

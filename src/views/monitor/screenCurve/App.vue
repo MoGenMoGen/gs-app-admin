@@ -12,9 +12,9 @@
     <van-sticky>
       <my-header title="泵房监控" @back="back" :searchStatus="false">
       </my-header>
-    <!-- </van-sticky> -->
-    <!-- <van-sticky :offset-top="82"> -->
-    <!-- <van-sticky > -->
+      <!-- </van-sticky> -->
+      <!-- <van-sticky :offset-top="82"> -->
+      <!-- <van-sticky > -->
       <div class="search">
         <div>
           <input
@@ -38,8 +38,9 @@
           <li v-for="item in zoneList" @click="toChoose(item)" :key="item.id">
             <p :class="{ active: tabId == item.id }">
               {{ item.nm }}
+              <span :class="{actice_border: tabId == item.id }"></span>
             </p>
-            <span>{{ item.arg1 }}</span>
+            <span class="span">{{ item.arg1 }}</span>
           </li>
         </ul>
       </div>
@@ -56,8 +57,8 @@
       <div v-for="(item, index) in dataList" :key="item.id" class="listItem">
         <div class="itemTop" @click="toDetail(item)">
           <div>
-            {{ item.pumpNo }}<span></span>{{ item.pumpNm }}{{item.nm}}<span></span
-            >{{ item.region }}
+            {{ item.pumpNo }}<span></span>{{ item.pumpNm }}{{ item.nm
+            }}<span></span>{{ item.region }}
             <!--<p v-if="item.status==1" class="green">在线</p>-->
             <!--<p v-if="item.status==0" class="red">离线</p>-->
           </div>
@@ -78,7 +79,7 @@
         </div>
 
         <!-- <div class="itemContent" v-show="!item.showMore"> -->
-        <div class="itemContent" >
+        <div class="itemContent">
           <p @click="toShow(item.pumpNo, 'outPressure', '出水压力', item)">
             <span>出水压力：</span>{{ item.outPressure }}
           </p>
@@ -660,7 +661,7 @@ export default {
       searchShow: false,
       zoneShow: false,
       pumpList: [],
-      zoneList: [ ],
+      zoneList: [],
 
       tabId: 1,
       loading: false,
@@ -672,28 +673,23 @@ export default {
       title: "",
       pumpNm: "",
       menuList: [],
-      timer:null
-
+      timer: null,
     };
   },
   mounted() {
-    this.getRegionTotal()
+    this.getRegionTotal();
     this.getList();
     //this.getPump();
   },
   methods: {
-    getRegionTotal(){
-
-      this.api.getApiUrl("/gs/monitorLatest/regionTotal")
-          .then((res) => {
-            if (res.code === 200) {
-              console.log(res)
-              this.zoneList = res.data
-            }
-          });
-
+    getRegionTotal() {
+      this.api.getApiUrl("/gs/monitorLatest/regionTotal").then((res) => {
+        if (res.code === 200) {
+          console.log(res);
+          this.zoneList = res.data;
+        }
+      });
     },
-
 
     //切换tab
     toChoose(item) {
@@ -729,7 +725,7 @@ export default {
         });
       }
     },
-     debounce(fn, wait) {
+    debounce(fn, wait) {
       return () => {
         if (this.timer) {
           clearTimeout(this.timer); //清除这个定时器
@@ -1022,8 +1018,22 @@ export default {
   }
   .active {
     color: #1177b9;
-    border-bottom: 1rpx solid #1177b9;
+    position: relative;
+    // border-bottom: 1rpx solid #1177b9;
+    .actice_border {
+      display: inline-block;
+      position: absolute;
+      bottom: 0.04rem;
+      left: 0;
+      // transform: translateX(-50%);
+      width: 100%;
+      height: 0.06rem;
+      background: #1177b9;
+      opacity: 1;
+      border-radius: 0.06rem;
+    }
   }
+
   .tab {
     height: 0.7rem;
     background: white;
@@ -1053,13 +1063,13 @@ export default {
       p {
         width: fit-content;
         height: 0.69rem;
-        padding: 0 0.15rem;
+        margin: 0 0.15rem;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 0.28rem;
       }
-      span {
+      .span {
         // position: absolute;
         background: red;
         border-radius: 40%;

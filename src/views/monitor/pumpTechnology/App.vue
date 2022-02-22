@@ -37,8 +37,9 @@
           <li v-for="item in zoneList" @click="toChoose(item)" :key="item.id">
             <p :class="{ active: tabId == item.id }">
               {{ item.nm }}
+              <span :class="{ actice_border: tabId == item.id }"></span>
             </p>
-            <span>{{ item.arg1 }}</span>
+            <span class="span">{{ item.arg1 }}</span>
           </li>
         </ul>
       </div>
@@ -670,7 +671,7 @@ export default {
       title: "",
       pumpNm: "",
       menuList: [],
-      timer:null
+      timer: null,
     };
   },
   mounted() {
@@ -1015,7 +1016,20 @@ export default {
   }
   .active {
     color: #1177b9;
-    border-bottom: 1rpx solid #1177b9;
+    position: relative;
+    // border-bottom: 1rpx solid #1177b9;
+    .actice_border {
+      display: inline-block;
+      position: absolute;
+      bottom: 0.04rem;
+      left: 0;
+      // transform: translateX(-50%);
+      width: 100%;
+      height: 0.06rem;
+      background: #1177b9;
+      opacity: 1;
+      border-radius: 0.06rem;
+    }
   }
   .tab {
     height: 0.7rem;
@@ -1046,13 +1060,13 @@ export default {
       p {
         width: fit-content;
         height: 0.69rem;
-        padding: 0 0.15rem;
+        margin: 0 0.15rem;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 0.28rem;
       }
-      span {
+      .span {
         // position: absolute;
         background: red;
         border-radius: 40%;
