@@ -38,14 +38,19 @@
 
     </div>
 
-    <van-popup v-model="show" position="top" :styles="{ height: '100%' }">
-      <detail
-        :id="detailId"
-        :type="type"
-        @closeInfo="closeInfo"
-        v-if="show"
-      ></detail>
+<!--    <van-popup v-model="show" position="top" :styles="{ height: '100%' }">-->
+<!--      <detail-->
+<!--        :id="detailId"-->
+<!--        :type="type"-->
+<!--        @closeInfo="closeInfo"-->
+<!--        v-if="show"-->
+<!--      ></detail>-->
+<!--    </van-popup>-->
+
+    <van-popup  v-model="show" position="right" :style="{ height: '100%', width: '100%' }" >
+      <detail :id="detailId" :type="type" @closeInfo="closeInfo" v-if="show"></detail>
     </van-popup>
+
   </div>
 </template>
 
@@ -168,20 +173,21 @@ export default {
   margin-top: 0.15rem;
 }
 .van-popup{
-	.content2{
-		overflow: scroll;
-		max-height: 100%;
-	}
+  .content2{
+    overflow: scroll;
+    max-height: 100%;
+  }
 }
-.main {
-  min-height: 100vh;
-  background: #f5f2f5;
+#container {
+
 }
+
 .listItem {
   background: #ffffff;
   border-radius: 0.1rem;
   margin: 0 auto 0.15rem;
   width: 96%;
+
   .itemTop {
     position: relative;
     display: flex;
@@ -189,10 +195,12 @@ export default {
     height: 1rem;
     width: 95%;
     margin: 0 auto;
+
     div:first-of-type {
       flex: 1;
       display: flex;
       align-items: center;
+
       span {
         display: inline-block;
         width: 1px;
@@ -201,6 +209,7 @@ export default {
         opacity: 0.2;
         margin: 0 0.2rem;
       }
+
       p {
         height: 0.45rem;
         line-height: 0.45rem;
@@ -210,12 +219,14 @@ export default {
         margin-left: 0.2rem;
       }
     }
+
     img {
       width: 0.35rem;
       position: absolute;
       top: 0.3rem;
       right: 0.2rem;
     }
+
     .showMore {
       transform: rotate(180deg);
       -ms-transform: rotate(180deg); /* IE 9 */
@@ -223,16 +234,21 @@ export default {
       -webkit-transform: rotate(180deg); /* Safari 和 Chrome */
       -o-transform: rotate(180deg); /* Opera */
     }
+
   }
+
+
   .itemContent {
     width: 95%;
     margin: 0 auto;
-    border-top: 1px solid #e9e9e9;
+    border-top: 1px solid #E9E9E9;
     padding: 0.2rem 0;
+
     p {
       display: flex;
       align-items: center;
       padding: 0.1rem 0;
+
       > span {
         color: #909090;
         width: 1.3rem;
@@ -240,38 +256,54 @@ export default {
         flex-shrink: 0;
       }
     }
+
   }
 }
+
+.main {
+  min-height: 100vh;
+  background: #F5F2F5;
+}
+
 /*
-        内容区域
-         */
+    内容区域
+     */
 .content {
+
   /*每一个循环块*/
+
   .block {
     font-size: 14px;
     background: white;
-    border-bottom: 1px solid #f5f2f5;
+    border-bottom: 1px solid #F5F2F5;
     /*顺序为上右下左（顺时针）。*/
     padding: 0.3rem 0.4rem 0.3rem 0.4rem;
     position: relative;
     /*每一条数据
-           */
+   */
+
     .item {
       padding-top: 0.13rem;
       padding-bottom: 0.13em;
       display: flex;
       /*左侧label*/
+
       span {
         flex: 4;
         color: #999999;
       }
+
       /*右侧内容*/
+
       p {
         flex: 14;
         color: #333333;
+
       }
     }
+
     /*箭头符号*/
+
     img {
       position: absolute;
       width: 20px;
@@ -280,6 +312,10 @@ export default {
       transform: translateY(-50%);
       right: 15px;
     }
+
+
   }
 }
+
+
 </style>

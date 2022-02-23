@@ -39,12 +39,9 @@
     </div>
 
 
-    <my-popup
-        v-model="show"
-        position="top" :styles="{height:'100%'}">
-      <!--            v-if用于销毁组件，否则会有记录-->
+    <van-popup  v-model="show" position="right" :style="{ height: '100%', width: '100%' }" >
       <detail :id="detailId" :type="type" @closeInfo="closeInfo" v-if="show"></detail>
-    </my-popup>
+    </van-popup>
 
   </div>
 </template>
@@ -140,16 +137,12 @@ export default {
 .van-list {
   margin-top: 0.15rem;
 }
-.van-popup{
-	.content2{
-		overflow: scroll;
-		max-height: 100%;
-	}
-}
-#container {
-
-}
-
+//.van-popup{
+//	.content2{
+//		overflow: scroll;
+//		max-height: 100%;
+//	}
+//}
 .listItem {
   background: #ffffff;
   border-radius: 0.1rem;
@@ -233,36 +226,21 @@ export default {
   background: #F5F2F5;
 }
 
-/*
-    内容区域
-     */
 .content {
-
-  /*每一个循环块*/
-
   .block {
     font-size: 14px;
     background: white;
     border-bottom: 1px solid #F5F2F5;
-    /*顺序为上右下左（顺时针）。*/
     padding: 0.3rem 0.4rem 0.3rem 0.4rem;
     position: relative;
-    /*每一条数据
-   */
-
     .item {
       padding-top: 0.13rem;
       padding-bottom: 0.13em;
       display: flex;
-      /*左侧label*/
-
       span {
         flex: 4;
         color: #999999;
       }
-
-      /*右侧内容*/
-
       p {
         flex: 14;
         color: #333333;

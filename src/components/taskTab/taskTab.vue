@@ -87,44 +87,15 @@ export default {
             this.tabbarDes[i].total = res.page.total
           })
         }
+
         if (tabbarDe.id == 2){
           this.query.toP(qry, 1, 999);
           this.api.getTaskOrder2(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
-            this.tabbarDes[i].total = res.list.length
+            this.tabbarDes[i].total = res.data.list.length
           })
         }
 
       }
-
-
-      // this.tabbarDes.map(res => {
-      //   let qry = this.query.new();
-      //   //工单指派
-      //   if (res.id == 1) {
-      //
-      //     this.query.toW(qry, "status", "2,1", "IN");
-      //   }
-      //   //完成工单
-      //   if (res.id == 3){
-      //     this.query.toW(qry, "status", "4,5", "IN");
-      //   }
-      //   //工单接单
-      //   if (res.id == 4){
-      //     this.query.toW(qry, "status2", "2,1", "IN");
-      //   }
-      //   if (res.id == 1|| res.id == 3 || res.id == 4){
-      //     this.query.toP(qry, 1, 1);
-      //     this.api.getTaskOrder(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
-      //       res.total = res.page.total
-      //     })
-      //   }
-      //   if (res.id == 2){
-      //     this.query.toP(qry, 1, 999);
-      //     this.api.getTaskOrder2(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
-      //       res.total = res.list.length
-      //     })
-      //   }
-      // })
     },
 
     setSelect(s) {

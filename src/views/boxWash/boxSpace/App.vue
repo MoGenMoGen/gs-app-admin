@@ -365,6 +365,7 @@
           >
             审核通过
           </van-button>
+          <div style="height: 100px"></div>
         </van-form>
       </van-cell-group>
     </van-popup>
@@ -522,6 +523,7 @@ export default {
     },
     writeEnd() {
       this.infoSpace.confirmSign = this.$refs.SignCanvas.saveAsImg();
+
       this.show3 = false;
     },
     debounce(fn, wait) {
@@ -633,6 +635,14 @@ export default {
 }
 
 #container {
+  .van-popup{
+    overflow: visible;
+    .van-cell-group{
+      overflow: scroll;
+      max-height: 100%;
+    }
+  }
+
   display: flex;
   flex-direction: column;
   height: 100%;

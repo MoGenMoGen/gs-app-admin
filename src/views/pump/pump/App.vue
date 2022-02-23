@@ -431,13 +431,7 @@ export default {
         this.timer = setTimeout(fn, wait);
       };
     },
-    search() {
-      //     this.searchShow = false;
-      this.pageNo = 1;
-      this.pageSize = 10;
-      this.dataList = [];
-      this.getList();
-    },
+
     getRegionTotal() {
       this.api.getApiUrl("/gs/pump/regionTotal").then((res) => {
         if (res.code === 200) {
@@ -476,6 +470,9 @@ export default {
     },
 
     toNav(item) {
+      if (!item.lat){
+        return  Toast("该泵房未设置经纬度");
+      }
       let temp = {
         dlat: item.lat,
         dlon: item.lng,

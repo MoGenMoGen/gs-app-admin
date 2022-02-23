@@ -38,12 +38,17 @@
 
     </div>
 
-    <van-popup v-model="showConfirm" position="top" :styles="{height:'100%'}">
+
+    <van-popup  v-model="showConfirm" position="right" :style="{ height: '100%', width: '100%' }" >
       <confirm-form :id="comfirmId" @closeConfirm="closeConfirm" v-if="showConfirm"></confirm-form>
     </van-popup>
-    <van-popup v-model="show" position="top" :style="{ height: '100%' }">
+
+
+    <van-popup v-model="show" position="right" :style="{ height: '100%', width: '100%' }" >
       <detail :id="detailId" :type="type" @closeInfo="closeInfo" v-if="show" @reList="onRefresh"></detail>
     </van-popup>
+
+
   </div>
 </template>
 
