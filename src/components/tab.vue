@@ -50,9 +50,9 @@
 import home from "./img/home.png";
 import homeA from "./img/homeA.png";
 import map from "./img/map.png";
-import mapA from "./img/map.png";
+import mapA from "./img/mapA.png";
 import msg from "./img/msg.png";
-import msgA from "./img/msg.png";
+import msgA from "./img/msgA.png";
 import user from "./img/user.png";
 import userA from "./img/userA.png";
 export default {

@@ -320,12 +320,12 @@
             </van-radio-group>
           </van-cell>
 
-          <van-field
+          <!-- <van-field
               label="施工作业负责人签字"
               readonly
               label-width="130"
-          ></van-field>
-          <van-image width="100%" height="10rem" :src="infoSpace.jobSign">
+          ></van-field> -->
+          <van-image width="100%" height="5rem" :src="infoSpace.jobSign">
             <template v-slot:loading>施工作业负责人签字</template>
           </van-image>
           <van-field
@@ -335,11 +335,11 @@
               readonly
           ></van-field>
 
-          <van-field label="确认人签字" readonly label-width="130"></van-field>
+          <!-- <van-field label="确认人签字" readonly label-width="130"></van-field> -->
           <van-image
               @click="show3 = true"
               width="100%"
-              height="8rem"
+              height="5rem"
               :src="infoSpace.confirmSign"
           >
             <template v-slot:loading>确认人签字</template>
