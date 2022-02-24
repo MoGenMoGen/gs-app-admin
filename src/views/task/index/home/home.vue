@@ -111,6 +111,8 @@ export default {
     //返回
     back() {
       this.until.back();
+      // this.until.replace("./index.html");
+      this.until.replace("../../views/home/index.html");
     },
     //新建工单
     newTask() {
@@ -129,20 +131,16 @@ export default {
     //接单单位
     getDept() {
       this.api.getDeptList(3000).then((res) => {
-        window.console.log("接单单位列表。。。。。");
-        window.console.log(res);
         this.receiveList = res.data.list;
       });
     },
     //工单来源确定
     sourceConfirm(e) {
-      console.log(e);
       this.searchData.orderSource = e.nm;
       this.sourceShow = false;
     },
     //处理单位确定
     receiveConfirm(e) {
-      console.log(e);
       this.searchData.receivingNm = e.nm;
       this.receiveShow = false;
     },
@@ -202,7 +200,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-	
+
 .search {
   display: flex;
   align-items: center;

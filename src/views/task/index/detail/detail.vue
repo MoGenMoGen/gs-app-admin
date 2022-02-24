@@ -1,14 +1,8 @@
 <template>
   <!--    工单详情-->
-  <div>
-    <my-header :title="title">
+  <div class="main">
+    <my-header :title="title" :search-status="false">
       <van-icon name="arrow-left" slot="left" color="white" @click="back"></van-icon>
-
-      <div class="right" slot="right">
-        <button>新建</button>
-        <img src="./img/search.png" @click="search">
-      </div>
-
     </my-header>
     <div class="content2">
       <div class="block2">
@@ -39,17 +33,16 @@
           <p>{{ info.dispatchDepartment }}</p></div>
         <div><span>派单人：</span>
           <p>{{ info.sendUser }}</p></div>
-        <!--                <div><span>工单时间：</span><p>{{info.orderDate}}</p></div>-->
-        <!--                <div><span>工单时段：</span><p>{{info.orderSlot}}</p></div>-->
         <div><span>接单备注：</span>
           <p>{{ info.remarks }}</p></div>
       </div>
-      <!--                执行单位-->
 
       <div class="block2">
         <h2>外协处理信息</h2>
         <div><span>接单时间：</span>
           <p>{{ info.orderTm }}</p></div>
+        <div><span>到场时间：</span>
+          <p>{{ info.arrivalTm }}</p></div>
         <div><span>完成时间：</span>
           <p>{{ info.orderCompletionTm }}</p></div>
         <div><span>接单人员：</span>
@@ -60,7 +53,7 @@
           <p>{{ info.cause }}</p></div>
         <div><span>排查手段：</span>
           <p>{{ info.means }}</p></div>
-        <div><span>处理记录：</span><textarea rows="4">{{info.processingRecords}} </textarea></div>
+        <div><span>处理记录：</span><textarea rows="4" readonly="readonly">{{info.processingRecords}} </textarea></div>
         <div><span>处理前：</span>
           <van-image v-if="info.img1 !== '' && info.img1 != null  " width="100" height="100"
                      v-for=" item in (info.img1 || '').split(',')" :key="item" :src="item"
@@ -77,6 +70,8 @@
         <h2>{{ info.deptNm }}处理信息</h2>
         <div><span>接单时间：</span>
           <p>{{ info.orderTm2 }}</p></div>
+        <div><span>到场时间：</span>
+          <p>{{ info.arrivalTm2 }}</p></div>
         <div><span>完成时间：</span>
           <p>{{ info.orderCompletionTm2 }}</p></div>
         <div><span>接单人员：</span>
@@ -87,7 +82,7 @@
           <p>{{ info.cause2 }}</p></div>
         <div><span>排查手段：</span>
           <p>{{ info.means2 }}</p></div>
-        <div><span>处理记录：</span><textarea rows="4">{{info.processingRecords2}} </textarea></div>
+        <div><span>处理记录：</span><textarea rows="4" readonly="readonly">{{info.processingRecords2}} </textarea></div>
         <div><span>处理前：</span>
           <van-image v-if="info.img3 !== '' && info.img3 != null  " width="100" height="100"
                      v-for=" item in (info.img3 || '').split(',')" :key="item" :src="item"
@@ -100,7 +95,7 @@
         </div>
       </div>
 
-      <div class="block2">
+      <div class="block2" v-if="type != 2">
         <h2>督办信息</h2>
         <div><span>确认时间：</span>
           <p>{{ info.finalConfirmationTm }}</p></div>
@@ -109,11 +104,17 @@
         <div><span>完成时效：</span>
           <p>{{ info.completionTime }}</p></div>
         <div><span>综合评价：</span>
-          <van-rate readonly v-model="info.evaluation"></van-rate>
+          <van-rate style="margin-left: -20px" readonly v-model="info.evaluation"></van-rate>
+        </div>
+
+        <div><span>故障考评：</span>
+          <p v-if="info.faultCategory == 1">设备商设备故障</p>
+          <p v-if="info.faultCategory == 2">片区故障</p>
+          <p v-if="info.faultCategory == 3">非泵房原因</p>
         </div>
       </div>
 
-      <div class="block2">
+      <div class="block2" v-if="type != 2">
         <h2>回访信息</h2>
         <div><span>回访时间：</span>
           <p>{{ info.revisitTm }}</p></div>
@@ -124,12 +125,34 @@
         <div><span>客户满意度：</span>
           <p>{{ info.customerSatisfaction }}</p></div>
       </div>
+
+      <div class="block2" v-if="type == 2">
+        <h2>填写工单确认信息</h2>
+        <div><span>评价等级：</span>
+          <van-rate style="margin-left: -20px" v-model="confirmInfo.val1"/>
+        </div>
+        <div style="margin-bottom: 20px"><span>确认意见：</span>
+          <textarea rows="1" v-model="confirmInfo.val2" placeholder="请输入确认意见"></textarea>
+        </div>
+        <div><span>故障考评：</span>
+          <el-radio-group v-model="confirmInfo.val3" style="display:block;margin-left: -20px">
+            <el-radio :label="1">设备商设备故障</el-radio>
+            <el-radio :label="2">片区故障</el-radio>
+            <el-radio :label="3">非泵房原因</el-radio>
+          </el-radio-group>
+        </div>
+      </div>
+
+
     </div>
 
-    <van-button v-if="info.status === 0 || info.status === 3" type="info" @click="show = true" block>工 单 确 认
-    </van-button>
 
     <van-dialog v-model="show" message="是否确认工单？" show-cancel-button @confirm="submit"></van-dialog>
+
+    <!--    <van-button v-if="info.status === 0 || info.status === 3" type="info" @click="show = true" block>工 单 确 认 </van-button>-->
+    <van-button v-if="info.status === 0 || info.status === 3" type="info" @click="openShow" block>工 单 确 认</van-button>
+
+
   </div>
 </template>
 
@@ -147,7 +170,12 @@ export default {
       show: false,
       imgShow: false,
       title: '工单详情',
-      info: {}
+      info: {},
+      confirmInfo: {
+        val1: 0,
+        val2: '',
+        val3: '',
+      }
 
     }
   },
@@ -163,7 +191,38 @@ export default {
         item
       ]);
     },
+    openShow() {
+      //Toast.success('自动保存成功');
 
+      if (!this.confirmInfo.val2){
+        return  Toast('请输入确认意见');
+      }
+      if (!this.confirmInfo.val3){
+        return  Toast('请选择故障考评');
+      }
+      Dialog.confirm({title: '提交工单确认信息', message: '是否确认提交工单确认信息？'})
+          .then(() => {
+            // on confirm
+            this.api.getUrl('/gs/order/confirm?id=' + this.id + '&num=' + this.confirmInfo.val1 + '&op=' + this.confirmInfo.val2 + '&f=' + this.confirmInfo.val3).then(res => {
+              Toast('提示内容');
+              if (res.code === 200) {
+                Toast.success("确认成功");
+                this.back();
+                // //调用父组件刷新列表方法
+                this.$emit('reList', this.info.id);
+
+
+              } else {
+                Toast("确认失败")
+              }
+            })
+          })
+          .catch(() => {
+            // on cancel
+          });
+
+
+      },
 
     //工单确认提交
     submit() {
@@ -185,22 +244,13 @@ export default {
           Toast.fail("确认失败")
         }
       })
-
-    },
-
-
-    search() {
-
     },
     getInfo(id) {
       this.api.getTaskInfo(id).then(res => {
         this.info = res.data;
-        console.log(this.info)
-
       })
     },
     back() {
-      console.log(123)
       this.$emit('closeInfo');
     }
   },
@@ -221,9 +271,8 @@ export default {
 <style scoped lang="less">
 
 .main {
-  height: 100%;
-  width: 100%;
-
+  //height: 100%;
+  //width: 100%;
 }
 
 .myHeader {
@@ -250,24 +299,18 @@ export default {
     padding-bottom: 0.2rem;
     position: relative;
 
-    /*每一条数据
-    不包括最后一条*/
-
     div {
       font-size: 14px;
       padding-bottom: 0.2rem;
       padding-left: 0.4rem;
       padding-right: 0.4rem;
       display: flex;
-      /*左侧label*/
 
       span {
         color: #999999;
         width: 90px;
         flex-shrink: 0;
       }
-
-      /*右侧内容*/
 
       p {
         color: #333333;

@@ -102,6 +102,8 @@ export default {
     this.getList()
   },
   methods: {
+
+
     toShowMore(item) {
       item.showMore = !item.showMore
     },
@@ -121,24 +123,22 @@ export default {
     getList() {
       let qry = this.query.new();
       this.query.toO(qry, "crtTm", "desc");
-      // this.query.toW(qry, "status", "3,0", "IN");
       this.query.toP(qry, this.pageNo, this.pageSize);
       this.api.getTaskOrder2(encodeURIComponent(this.query.toJsonStr(qry))).then(res => {
         this.list.push(...res.data.list);
         this.list.forEach(item => {
           this.$set(item, 'showMore', false)
         })
-        // 加载状态结束
         this.finished = this.list.length >= res.page.total;
         this.loading = false;
         this.pageNo++
-        // 数据全部加载完成
       })
     },
     onRefresh(id) {
+      this.until.seSave('taskTab', "confirm");
+      this.until.href('../task/index.html')
       //删除列表中的数据
-      this.list = this.list.filter(item => item.id !== id)
-
+      //this.list = this.list.filter(item => item.id !== id)
     }
   }
 }
