@@ -35,9 +35,9 @@
           <li v-for="item in tabList" @click="toChoose(item)" :key="item.id">
             <p :class="{ active: tabId == item.id }">
               {{ item.name }}
-              <span :class="{ actice_border: tabId == item.id }"></span>
+              <span :class="{actice_border: tabId == item.id }"></span>
             </p>
-            <van-tag round type="danger" class="span">{{ item.total }}</van-tag>
+            <van-tag round type="danger"  class="span">{{ item.total }}</van-tag>
           </li>
         </ul>
       </div>
@@ -274,26 +274,22 @@ export default {
       this.getList();
     },
     onLoad() {
-      console.log("onload");
       this.getList();
     },
 
     toChoose(item) {
-      console.log("choose");
       if (this.tabId != item.id) {
         this.tabId = item.id;
         this.tabIndex = item.id;
-        this.debounce(this.search, 100)();
-
-        // this.pageNo = 1;
-        // this.dataList = [];
-        // setTimeout(() => {
-        //   this.getList();
-        // }, 1000);
+        this.finished = false;
+        this.pageNo = 1;
+        this.dataList = [];
+        //this.getList();
       }
     },
 
     getList() {
+      console.log(1111111)
       let qry = this.query.new();
       if (this.searchData.estateNm) {
         this.query.toW(qry, "estateNm", this.searchData.estateNm, "LK");
@@ -306,15 +302,21 @@ export default {
       }
       if (this.tabIndex === 0) {
         this.query.toW(qry, "status", "待保养", "EQ");
+        this.query.toO(qry, "planTm", "asc");
       }
       if (this.tabIndex === 1) {
         this.query.toW(qry, "status", "已保养", "EQ");
+        this.query.toO(qry, "planTm", "desc");
       }
       if (this.tabIndex === 2) {
         this.query.toW(qry, "status", "逾期", "EQ");
+        this.query.toO(qry, "planTm", "asc");
       }
       this.query.toP(qry, this.pageNo, this.pageSize);
-      this.query.toO(qry, "crtTm", "desc");
+
+      this.query.toO(qry, "pumpNo", "asc");
+
+
       this.api
         .getMaintainTask(encodeURIComponent(this.query.toJsonStr(qry)))
         .then((res) => {

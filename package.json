@@ -1,7 +1,7 @@
 {
   "name": "11",
   "version": "1.0.1",
-  "author": "wyh https://eg.zjfld.net/    127.0.0.1   http://61.130.113.44:6143/   192.168.0.80",
+  "author": "wyh https://dceg.zjfld.net/    127.0.0.1   http://61.130.113.44:6143/   192.168.0.80",
   "scripts": {
     "dev": "node --max_old_space_size=4096 build/dev-server.js --proxy=https://dceg.zjfld.net/",
     "build": "node build/build.js",

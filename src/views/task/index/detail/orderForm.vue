@@ -1,15 +1,17 @@
 <template>
   <!--    工单详情-->
   <div>
-    <my-header :title="title" :searchStatus="false">
-      <van-icon name="arrow-left" slot="left" color="white" @click="back"></van-icon>
-    </my-header>
-	<van-popup v-model="showPicker" position="bottom">
-	  <van-picker show-toolbar :columns="zList" @cancel="showPicker = false" @confirm="onConfirm"></van-picker>
-	</van-popup>
-	<van-popup v-model="showPicker2" position="bottom">
-	  <van-picker show-toolbar :columns="yList" @cancel="showPicker2 = false" @confirm="onConfirm2"></van-picker>
-	</van-popup>
+    <van-sticky>
+      <my-header :title="title" :searchStatus="false">
+        <van-icon name="arrow-left" slot="left" color="white" @click="back"></van-icon>
+      </my-header>
+    </van-sticky>
+    <van-popup v-model="showPicker" position="bottom">
+      <van-picker show-toolbar :columns="zList" @cancel="showPicker = false" @confirm="onConfirm"></van-picker>
+    </van-popup>
+    <van-popup v-model="showPicker2" position="bottom">
+      <van-picker show-toolbar :columns="yList" @cancel="showPicker2 = false" @confirm="onConfirm2"></van-picker>
+    </van-popup>
     <div class="content2">
       <div class="block2">
         <h2>工单信息</h2>
@@ -147,18 +149,12 @@ export default {
         }
       })
     },
-
-
     //接单
     acceptTask() {
-      // let dept = this.until.loGet("deptId");
-      // if (this.info.deptId != dept){
-      //   return Toast('非本部门工单，无法操作');
-      // }
       this.api.orderReceipt(this.id).then(res => {
         if (res.code === 200) {
           this.info.status2 = 2;
-        }else {
+        } else {
           return Toast(res.msg);
         }
       })

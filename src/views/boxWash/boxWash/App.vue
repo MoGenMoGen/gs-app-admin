@@ -328,7 +328,6 @@
             <!-- 使用 title 插槽来自定义标题 -->
             <template #title>
               <span>清洗存在问题</span>
-              {{ info.val8 }}
               <van-checkbox-group
                 v-model="val4"
                 direction="horizontal"
@@ -390,7 +389,7 @@
                 :size="25"
                 color="#ffd21e"
                 void-icon="star"
-                :disabled="info.val8 === 1"
+                :readonly="info.val8 == 1"
                 void-color="#eee"
               />
             </template>
@@ -400,23 +399,24 @@
             label="其他说明事项"
             rows="3"
             type="textarea"
-            :disabled="info.val8 === 1"
+            :disabled="info.val8 == 1"
             placeholder="请输入其他说明事项"
           />
           <van-field
             v-model="from.val7"
             label="项目负责人"
             placeholder="请输入项目负责人"
-            :disabled="info.val8 === 1"
+            :disabled="info.val8 == 1"
           />
           <div style="height: 30px"></div>
           <van-button
             type="primary"
             @click="addEvaluation"
             block
-            v-if="info.val8 !== 1"
+            v-if="info.val8 == 0"
             >提交考评
           </van-button>
+          <div style="height: 100px"></div>
         </div>
       </van-cell-group>
     </van-popup>
@@ -490,7 +490,7 @@
             <template slot="label">
               <van-tag
                 type="primary"
-                v-for="item in jobPerson"
+                v-for="item in infoSpace.jobPerson"
                 :key="item"
                 size="medium"
                 style="margin-right: 10px; margin-top: 5px"
@@ -778,7 +778,7 @@ export default {
       // val5:'',
       from: {
         id: "",
-        val4: "",
+        val4: [],
         val5: 0,
         val6: "",
         val7: "",
@@ -930,6 +930,11 @@ export default {
       if (this.tabId != 0) {
         this.api.getBoxWashDtl(item.id).then((res) => {
           this.info = res.data;
+          if (this.info.val8 == 1){
+            this.from = this.info
+            this.val4 = this.info.val4.split(",")
+            console.log(this.from)
+          }
           this.show = true;
         });
       }
@@ -947,7 +952,6 @@ export default {
     getSpecInfo(id) {
       this.api.confinedSpaceInfo(id).then((res) => {
         if (res.code === 200) {
-          console.log(res.data);
           this.infoSpace = res.data;
           this.show2 = true;
         }

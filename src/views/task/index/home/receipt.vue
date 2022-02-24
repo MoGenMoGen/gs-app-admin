@@ -37,7 +37,7 @@
       </van-list>
 
     </div>
-    <van-popup v-model="show" position="right" :style="{ height: '100%', width: '100%' }">
+    <van-popup v-model="show" position="top" :style="{ height: '100%', width: '100%' }">
       <orderForm :id="detailId" :type="type" @closeInfo="closeInfo" v-if="show" @reLoad="reLoad"></orderForm>
     </van-popup>
 
@@ -97,7 +97,6 @@ export default {
       this.getList()
     },
     reLoad(){
-      console.log(1111111111)
       this.until.seSave('taskTab', "receipt");
       this.until.href('../task/index.html')
     },
