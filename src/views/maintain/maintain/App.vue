@@ -35,9 +35,9 @@
           <li v-for="item in tabList" @click="toChoose(item)" :key="item.id">
             <p :class="{ active: tabId == item.id }">
               {{ item.name }}
-              <span :class="{actice_border: tabId == item.id }"></span>
+              <span :class="{ actice_border: tabId == item.id }"></span>
             </p>
-            <van-tag round type="danger"  class="span">{{ item.total }}</van-tag>
+            <van-tag round type="danger" class="span">{{ item.total }}</van-tag>
           </li>
         </ul>
       </div>
@@ -274,19 +274,22 @@ export default {
       this.getList();
     },
     onLoad() {
+      console.log("onload");
       this.getList();
     },
 
     toChoose(item) {
+      console.log("choose");
       if (this.tabId != item.id) {
         this.tabId = item.id;
         this.tabIndex = item.id;
-        this.finished = false;
-        this.pageNo = 1;
-        this.dataList = [];
-        setTimeout(() => {
-          this.getList();
-        }, 1000);
+        this.debounce(this.search, 100)();
+
+        // this.pageNo = 1;
+        // this.dataList = [];
+        // setTimeout(() => {
+        //   this.getList();
+        // }, 1000);
       }
     },
 

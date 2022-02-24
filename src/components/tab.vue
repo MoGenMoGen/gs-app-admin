@@ -10,6 +10,7 @@
   padding-top: 0.1rem;
   border-top: 1px solid @borderColor;
   div {
+    height: .8rem;
     flex: 1;
     text-align: center;
     .img {
