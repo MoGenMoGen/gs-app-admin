@@ -4,6 +4,12 @@
     <my-header :title="title">
       <van-icon name="arrow-left" slot="left" color="white" @click="back"></van-icon>
     </my-header>
+	<van-popup v-model="showPicker" position="bottom">
+	  <van-picker show-toolbar :columns="zList" @cancel="showPicker = false" @confirm="onConfirm"></van-picker>
+	</van-popup>
+	<van-popup v-model="showPicker2" position="bottom">
+	  <van-picker show-toolbar :columns="yList" @cancel="showPicker2 = false" @confirm="onConfirm2"></van-picker>
+	</van-popup>
     <div class="content2">
       <div class="block2">
         <h2>工单信息</h2>
@@ -52,15 +58,11 @@
 
         <van-field readonly clickable label="故障类型" :value="info.faultType2" placeholder="选择故障类型"
                    @click="showPicker = true"></van-field>
-        <van-popup v-model="showPicker" position="bottom">
-          <van-picker show-toolbar :columns="zList" @cancel="showPicker = false" @confirm="onConfirm"></van-picker>
-        </van-popup>
+        
 
         <van-field readonly clickable label="故障原因" :value="info.cause2" placeholder="选择故障原因"
                    @click="showPicker2 = true"></van-field>
-        <van-popup v-model="showPicker2" position="bottom">
-          <van-picker show-toolbar :columns="yList" @cancel="showPicker2 = false" @confirm="onConfirm2"></van-picker>
-        </van-popup>
+      
 
         <van-field v-model="info.means2" label="排查手段:" placeholder="请输入排查手段" type="textarea" rows="2"></van-field>
         <van-field v-model="info.processingRecords2" label="处理记录:" placeholder="请输入处理记录" type="textarea"
