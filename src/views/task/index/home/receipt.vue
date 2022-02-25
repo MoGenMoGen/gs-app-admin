@@ -37,6 +37,7 @@
       </van-list>
 
     </div>
+
     <van-popup v-model="show" position="top" :style="{ height: '100%', width: '100%' }">
       <orderForm :id="detailId" :type="type" @closeInfo="closeInfo" v-if="show" @reLoad="reLoad"></orderForm>
     </van-popup>
@@ -96,10 +97,12 @@ export default {
     onLoad() {
       this.getList()
     },
+
     reLoad(){
       this.until.seSave('taskTab', "receipt");
       this.until.href('../task/index.html')
     },
+
 
     getList() {
       let qry = this.query.new();
